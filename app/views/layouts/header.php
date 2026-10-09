@@ -681,6 +681,7 @@ $isDashboard = (
             $baseUrl = $isLanding ? '' : '/tenant/?url=boarding/index';
         ?>
         <nav class="app-nav">
+            <?php if (getenv('INVENTORY_ENABLED') === 'true'): ?><a href="/tenant/?url=property/browse">All spaces</a><?php endif; ?>
             <a href="<?= $baseUrl ?>#features" class="no-loader">Features</a>
             <a href="<?= $baseUrl ?>#how-it-works" class="no-loader">How it Works</a>
             <a href="<?= $baseUrl ?>#pricing" class="no-loader">Pricing</a>

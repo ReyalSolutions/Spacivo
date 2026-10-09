@@ -240,10 +240,14 @@ try {
             $savedPhotoCookie = $cookie; $cookie = '';
             $response = $request('api/v1/properties/' . $httpInventoryProperty . '/photos/' . $httpInventoryPhoto);
             $check($response[0] === 200 && @getimagesizefromstring($response[1]) !== false, 'Published photo is available to anonymous visitors');
+            $response = $request('?url=property/browse');
+            $check($response[0] === 200 && strpos($response[1], 'HTTP Property') !== false && strpos($response[1], '/photos/' . $httpInventoryPhoto) !== false, 'Published approved inventory appears in the public marketplace');
             $cookie = $savedPhotoCookie;
             $httpPropertyService->moderate($adminId, $ownerOrganization, $httpInventoryProperty, 6, 'suspended');
             $response = $request('api/v1/properties/' . $httpInventoryProperty . '/photos/' . $httpInventoryPhoto);
             $check($response[0] === 403, 'Suspending listing revokes public photo downloads');
+            $response = $request('?url=property/browse');
+            $check($response[0] === 200 && strpos($response[1], 'HTTP Property') === false, 'Suspended inventory disappears from the public marketplace');
             $response = $request('api/v1/owner/properties/' . $httpInventoryProperty . '/state', ['organization_id' => $ownerOrganization, 'version' => 7, 'state' => 'published', 'csrf_token' => $token], 'POST');
             $check($response[0] === 422, 'Owner REST API cannot bypass platform suspension');
             $httpPropertyService->moderate($adminId, $ownerOrganization, $httpInventoryProperty, 7, 'draft');

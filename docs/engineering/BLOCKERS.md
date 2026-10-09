@@ -9,3 +9,5 @@ User selected PHPMailer. The SMTP adapter is implemented and locally tested; pri
 Future Mapbox, payment sandbox, Firebase, hosting and mobile production configuration are not available yet. Those remain later-phase external dependencies, not invented integrations.
 
 Approval audit: automatic review initially rejected applying schema changes to the existing database because authorization was unclear. The user then explicitly approved the baseline and subsequently both Phase 2 migrations/enabling their features. Those exact migrations were applied successfully; this blocker is resolved.
+
+Mapbox: the user confirmed no token is available yet. Phase 4 map verification requires a user-owned public token; do not substitute fabricated or borrowed credentials. Other Phase 4 tasks can proceed after Phase 3 acceptance.

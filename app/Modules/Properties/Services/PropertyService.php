@@ -111,6 +111,20 @@ final class PropertyService
         });
     }
     public function publicListings(): array { return $this->repository->publicListings(); }
+    public function marketplace(?\App\Modules\Properties\Repositories\PropertyMetadataRepository $metadata = null): array
+    {
+        $listings = $this->repository->publicListings();
+        if ($metadata !== null) {
+            foreach ($listings as &$listing) {
+                $scope = $this->repository->publicFind((int)$listing['id']);
+                if ($scope === null) { continue; }
+                $photos = $metadata->photos((int)$scope['organization_id'], (int)$listing['id']);
+                $listing['cover_photo_id'] = (int)($photos[0]['id'] ?? 0);
+            }
+            unset($listing);
+        }
+        return $listings;
+    }
     private function write(int $actor, int $organization, callable $operation)
     {
         return $this->repository->transaction(function () use ($actor, $organization, $operation) {

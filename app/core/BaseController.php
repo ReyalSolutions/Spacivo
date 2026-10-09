@@ -216,7 +216,7 @@ abstract class BaseController
             $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
 
             // Never block these pages
-            $exempt = ['admin/subscriptions', 'auth/logout', 'organization/', 'owner/subscription_simulation', 'admin/upgrade_plan'];
+            $exempt = ['admin/subscriptions', 'auth/logout', 'organization/', 'property/browse', 'owner/subscription_simulation', 'admin/upgrade_plan'];
             foreach ($exempt as $ex) {
                 if (strpos($url, $ex) === 0) return;
             }

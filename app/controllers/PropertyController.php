@@ -3,6 +3,14 @@ declare(strict_types=1);
 
 final class PropertyController extends BaseController
 {
+    public function browse(): void
+    {
+        if (getenv('INVENTORY_ENABLED') !== 'true') { http_response_code(503); echo 'Space listings are not enabled.'; return; }
+        $service = new App\Modules\Properties\Services\PropertyService(new App\Modules\Properties\Repositories\PropertyRepository($this->db()), new App\Modules\Organizations\Repositories\OrganizationRepository($this->db()));
+        $metadata = getenv('INVENTORY_METADATA_ENABLED') === 'true' ? new App\Modules\Properties\Repositories\PropertyMetadataRepository($this->db()) : null;
+        header('Cache-Control: no-store');
+        $this->render('property/browse', ['properties' => $service->marketplace($metadata)]);
+    }
     public function index(): void
     {
         $this->requireLogin();
