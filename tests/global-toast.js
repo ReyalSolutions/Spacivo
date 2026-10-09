@@ -15,5 +15,10 @@ assert.strictEqual(window.Feedback.fire({input:'text'}),sentinel);assert.strictE
 loading=true;let resolved=false;const result=window.Feedback.fire({icon:'success',title:'Saved',text:'Done',timer:1500}).then(()=>resolved=true);
 assert.equal(closed,1);assert.equal(nodes.length,3);assert.equal(resolved,false);const delay=timers[timers.length-1];assert.equal(delay.ms,1500);delay.fn();await result;assert.equal(resolved,true);
 window.Feedback.fire('Denied','Permission required','error');assert.equal(nodes[3].role,'alert');assert.equal(calls.length,3);
+const listingSource=fs.readFileSync('app/views/admin/houses.php','utf8');
+let refreshes=0;const jq=()=>({DataTable(){return {ajax:{reload(){refreshes++;}}};},attr(){return 'fixture-token';}});
+jq.ajax=()=>({done(fn){fn({success:true,message:'Boarding house has been approved.'});return this;},fail(){return this;}});context.$=jq;
+vm.runInContext(listingSource.match(/function moderateListing[\s\S]*?(?=<\/script>)/)[0],context);
+context.moderateListing(1,'approve');assert.equal(refreshes,1);assert(nodes[nodes.length-1].innerHTML.includes('Boarding house has been approved.'));
 console.log('PASS global toast escaping, shared initialization, confirmation preservation, loading cleanup and delayed callbacks');
 })().catch(error=>{console.error(error);process.exitCode=1;});

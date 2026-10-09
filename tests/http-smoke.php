@@ -244,6 +244,13 @@ try {
             $server->query('INSERT INTO role_permissions (role_id, permission_id) VALUES (2, ' . $editPermission . ')');
             $foreignListingEdit = $request('?url=admin/update_house', ['house_id' => $fixtureForeignHouse, 'name' => 'Unauthorized change', 'csrf_token' => $token]);
             $check($foreignListingEdit[0] === 302 && $server->query('SELECT name FROM boarding_houses WHERE id = ' . $fixtureForeignHouse)->fetch_row()[0] === 'Foreign private house', 'Edit permission never overrides owner listing boundary');
+            // A successful listing POST must survive the redirect as a single global toast.
+            $savedListing = $request('?url=admin/update_house', ['house_id' => $fixtureOwnHouse, 'name' => 'Own scoped listing', 'address' => 'Street, Barangay, City, Province, Country', 'description' => 'Updated toast fixture', 'latitude' => '0', 'longitude' => '0', 'csrf_token' => $token]);
+            $check($savedListing[0] === 302, 'Successful listing update redirects to shared page');
+            $savedPage = $request('?url=admin/houses');
+            $check($savedPage[0] === 200 && strpos($savedPage[1], 'Property details successfully updated.') !== false && strpos($savedPage[1], "ToastStack.create({type: 'success'") !== false && strpos($savedPage[1], 'toast.js?v=') !== false, 'Redirected listing update renders global success toast with current assets');
+            $savedPageAgain = $request('?url=admin/houses');
+            $check(strpos($savedPageAgain[1], 'Property details successfully updated.') === false, 'Listing success toast flash is consumed exactly once');
             $server->query('DELETE FROM role_permissions WHERE role_id = 2 AND permission_id = ' . $editPermission);
             $viewPermission = (int)$server->query("SELECT id FROM permissions WHERE slug = 'view_houses'")->fetch_row()[0];
             $server->query('DELETE FROM role_permissions WHERE role_id = 2 AND permission_id = ' . $viewPermission);

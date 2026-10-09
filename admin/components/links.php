@@ -30,7 +30,7 @@
 
 <script src="/tenant/admin/assets/libs/jquery/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="/tenant/public/assets/js/toast.js"></script>
+<script src="/tenant/public/assets/js/toast.js?v=<?= filemtime(dirname(__DIR__, 2) . '/public/assets/js/toast.js') ?>"></script>
 <link rel="stylesheet" href="/tenant/public/assets/css/management.css">
 <link rel="stylesheet" href="/tenant/public/assets/css/management-theme.css">
 <link rel="stylesheet" href="/tenant/public/assets/css/management-loading.css">

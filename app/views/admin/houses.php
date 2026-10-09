@@ -420,7 +420,7 @@ function resetFilters() {
 <script>
 function moderateListing(id, action) {
     $.ajax({url:'/tenant/?url=admin/' + action + '_house',method:'POST',dataType:'json',data:{house_id:id,csrf_token:$('meta[name="csrf-token"]').attr('content')}})
-        .done(function(result){if(result.success){$('#houses-table').DataTable().ajax.reload(null,false);}else{Feedback.fire('Unable to update',result.message,'error');}})
+        .done(function(result){if(result.success){ToastStack.success(result.message || 'Property status updated.');$('#houses-table').DataTable().ajax.reload(null,false);}else{Feedback.fire('Unable to update',result.message,'error');}})
         .fail(function(){Feedback.fire('Unable to update','Permission or security validation failed.','error');});
 }
 </script>

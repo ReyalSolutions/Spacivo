@@ -1,5 +1,5 @@
 <!-- GLOBAL TOAST STACK â€” rendered once for every admin page -->
-<div id="toast-stack"></div>
+<!-- ToastStack creates one notification container on demand. -->
 
 
   <script src="/tenant/admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

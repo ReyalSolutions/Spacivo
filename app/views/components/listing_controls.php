@@ -343,6 +343,7 @@ function deleteImage(imageId) {
                 if (res.success) {
                     const tile = document.getElementById('imgTile_' + imageId);
                     if (tile) tile.remove();
+                    ToastStack.success(res.message || 'Property photo deleted.');
                     loadExistingImages();
                 } else {
                     Feedback.fire('Error', res.message, 'error');
@@ -438,26 +439,16 @@ function saveAmenities() {
 
 <?php if (isset($_SESSION['success'])): ?>
 <script>
-Feedback.fire({
-    title: 'Success!',
-    text: <?= json_encode($_SESSION['success'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>,
-    icon: 'success',
-    confirmButtonColor: '#4f46e5',
-    borderRadius: '24px',
-    timer: 3000,
-    timerProgressBar: true
+document.addEventListener('DOMContentLoaded', function () {
+    ToastStack.create({type: 'success', title: 'Success!', message: <?= json_encode($_SESSION['success'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>, duration: 5000});
 });
 </script>
 <?php unset($_SESSION['success']); endif; ?>
 
 <?php if (isset($_SESSION['error'])): ?>
 <script>
-Feedback.fire({
-    title: 'Action Failed',
-    text: <?= json_encode($_SESSION['error'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>,
-    icon: 'error',
-    confirmButtonColor: '#ef4444',
-    borderRadius: '24px'
+document.addEventListener('DOMContentLoaded', function () {
+    ToastStack.create({type: 'error', title: 'Action Failed', message: <?= json_encode($_SESSION['error'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>, duration: 5000});
 });
 </script>
 <?php unset($_SESSION['error']); endif; ?>
