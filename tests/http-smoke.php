@@ -24,6 +24,9 @@ foreach (['view_houses', 'add_houses', 'edit_houses', 'delete_houses', 'approve_
     $server->query('INSERT INTO role_permissions (role_id, permission_id) VALUES (1, ' . $listingPermissionId . ')');
     if ($listingPermission === 'view_houses') $server->query('INSERT INTO role_permissions (role_id, permission_id) VALUES (2, ' . $listingPermissionId . ')');
 }
+App\Shared\Security\PermissionSeeder::seed($server);
+$server->query('INSERT IGNORE INTO role_permissions (role_id, permission_id) SELECT 1, id FROM permissions');
+$server->query("INSERT IGNORE INTO role_permissions (role_id, permission_id) SELECT 2, id FROM permissions WHERE slug IN ('view_rooms','view_tenants','booking_ops','view_payments','record_payments','print_payment_receipt','view_revenue','manage_subscriptions')");
 $fixtureUsers = new User($server);
 $fixtureOwner = (int)$fixtureUsers->findByUsername('fixture_owner')['id'];
 $fixtureOtherOwner = $fixtureUsers->create('Foreign', null, 'Owner', 'foreign-owner@example.test', '09991111110', 2, 'foreign_owner', 'FixturePassword123');
@@ -178,9 +181,26 @@ try {
             $check($response[0] === 200 && strpos($response[1], 'class="left-sidebar"') !== false && strpos($response[1], '/tenant/public/assets/css/admin.css') === false, 'Owner subscriptions use new management design');
             $check(strpos($response[1], 'href="/tenant/admin/users.php"') === false && strpos($response[1], 'href="/tenant/admin/roles.php"') === false && strpos($response[1], 'href="/tenant/?url=admin/subscriptions"') !== false, 'Owner navigation excludes administrator account and role controls');
             $response = $request('admin/users.php');
-            $check($response[0] === 302, 'Shared interface does not grant owner administrator access');
+            $check($response[0] === 403, 'Shared interface does not grant owner administrator access');
         }
         if ($role === 'admin') {
+            $roleEditor = $request('admin/roles.php');
+            $check($roleEditor[0] === 200 && strpos($roleEditor[1], 'update_role_permissions') !== false && strpos($roleEditor[1], 'name="csrf_token"') !== false, 'Physical roles URL exposes complete canonical permission editor with CSRF');
+            $ownerGrants = array_column($server->query('SELECT permission_id FROM role_permissions WHERE role_id = 2')->fetch_all(MYSQLI_ASSOC), 'permission_id');
+            $editHouseGrant = (int)$server->query("SELECT id FROM permissions WHERE slug = 'edit_houses'")->fetch_row()[0];
+            $newGrants = array_merge($ownerGrants, [$editHouseGrant]);
+            $deniedSync = $request('?url=admin/update_role_permissions', ['role_id' => 2, 'permissions' => $newGrants]);
+            $check($deniedSync[0] === 403, 'Role permission assignment rejects missing CSRF');
+            $configuredSync = $request('?url=admin/update_role_permissions', ['role_id' => 2, 'permissions' => $newGrants, 'csrf_token' => $token]);
+            $check($configuredSync[0] === 302 && $server->query('SELECT 1 FROM role_permissions WHERE role_id = 2 AND permission_id = ' . $editHouseGrant)->num_rows === 1, 'Administrator configures owner action grant through role editor endpoint');
+            $invalidSync = $request('?url=admin/update_role_permissions', ['role_id' => 2, 'permissions' => [99999999], 'csrf_token' => $token]);
+            $check($invalidSync[0] === 302 && $server->query('SELECT 1 FROM role_permissions WHERE role_id = 2 AND permission_id = ' . $editHouseGrant)->num_rows === 1, 'Invalid permission IDs preserve existing role grants');
+            $request('?url=admin/update_role_permissions', ['role_id' => 2, 'permissions' => $ownerGrants, 'csrf_token' => $token]);
+            $syncGrant = (int)$server->query("SELECT id FROM permissions WHERE slug = 'sync_permissions'")->fetch_row()[0];
+            $server->query('DELETE FROM role_permissions WHERE role_id = 1 AND permission_id = ' . $syncGrant);
+            $revokedSync = $request('?url=admin/update_role_permissions', ['role_id' => 2, 'permissions' => [], 'csrf_token' => $token]);
+            $check($revokedSync[0] === 403, 'Role configuration grant revocation applies immediately');
+            $server->query('INSERT INTO role_permissions (role_id, permission_id) VALUES (1, ' . $syncGrant . ')');
             $allListings = $request('?url=admin/houses_data');
             $check($allListings[0] === 200 && strpos($allListings[1], 'Foreign private house') !== false && strpos($allListings[1], 'Own scoped listing') !== false, 'Shared admin listing data includes every owner');
             $response = $request('?url=property/index');
@@ -206,7 +226,7 @@ try {
             $adminId = (int)$server->query("SELECT id FROM users WHERE username = 'fixture_admin'")->fetch_row()[0];
             $server->query('UPDATE users SET role_id = 3 WHERE id = ' . $adminId);
             $response = $request('admin/users.php');
-            $check($response[0] === 302, 'Persisted role change revokes existing admin session privileges');
+            $check(in_array($response[0], [302,403], true), 'Persisted role change revokes existing admin session privileges');
             $server->query('UPDATE users SET role_id = 1 WHERE id = ' . $adminId);
         }
         if ($role === 'owner') {

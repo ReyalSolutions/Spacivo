@@ -115,6 +115,21 @@ abstract class BaseController
         }
     }
 
+    protected function requireActionPermission(string $action): void
+    {
+        $this->requireRole(['admin', 'owner']);
+        $catalog = require __DIR__ . '/../../config/management_permissions.php';
+        $allowed = false;
+        foreach ($catalog[$action] ?? [] as $permission) {
+            if ($this->hasPermission($permission)) { $allowed = true; break; }
+        }
+        if (!$allowed) $this->json(['success' => false, 'message' => 'Permission required for this action.'], 403);
+        if (!in_array($_SERVER['REQUEST_METHOD'] ?? 'GET', ['GET', 'HEAD'], true)
+            && !Csrf::verify($_POST['csrf_token'] ?? $_SERVER['HTTP_X_CSRF_TOKEN'] ?? null)) {
+            $this->json(['success' => false, 'message' => 'Invalid security token.'], 403);
+        }
+    }
+
     protected function hasPermission(string $slug): bool
     {
         if (!isset($_SESSION['role_id'])) return false;

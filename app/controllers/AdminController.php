@@ -5,20 +5,17 @@ final class AdminController extends BaseController
 {
     public function index(): void
     {
-        $this->requirePermission('view_dashboard');
+        $this->requireActionPermission('index');
+
 
         $role = $_SESSION['role'] ?? '';
-        if ($role === 'admin') {
-            header('Location: /tenant/admin/index.php');
-            exit;
-        }
         $data = [];
 
         if ($role === 'admin') {
             $data['pageTitle'] = 'System Administrator Dashboard';
             $data['roleLabel'] = 'Admin';
             $data['firstName'] = $_SESSION['first_name'] ?? 'Admin';
-            
+
             $userModel = new User($this->db());
             $houseModel = new BoardingHouse($this->db());
             $bookingModel = new Booking($this->db());
@@ -30,7 +27,7 @@ final class AdminController extends BaseController
             $data['totalOwners'] = count(array_filter($users, fn($u) => $u['role'] === 'owner'));
             $data['totalTenants'] = count(array_filter($users, fn($u) => strtolower($u['role'] ?? '') === 'tenant'));
             $data['totalStaff'] = count(array_filter($users, fn($u) => strtolower($u['role'] ?? '') === 'staff' || strtolower($u['role'] ?? '') === 'admin'));
-            
+
             $houses = $houseModel->all();
             $data['totalHouses'] = count($houses);
             $data['pendingApprovals'] = count(array_filter($houses, fn($h) => ($h['status'] ?? 'pending') === 'pending'));
@@ -41,7 +38,7 @@ final class AdminController extends BaseController
             $subModel = new Subscription($this->db());
             $planPayments = $this->db()->query("SELECT amount FROM plan_payments WHERE status = 'paid'")->fetch_all(MYSQLI_ASSOC);
             $subRevenue = array_reduce($planPayments, fn($carry, $item) => $carry + (float)($item['amount'] ?? 0), 0.0);
-            
+
             $data['totalRevenue'] = $subRevenue;
             $data['activeSubscriptions'] = $this->db()->query("SELECT COUNT(*) FROM subscriptions WHERE status = 'active'")->fetch_row()[0];
 
@@ -51,14 +48,14 @@ final class AdminController extends BaseController
 
             // 3. Revenue Analytics (Subscriptions Only)
             $subTrend = $subModel->getSubscriptionTrend('monthly');
-            
+
             $trendLabels = [];
             $trendValues = [];
             foreach ($subTrend as $s) {
                 $trendLabels[] = $s['label'];
                 $trendValues[] = (float)$s['total'];
             }
-            
+
             $data['revenueTrend'] = [
                 'labels' => $trendLabels,
                 'data'   => $trendValues
@@ -98,7 +95,7 @@ final class AdminController extends BaseController
             $data['totalBookings'] = count($myBookings);
             $data['pendingRequests'] = array_filter($myBookings, fn($b) => ($b['status'] ?? '') === 'pending');
             $data['approvedBookings'] = array_filter($myBookings, fn($b) => ($b['status'] ?? '') === 'approved');
-            
+
             // 4. Earnings (Real Paid Revenue)
             $data['earnings'] = $paymentModel->getTotalRevenueForOwner($ownerId);
 
@@ -110,7 +107,7 @@ final class AdminController extends BaseController
             $ownerTrend = $paymentModel->getRevenueTrend($ownerId, 'daily', 7);
             $trendLabels = [];
             $trendValues = [];
-            
+
             // Default to last 7 days even if no data
             for ($i = 6; $i >= 0; $i--) {
                 $d = date('Y-m-d', strtotime("-$i days"));
@@ -125,7 +122,7 @@ final class AdminController extends BaseController
                 }
                 $trendValues[] = $val;
             }
-            
+
             $data['earningsTrend'] = [
                 'labels' => $trendLabels,
                 'data'   => $trendValues
@@ -137,7 +134,7 @@ final class AdminController extends BaseController
             $limit = (int)($subStatus['room_limit'] ?? 0);
             $usage = $data['totalRooms'];
             $usageStr = ($limit > 0) ? "$usage/$limit rooms used" : "$usage rooms used";
-            
+
             $data['hasActiveSub'] = $hasActiveSub;
             $data['activeSubId'] = (int)($subStatus['id'] ?? 0);
             $data['subscription'] = [
@@ -157,8 +154,9 @@ final class AdminController extends BaseController
 
     public function approve_house(): void
     {
+        $this->requireActionPermission('approve_house');
         $this->requireRole(['admin']);
-        $this->requirePermission('approve_houses');
+
         header('Content-Type: application/json');
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -186,8 +184,9 @@ final class AdminController extends BaseController
 
     public function reject_house(): void
     {
+        $this->requireActionPermission('reject_house');
         $this->requireRole(['admin']);
-        $this->requirePermission('approve_houses');
+
         header('Content-Type: application/json');
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -215,7 +214,8 @@ final class AdminController extends BaseController
 
     public function bookings(): void
     {
-        $this->requirePermission('manage_bookings');
+        $this->requireActionPermission('bookings');
+
         $db       = $this->db();
         $role     = strtolower($_SESSION['role'] ?? 'owner');
         $ownerId  = (int)$_SESSION['user_id'];
@@ -236,7 +236,8 @@ final class AdminController extends BaseController
 
     public function bookings_data(): void
     {
-        $this->requirePermission('manage_bookings');
+        $this->requireActionPermission('bookings_data');
+
 
         $ownerId = (int)$_SESSION['user_id'];
         $role    = $_SESSION['role'] ?? '';
@@ -366,12 +367,13 @@ final class AdminController extends BaseController
 
     public function houses(): void
     {
+        $this->requireActionPermission('houses');
         $this->requireRole(['admin', 'owner']);
-        $this->requirePermission('view_houses');
-        
+
+
         $filter = explode('/', $_GET['url'] ?? '')[2] ?? null;
         $ownerFilter = isset($_GET['owner_id']) && $_GET['owner_id'] !== '' ? (int)$_GET['owner_id'] : null;
-        
+
         // Granular Sub-path Enrollment
         if ($filter === 'pending') {
             $this->requirePermission('approve_houses');
@@ -409,8 +411,9 @@ final class AdminController extends BaseController
 
     public function houses_data(): void
     {
+        $this->requireActionPermission('houses_data');
         $this->requireRole(['admin', 'owner']);
-        $this->requirePermission('view_houses');
+
 
         $role = strtolower($_SESSION['role'] ?? 'owner');
         $roleLabel = ($role === 'admin') ? 'Admin' : 'Owner';
@@ -484,7 +487,7 @@ final class AdminController extends BaseController
         // Fetch Data
         $dataParams = array_merge($params, [$length, $start]);
         $dataTypes = $types . "ii";
-        
+
         // Sorting
         $cols = ['bh.id', 'bh.name', 'bh.address', 'u.first_name', 'bh.status', 'bh.created_at'];
         $orderCol = $cols[$orderColIdx] ?? 'bh.created_at';
@@ -502,7 +505,7 @@ final class AdminController extends BaseController
         foreach ($houses as $house) {
             $houseId = $house['id'];
             $houseImages = $houseModel->getImages((int)$houseId);
-            
+
             // Fetch starting price
             $pStmt = $db->prepare("SELECT MIN(price) as min_price FROM rooms WHERE boarding_house_id = ?");
             $pStmt->bind_param('i', $houseId);
@@ -537,7 +540,7 @@ final class AdminController extends BaseController
                                 <?php endforeach; ?>
                             <?php endif; ?>
                         </div>
-                        
+
                         <?php if (count($houseImages) > 1): ?>
                             <button class="carousel-control-prev" type="button" data-bs-target="#<?= $carouselId ?>" data-bs-slide="prev">
                                 <span class="carousel-control-prev-icon" aria-hidden="true" style="width: 1.5rem; height: 1.5rem;"></span>
@@ -552,7 +555,7 @@ final class AdminController extends BaseController
                                 <?= $status ?>
                             </span>
                         </div>
-                        
+
                         <div class="position-absolute bottom-0 end-0 p-3" style="z-index: 10;">
                             <div class="bg-white rounded-3 p-2 px-3 shadow-lg border border-primary border-opacity-10 text-center">
                                 <div class="text-muted extra-small fw-bold text-uppercase mb-0" style="font-size: 0.65rem; line-height: 1;">Starts at</div>
@@ -568,7 +571,7 @@ final class AdminController extends BaseController
                             <h4 class="fw-extrabold m-0 text-dark text-truncate" title="<?= htmlspecialchars($house['name']) ?>">
                                 <?= htmlspecialchars($house['name'] ?? 'Untitled Property') ?>
                             </h4>
-                            
+
                             <?php if ($roleLabel === 'Admin'): ?>
                                 <div class="d-flex align-items-center gap-2 mt-2">
                                     <div class="rounded-circle bg-primary bg-opacity-10 text-primary d-flex align-items-center justify-content-center" style="width: 24px; height: 24px;">
@@ -585,7 +588,7 @@ final class AdminController extends BaseController
                             <i class="fa-solid fa-location-dot me-1 text-primary text-opacity-75"></i> 
                             <?= htmlspecialchars($house['address'] ?? 'No address provided') ?>
                         </p>
-                        
+
                         <?php if ($roleLabel === 'Admin'): ?>
                             <div class="d-flex justify-content-between align-items-center pt-3 border-top">
                                 <div class="d-flex gap-1">
@@ -629,10 +632,11 @@ final class AdminController extends BaseController
 
     public function users(): void
     {
-        $this->requirePermission('list_users');
-        
+        $this->requireActionPermission('users');
+
+
         $filter = explode('/', $_GET['url'] ?? '')[2] ?? null;
-        
+
         // Granular Sub-path Enforcements
         if ($filter === 'owners') {
             $this->requirePermission('manage_owners');
@@ -642,7 +646,7 @@ final class AdminController extends BaseController
 
         $userModel = new User($this->db());
         $users = $userModel->all();
-        
+
         $role = strtolower($_SESSION['role'] ?? 'owner');
         $roleLabel = ($role === 'admin') ? 'Admin' : 'Owner';
 
@@ -662,92 +666,20 @@ final class AdminController extends BaseController
 
     public function roles(): void
     {
-        $this->requirePermission('manage_roles');
-        
-        $db = $this->db();
-        
-        // --- 1. Emergency Schema Check (Self-Correction) ---
-        $tableCheck = $db->query("SHOW TABLES LIKE 'permissions'");
-        if ($tableCheck->num_rows === 0) {
-            // Re-seed tables if missing
-            $db->query("CREATE TABLE IF NOT EXISTS roles (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                name VARCHAR(100) NOT NULL,
-                slug VARCHAR(100) NOT NULL UNIQUE,
-                description TEXT,
-                created_at DATETIME DEFAULT CURRENT_TIMESTAMP
-            )");
-            $db->query("CREATE TABLE IF NOT EXISTS permissions (
-                id INT AUTO_INCREMENT PRIMARY KEY,
-                name VARCHAR(100) NOT NULL,
-                slug VARCHAR(100) NOT NULL UNIQUE,
-                category VARCHAR(100) NOT NULL,
-                description TEXT
-            )");
-            $db->query("CREATE TABLE IF NOT EXISTS role_permissions (
-                role_id INT NOT NULL,
-                permission_id INT NOT NULL,
-                PRIMARY KEY (role_id, permission_id),
-                FOREIGN KEY (role_id) REFERENCES roles(id) ON DELETE CASCADE,
-                FOREIGN KEY (permission_id) REFERENCES permissions(id) ON DELETE CASCADE
-            )");
-            
-            // Seed base permissions if empty
-            $perms = [
-                ['Global System Config', 'system_config', 'core', 'Manage global settings'],
-                ['Identity Orchestration', 'identity_crud', 'users', 'Manage users'],
-                ['Financial Analytics', 'finance_audit', 'finance', 'View reports'],
-                ['Audit Logs', 'view_logs', 'core', 'View activity logs'],
-                ['Portfolio Mgmt', 'property_mgmt', 'assets', 'Manage houses'],
-                ['Booking Operations', 'booking_ops', 'assets', 'Handle bookings'],
-                ['Occupancy Analytics', 'occupancy_view', 'assets', 'View stats']
-            ];
-            foreach ($perms as $p) {
-                $stmt = $db->prepare("INSERT IGNORE INTO permissions (name, slug, category, description) VALUES (?, ?, ?, ?)");
-                $stmt->bind_param("ssss", $p[0], $p[1], $p[2], $p[3]);
-                $stmt->execute();
-            }
-        }
-
-        // --- 1.1 Column Alignment (Slug & Description) ---
-        $columnCheck = $db->query("SHOW COLUMNS FROM roles LIKE 'slug'");
-        if ($columnCheck->num_rows === 0) {
-            // First add without UNIQUE to avoid "Duplicate entry ''" error
-            $db->query("ALTER TABLE roles ADD COLUMN slug VARCHAR(100) AFTER name");
-            $db->query("ALTER TABLE roles ADD COLUMN description TEXT AFTER slug");
-            
-            // Seed base slugs
-            $db->query("UPDATE roles SET slug = 'admin' WHERE name = 'Administrator' OR name = 'admin'");
-            $db->query("UPDATE roles SET slug = 'owner' WHERE name = 'Property Owner' OR name = 'owner'");
-            $db->query("UPDATE roles SET slug = 'tenant' WHERE name = 'Tenant' OR name = 'tenant'");
-            
-            // Ensure NO empty slugs exist before adding UNIQUE
-            $db->query("UPDATE roles SET slug = CONCAT('role_', id) WHERE slug IS NULL OR slug = ''");
-            
-            // Now add the UNIQUE constraint
-            $db->query("ALTER TABLE roles MODIFY COLUMN slug VARCHAR(100) NOT NULL UNIQUE");
-        }
-        
-        $roleModel = new Role($db);
-        $permModel = new Permission($db);
-        
-        $data = [
-            'roles' => $roleModel->all(),
-            'permissionsByCategory' => $permModel->getByCategory()
-        ];
-        
-        // Fetch permissions for each role
-        foreach ($data['roles'] as &$r) {
-            $r['permissions'] = $roleModel->getPermissions((int)$r['id']);
-        }
-        
+        $this->requireRole(['admin']);
+        $this->requireActionPermission('roles');
+        $roleModel = new Role($this->db());
+        $data = ['roles' => $roleModel->all(), 'permissionsByCategory' => (new Permission($this->db()))->getByCategory()];
+        foreach ($data['roles'] as &$role) $role['permissions'] = $roleModel->getPermissions((int)$role['id']);
+        unset($role);
         $this->render('admin/roles', $data);
     }
 
     public function store_role(): void
     {
-        $this->requirePermission('manage_roles');
-        
+        $this->requireRole(['admin']);
+        $this->requireActionPermission('store_role');
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('admin/roles');
         }
@@ -755,7 +687,8 @@ final class AdminController extends BaseController
         $name = $_POST['name'] ?? '';
         $description = $_POST['description'] ?? '';
         $permissions = $_POST['permissions'] ?? [];
-        
+        if (!is_array($permissions)) $this->json(['success' => false, 'message' => 'Invalid permissions.'], 422);
+
         if (empty($name)) {
             $_SESSION['error'] = "Role name is required.";
             $this->redirect('admin/roles');
@@ -764,9 +697,9 @@ final class AdminController extends BaseController
         $roleModel = new Role($this->db());
         $logger = new ActivityLog($this->db());
         $slug = strtolower(str_replace(' ', '_', $name));
-        
+
         $roleId = $roleModel->create($name, $slug, $description);
-        
+
         if ($roleId) {
             $roleModel->syncPermissions((int)$roleId, array_map('intval', $permissions));
             $logger->log($_SESSION['user_id'], 'CREATE_ROLE', [
@@ -784,8 +717,9 @@ final class AdminController extends BaseController
 
     public function update_role(): void
     {
-        $this->requirePermission('manage_roles');
-        
+        $this->requireRole(['admin']);
+        $this->requireActionPermission('update_role');
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('admin/roles');
         }
@@ -814,14 +748,16 @@ final class AdminController extends BaseController
 
     public function update_role_permissions(): void
     {
-        $this->requirePermission('manage_roles');
-        
+        $this->requireRole(['admin']);
+        $this->requireActionPermission('update_role_permissions');
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('admin/roles');
         }
 
         $roleId = (int)($_POST['role_id'] ?? 0);
         $permissions = $_POST['permissions'] ?? [];
+        if (!is_array($permissions)) $this->json(['success' => false, 'message' => 'Invalid permissions.'], 422);
 
         if ($roleId <= 0) {
             $this->redirect('admin/roles', 'error', 'Invalid role target.');
@@ -844,14 +780,15 @@ final class AdminController extends BaseController
 
     public function delete_role(): void
     {
-        $this->requirePermission('manage_roles');
-        
+        $this->requireRole(['admin']);
+        $this->requireActionPermission('delete_role');
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('admin/roles');
         }
 
         $roleId = (int)($_POST['role_id'] ?? 0);
-        
+
         // Prevent deleting standard roles (Admin=1, Owner=2, Tenant=3)
         if ($roleId <= 3) {
             $this->redirect('admin/roles', 'error', 'Standard system roles cannot be deleted.');
@@ -887,8 +824,9 @@ final class AdminController extends BaseController
 
     public function store_permission(): void
     {
-        $this->requirePermission('manage_roles');
-        
+        $this->requireRole(['admin']);
+        $this->requireActionPermission('store_permission');
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('admin/roles');
         }
@@ -922,8 +860,9 @@ final class AdminController extends BaseController
 
     public function delete_permission(): void
     {
-        $this->requirePermission('manage_roles');
-        
+        $this->requireRole(['admin']);
+        $this->requireActionPermission('delete_permission');
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('admin/roles');
         }
@@ -952,7 +891,8 @@ final class AdminController extends BaseController
     public function store_user(): void
 
     {
-        $this->requirePermission('manage_admins');
+        $this->requireActionPermission('store_user');
+
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
@@ -983,7 +923,7 @@ final class AdminController extends BaseController
 
         $userModel = new User($this->db());
         $logger = new ActivityLog($this->db());
-        
+
         // Identity Uniqueness Guardrails
         if ($userModel->isUsernameTaken($username)) {
             $_SESSION['error'] = 'The username "@' . $username . '" is already occupied.';
@@ -1039,7 +979,8 @@ final class AdminController extends BaseController
 
     public function update_user(): void
     {
-        $this->requirePermission('list_users');
+        $this->requireActionPermission('update_user');
+
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
@@ -1083,7 +1024,7 @@ final class AdminController extends BaseController
 
         $userModel = new User($this->db());
         $logger = new ActivityLog($this->db());
-        
+
         // Fetch Old State for Diff Analysis
         $oldUser = $userModel->findById($userId);
 
@@ -1118,7 +1059,7 @@ final class AdminController extends BaseController
                     if ($oldUser[$k] != $v) $changes[$k] = ['old' => $oldUser[$k] ?? 'N/A', 'new' => $v];
                 }
                 if ($password !== '') $changes['password'] = 'Security identity credential overridden';
-                
+
                 if (!empty($changes)) {
                     $logger->log($_SESSION['user_id'], 'UPDATE_USER', $changes, $userId);
                 }
@@ -1134,11 +1075,12 @@ final class AdminController extends BaseController
 
     public function notifications(): void
     {
-        $this->requirePermission('view_notifications');
+        $this->requireActionPermission('notifications');
+
         // Simple mock for now as there is no Notification model yet
         $role = strtolower($_SESSION['role'] ?? 'owner');
         $roleLabel = ($role === 'admin') ? 'Admin' : 'Owner';
-        
+
         $this->render('admin/notifications', [
             'notifications' => [],
             'roleLabel' => $roleLabel,
@@ -1148,8 +1090,9 @@ final class AdminController extends BaseController
 
     public function payments(): void
     {
-        $this->requirePermission('audit_finances');
-        
+        $this->requireActionPermission('payments');
+
+
         $role = strtolower($_SESSION['role'] ?? 'owner');
         $userId = (int)($_SESSION['user_id'] ?? 0);
 
@@ -1169,8 +1112,9 @@ final class AdminController extends BaseController
 
     public function get_payments_json(): void
     {
-        $this->requirePermission('audit_finances');
-        
+        $this->requireActionPermission('get_payments_json');
+
+
         $status = $_GET['status'] ?? null;
         $houseId = isset($_GET['house_id']) && $_GET['house_id'] !== '' ? (int)$_GET['house_id'] : null;
         $role = strtolower($_SESSION['role'] ?? 'owner');
@@ -1182,7 +1126,7 @@ final class AdminController extends BaseController
                 LEFT JOIN bookings b ON p.booking_id = b.id
                 LEFT JOIN rooms r ON b.room_id = r.id
                 LEFT JOIN boarding_houses bh ON r.boarding_house_id = bh.id";
-        
+
         $where = [];
         if ($status) $where[] = "p.status = '" . $this->db()->real_escape_string($status) . "'";
         if ($houseId) $where[] = "bh.id = $houseId";
@@ -1195,10 +1139,10 @@ final class AdminController extends BaseController
         }
 
         $sql .= " ORDER BY p.created_at DESC";
-        
+
         $res = $this->db()->query($sql);
         $data = $res->fetch_all(MYSQLI_ASSOC);
-        
+
         header('Content-Type: application/json');
         echo json_encode(['data' => $data]);
         exit;
@@ -1206,8 +1150,9 @@ final class AdminController extends BaseController
 
     public function plan_payments(): void
     {
-        $this->requirePermission('audit_finances');
-        
+        $this->requireActionPermission('plan_payments');
+
+
         $this->render('admin/plan_payments', [
             'roleLabel' => 'Admin',
             'pageTitle' => 'Subscription Payment Ledger'
@@ -1216,8 +1161,9 @@ final class AdminController extends BaseController
 
     public function get_plan_payments_json(): void
     {
-        $this->requirePermission('audit_finances');
-        
+        $this->requireActionPermission('get_plan_payments_json');
+
+
         $status = $_GET['status'] ?? null;
         $billingCycle = $_GET['billing_cycle'] ?? null;
 
@@ -1225,7 +1171,7 @@ final class AdminController extends BaseController
                 FROM plan_payments pp
                 LEFT JOIN users u ON pp.owner_id = u.id
                 LEFT JOIN plans p ON pp.plan_id = p.id";
-        
+
         $where = [];
         if ($status) $where[] = "pp.status = '" . $this->db()->real_escape_string($status) . "'";
         if ($billingCycle) $where[] = "pp.billing_cycle = '" . $this->db()->real_escape_string($billingCycle) . "'";
@@ -1235,10 +1181,10 @@ final class AdminController extends BaseController
         }
 
         $sql .= " ORDER BY pp.created_at DESC";
-        
+
         $res = $this->db()->query($sql);
         $data = $res ? $res->fetch_all(MYSQLI_ASSOC) : [];
-        
+
         header('Content-Type: application/json');
         echo json_encode(['data' => $data]);
         exit;
@@ -1246,6 +1192,7 @@ final class AdminController extends BaseController
 
     public function update_plan_payment_status(): void
     {
+        $this->requireActionPermission('update_plan_payment_status');
         // 1. Ensure a clean JSON environment
         if (ob_get_length()) ob_clean();
         header('Content-Type: application/json');
@@ -1255,7 +1202,7 @@ final class AdminController extends BaseController
             echo json_encode(['success' => false, 'message' => 'Forbidden: You do not have permission to audit finances.']);
             exit;
         }
-        
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             echo json_encode(['success' => false, 'message' => 'Method Not Allowed']);
             exit;
@@ -1271,7 +1218,7 @@ final class AdminController extends BaseController
         // 4. Parameter Validation
         $id = (int)($_POST['payment_id'] ?? 0);
         $status = $_POST['status'] ?? '';
-        
+
         if ($id <= 0 || !in_array($status, ['paid', 'failed', 'pending'])) {
             echo json_encode(['success' => false, 'message' => 'Invalid parameters provided.']);
             exit;
@@ -1284,7 +1231,7 @@ final class AdminController extends BaseController
             // A. Update the plan_payment record
             $stmt = $db->prepare("UPDATE plan_payments SET status = ?, paid_at = CASE WHEN ? = 'paid' THEN NOW() ELSE paid_at END WHERE id = ?");
             $stmt->bind_param('ssi', $status, $status, $id);
-            
+
             if (!$stmt->execute()) {
                 throw new Exception("Database update failed: " . $db->error);
             }
@@ -1330,8 +1277,9 @@ final class AdminController extends BaseController
 
     public function print_plan_payments(): void
     {
-        $this->requirePermission('audit_finances');
-        
+        $this->requireActionPermission('print_plan_payments');
+
+
         $status = $_GET['status'] ?? null;
         $billingCycle = $_GET['billing_cycle'] ?? null;
 
@@ -1339,7 +1287,7 @@ final class AdminController extends BaseController
                 FROM plan_payments pp
                 LEFT JOIN users u ON pp.owner_id = u.id
                 LEFT JOIN plans p ON pp.plan_id = p.id";
-        
+
         $where = [];
         if ($status) $where[] = "pp.status = '" . $this->db()->real_escape_string($status) . "'";
         if ($billingCycle) $where[] = "pp.billing_cycle = '" . $this->db()->real_escape_string($billingCycle) . "'";
@@ -1349,7 +1297,7 @@ final class AdminController extends BaseController
         }
 
         $sql .= " ORDER BY pp.created_at DESC";
-        
+
         $res = $this->db()->query($sql);
         $payments = $res ? $res->fetch_all(MYSQLI_ASSOC) : [];
         $totalAmount = array_reduce($payments, fn($carry, $item) => $carry + (float)($item['amount'] ?? 0), 0.0);
@@ -1364,11 +1312,12 @@ final class AdminController extends BaseController
 
     public function plans(): void
     {
-        $this->requirePermission('manage_plans');
-        
+        $this->requireActionPermission('plans');
+
+
         $role = strtolower($_SESSION['role'] ?? 'owner');
         $roleLabel = ($role === 'admin') ? 'Admin' : 'Owner';
-        
+
         $this->render('admin/plans', [
             'plans' => [],
             'roleLabel' => $roleLabel,
@@ -1378,8 +1327,9 @@ final class AdminController extends BaseController
 
     public function get_plans_json(): void
     {
-        $this->requirePermission('manage_plans');
-        
+        $this->requireActionPermission('get_plans_json');
+
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $csrf = $_POST['csrf_token'] ?? null;
             if (!Csrf::verify($csrf)) {
@@ -1388,10 +1338,10 @@ final class AdminController extends BaseController
                 exit;
             }
         }
-        
+
         $res = $this->db()->query("SELECT * FROM plans WHERE is_deleted = 0 ORDER BY price_monthly ASC");
         $plans = $res ? $res->fetch_all(MYSQLI_ASSOC) : [];
-        
+
         header('Content-Type: application/json');
         echo json_encode(['data' => $plans]);
         exit;
@@ -1399,14 +1349,15 @@ final class AdminController extends BaseController
 
     public function print_plans(): void
     {
-        $this->requirePermission('manage_plans');
-        
+        $this->requireActionPermission('print_plans');
+
+
         $res = $this->db()->query("SELECT * FROM plans WHERE is_deleted = 0 ORDER BY price_monthly ASC");
         $plans = $res ? $res->fetch_all(MYSQLI_ASSOC) : [];
 
         $totalPlans = count($plans);
         $avgMonthly = $totalPlans > 0 ? array_reduce($plans, fn($c, $p) => $c + (float)$p['price_monthly'], 0) / $totalPlans : 0;
-        
+
         $this->render('admin/print_plans', [
             'plans' => $plans,
             'totalPlans' => $totalPlans,
@@ -1416,9 +1367,10 @@ final class AdminController extends BaseController
 
     public function create_plan(): void
     {
-        $this->requirePermission('manage_plans');
+        $this->requireActionPermission('create_plan');
+
         $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
-        
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             echo $isAjax ? json_encode(['success' => false, 'message' => 'Method Not Allowed']) : 'Method Not Allowed';
@@ -1466,9 +1418,10 @@ final class AdminController extends BaseController
 
     public function update_plan(): void
     {
-        $this->requirePermission('manage_plans');
+        $this->requireActionPermission('update_plan');
+
         $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
-        
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             echo $isAjax ? json_encode(['success' => false, 'message' => 'Method Not Allowed']) : 'Method Not Allowed';
@@ -1517,8 +1470,9 @@ final class AdminController extends BaseController
 
     public function delete_plan(): void
     {
-        $this->requirePermission('manage_plans');
-        
+        $this->requireActionPermission('delete_plan');
+
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             echo json_encode(['success' => false, 'message' => 'Method Not Allowed']);
             exit;
@@ -1556,9 +1510,10 @@ final class AdminController extends BaseController
 
     public function subscriptions(): void
     {
+        $this->requireActionPermission('subscriptions');
         $this->requireLogin();
         if ($_SESSION['role'] !== 'owner') {
-            $this->requirePermission('manage_subscriptions');
+
         }
 
         if (isset($_GET['status']) && $_GET['status'] === 'success') {
@@ -1632,16 +1587,16 @@ final class AdminController extends BaseController
             header('Location: /tenant/?url=admin/subscriptions');
             exit;
         }
-        
+
         $role = strtolower($_SESSION['role'] ?? 'owner');
         $roleLabel = ($role === 'admin') ? 'Admin' : 'Owner';
-        
+
         $res = $this->db()->query("SELECT * FROM plans ORDER BY price_monthly ASC");
         $plans = $res ? $res->fetch_all(MYSQLI_ASSOC) : [];
-        
+
         $settingModel = new SystemSetting($this->db());
         $paymentSettings = $settingModel->getAll();
-        
+
         $this->render('admin/subscriptions', [
             'subscriptions' => [],
             'plans' => $plans,
@@ -1654,16 +1609,17 @@ final class AdminController extends BaseController
 
     public function get_subscriptions_json(): void
     {
+        $this->requireActionPermission('get_subscriptions_json');
         $this->requireLogin();
         if ($_SESSION['role'] !== 'owner') {
-            $this->requirePermission('manage_subscriptions');
+
         }
         $subscriptionModel = new Subscription($this->db());
-        
+
         $userRole = strtolower($_SESSION['role'] ?? '');
         $userId = (int)($_SESSION['user_id'] ?? 0);
         $ownerId = ($userRole === 'owner') ? $userId : null;
-        
+
         $subscriptions = $subscriptionModel->allWithDetails($ownerId);
 
         header('Content-Type: application/json');
@@ -1673,8 +1629,9 @@ final class AdminController extends BaseController
 
     public function upgrade_subscription_yearly(): void
     {
-        $this->requirePermission('manage_subscriptions');
-        
+        $this->requireActionPermission('upgrade_subscription_yearly');
+
+
         $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -1693,7 +1650,7 @@ final class AdminController extends BaseController
 
         $subIdRaw = $_POST['subscription_id'] ?? null;
         $subId = is_numeric($subIdRaw) ? (int)$subIdRaw : 0;
-        
+
         if ($subId <= 0) {
             http_response_code(400);
             header('Content-Type: application/json');
@@ -1702,15 +1659,15 @@ final class AdminController extends BaseController
         }
 
         $subscriptionModel = new Subscription($this->db());
-        
+
         $userRole = strtolower($_SESSION['role'] ?? '');
         $userId = (int)($_SESSION['user_id'] ?? 0);
         $ownerId = ($userRole === 'owner') ? $userId : null;
-        
+
         if ($subscriptionModel->upgradeToYearly($subId, $ownerId)) {
             $logger = new ActivityLog($this->db());
             $logger->log($userId, 'UPGRADE_SUBSCRIPTION', ['subscription_id' => $subId, 'cycle' => 'yearly']);
-            
+
             header('Content-Type: application/json');
             echo json_encode(['success' => true, 'message' => 'Successfully upgraded to yearly billing']);
         } else {
@@ -1723,8 +1680,9 @@ final class AdminController extends BaseController
 
     public function downgrade_subscription_monthly(): void
     {
-        $this->requirePermission('manage_subscriptions');
-        
+        $this->requireActionPermission('downgrade_subscription_monthly');
+
+
         $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -1743,7 +1701,7 @@ final class AdminController extends BaseController
 
         $subIdRaw = $_POST['subscription_id'] ?? null;
         $subId = is_numeric($subIdRaw) ? (int)$subIdRaw : 0;
-        
+
         if ($subId <= 0) {
             http_response_code(400);
             header('Content-Type: application/json');
@@ -1752,15 +1710,15 @@ final class AdminController extends BaseController
         }
 
         $subscriptionModel = new Subscription($this->db());
-        
+
         $userRole = strtolower($_SESSION['role'] ?? '');
         $userId = (int)($_SESSION['user_id'] ?? 0);
         $ownerId = ($userRole === 'owner') ? $userId : null;
-        
+
         if ($subscriptionModel->downgradeToMonthly($subId, $ownerId)) {
             $logger = new ActivityLog($this->db());
             $logger->log($userId, 'DOWNGRADE_SUBSCRIPTION', ['subscription_id' => $subId, 'cycle' => 'monthly']);
-            
+
             header('Content-Type: application/json');
             echo json_encode(['success' => true, 'message' => 'Successfully switched to monthly billing']);
         } else {
@@ -1773,8 +1731,9 @@ final class AdminController extends BaseController
 
     public function cancel_subscription(): void
     {
-        $this->requirePermission('manage_subscriptions');
-        
+        $this->requireActionPermission('cancel_subscription');
+
+
         $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -1793,7 +1752,7 @@ final class AdminController extends BaseController
 
         $subIdRaw = $_POST['subscription_id'] ?? null;
         $subId = is_numeric($subIdRaw) ? (int)$subIdRaw : 0;
-        
+
         if ($subId <= 0) {
             http_response_code(400);
             header('Content-Type: application/json');
@@ -1802,15 +1761,15 @@ final class AdminController extends BaseController
         }
 
         $subscriptionModel = new Subscription($this->db());
-        
+
         $userRole = strtolower($_SESSION['role'] ?? '');
         $userId = (int)($_SESSION['user_id'] ?? 0);
         $ownerId = ($userRole === 'owner') ? $userId : null;
-        
+
         if ($subscriptionModel->cancelSubscription($subId, $ownerId)) {
             $logger = new ActivityLog($this->db());
             $logger->log($userId, 'CANCEL_SUBSCRIPTION', ['subscription_id' => $subId]);
-            
+
             header('Content-Type: application/json');
             echo json_encode(['success' => true, 'message' => 'Subscription cancelled successfully']);
         } else {
@@ -1823,8 +1782,9 @@ final class AdminController extends BaseController
 
     public function upgrade_plan(): void
     {
+        $this->requireActionPermission('upgrade_plan');
         $this->requireRole(['owner', 'admin']);
-        
+
         try {
             if (!isset($_POST['csrf_token']) || !Csrf::verify($_POST['csrf_token'])) {
                 $this->json(['success' => false, 'message' => 'Security protocol breach (Invalid CSRF). Cycle aborted.'], 403);
@@ -1836,12 +1796,12 @@ final class AdminController extends BaseController
 
             $newPlanIdRaw = $_POST['new_plan_id'] ?? null;
             $newPlanId = is_numeric($newPlanIdRaw) ? (int)$newPlanIdRaw : 0;
-            
+
             $billingCycle = $_POST['billing_cycle'] ?? 'monthly';
             if (!in_array($billingCycle, ['monthly', 'yearly'])) {
                 $billingCycle = 'monthly';
             }
-            
+
             if ($newPlanId <= 0) {
                 $this->json(['success' => false, 'message' => 'Please select a valid subscription plan.'], 400);
                 return;
@@ -1877,14 +1837,14 @@ final class AdminController extends BaseController
             $subscriptionModel = new Subscription($this->db());
             $planModel = new Plan($this->db());
             $plan = $planModel->getById($newPlanId);
-            
+
             if (!$plan) {
                 $this->json(['success' => false, 'message' => 'Target plan blueprint not found in the system repository.'], 404);
                 return;
             }
 
             $amount = ($billingCycle === 'yearly') ? (float)$plan['price_yearly'] : (float)$plan['price_monthly'];
-            
+
             $settingModel = new SystemSetting($this->db());
             $taxEnabled = ($settingModel->get('payment_tax_enabled', '0') === '1');
             $taxPercent = (float)$settingModel->get('payment_tax_percent', 0);
@@ -1989,7 +1949,7 @@ final class AdminController extends BaseController
                         'amount' => $amount
                     ]);
                 } catch (Throwable $e) {}
-                
+
                 $this->json([
                     'success' => true, 
                     'message' => 'Subscription upgrade protocols successfully initialized.',
@@ -2083,11 +2043,12 @@ final class AdminController extends BaseController
 
     public function reviews(): void
     {
-        $this->requirePermission('manage_reviews');
-        
+        $this->requireActionPermission('reviews');
+
+
         $role = strtolower($_SESSION['role'] ?? 'owner');
         $roleLabel = ($role === 'admin') ? 'Admin' : 'Owner';
-        
+
         $this->render('admin/reviews', [
             'pageTitle' => 'Platform Reviews',
             'roleLabel' => $roleLabel
@@ -2096,12 +2057,13 @@ final class AdminController extends BaseController
 
     public function get_reviews_json(): void
     {
-        $this->requirePermission('manage_reviews');
+        $this->requireActionPermission('get_reviews_json');
+
         require_once __DIR__ . '/../models/Review.php';
-        
+
         $reviewModel = new Review($this->db());
         $reviews = $reviewModel->getAll();
-        
+
         header('Content-Type: application/json');
         echo json_encode(['data' => $reviews]);
         exit;
@@ -2109,9 +2071,10 @@ final class AdminController extends BaseController
 
     public function update_review_status(): void
     {
-        $this->requirePermission('manage_reviews');
+        $this->requireActionPermission('update_review_status');
+
         require_once __DIR__ . '/../models/Review.php';
-        
+
         $id = $_POST['review_id'] ?? null;
         $status = $_POST['status'] ?? null;
         $csrf = $_POST['csrf_token'] ?? null;
@@ -2141,9 +2104,10 @@ final class AdminController extends BaseController
 
     public function delete_review(): void
     {
-        $this->requirePermission('manage_reviews');
+        $this->requireActionPermission('delete_review');
+
         require_once __DIR__ . '/../models/Review.php';
-        
+
         $id = $_POST['review_id'] ?? null;
         $csrf = $_POST['csrf_token'] ?? null;
 
@@ -2172,8 +2136,9 @@ final class AdminController extends BaseController
 
     public function reports(): void
     {
-        $this->requirePermission('generate_reports');
-        
+        $this->requireActionPermission('reports');
+
+
         $role = strtolower($_SESSION['role'] ?? 'owner');
         $roleLabel = ($role === 'admin') ? 'Admin' : 'Owner';
         $userId = (int)($_SESSION['user_id'] ?? 0);
@@ -2184,7 +2149,7 @@ final class AdminController extends BaseController
             $sql .= " WHERE owner_id = $userId";
         }
         $properties = $this->db()->query($sql)->fetch_all(MYSQLI_ASSOC);
-        
+
         $this->render('admin/reports', [
             'pageTitle' => 'Analytics & Reports',
             'roleLabel' => $roleLabel,
@@ -2194,8 +2159,9 @@ final class AdminController extends BaseController
 
     public function get_reports_stats(): void
     {
-        $this->requirePermission('generate_reports');
-        
+        $this->requireActionPermission('get_reports_stats');
+
+
         $role = strtolower($_SESSION['role'] ?? 'owner');
         $userId = (int)($_SESSION['user_id'] ?? 0);
         $houseId = isset($_POST['house_id']) && $_POST['house_id'] !== '' ? (int)$_POST['house_id'] : null;
@@ -2211,7 +2177,7 @@ final class AdminController extends BaseController
             $ownerHouseIds = $this->db()->query("SELECT id FROM boarding_houses WHERE owner_id = $userId")->fetch_all(MYSQLI_NUM);
             $houseIds = array_column($ownerHouseIds, 0);
             $houseIdsStr = !empty($houseIds) ? implode(',', $houseIds) : '0';
-            
+
             if ($houseId) {
                 $whereBookings .= " AND r.boarding_house_id = $houseId";
                 $wherePayments .= " AND bh.id = $houseId";
@@ -2252,7 +2218,7 @@ final class AdminController extends BaseController
             $activeTenants = $this->db()->query($tenantSql)->fetch_assoc()['total'] ?? 0;
             $activeOwners = ($role === 'admin') ? 1 : 1; // Simplification for filtered view
         }
-        
+
         // 2. Revenue Trend (Last 6 Months)
         $revenueTrend = [];
         for ($i = 5; $i >= 0; $i--) {
@@ -2268,13 +2234,13 @@ final class AdminController extends BaseController
                 'amount' => (float)$val
             ];
         }
-        
+
         // 3. Booking Distribution (Statuses)
         $bookingDistSql = "SELECT b.status, COUNT(b.id) as count FROM bookings b 
                            JOIN rooms r ON b.room_id = r.id 
                            $whereBookings GROUP BY b.status";
         $bookingDist = $this->db()->query($bookingDistSql)->fetch_all(MYSQLI_ASSOC);
-        
+
         // 4. Top Properties (By Bookings)
         $topPropertiesSql = "
             SELECT bh.name, COUNT(b.id) as booking_count, SUM(b.total_amount) as revenue
@@ -2306,7 +2272,8 @@ final class AdminController extends BaseController
 
     public function map(): void
     {
-        $this->requirePermission('view_houses');
+        $this->requireActionPermission('map');
+
         $db = $this->db();
 
         // Auto-migrate: safe no-op if columns already exist
@@ -2343,7 +2310,8 @@ final class AdminController extends BaseController
 
     public function map_update_coords(): void
     {
-        $this->requirePermission('view_houses'); // All with house access can reach endpoint
+        $this->requireActionPermission('map_update_coords');
+         // All with house access can reach endpoint
 
         $body = json_decode(file_get_contents('php://input'), true) ?? [];
         $csrf = $body['csrf_token'] ?? ($_POST['csrf_token'] ?? '');
@@ -2392,7 +2360,8 @@ final class AdminController extends BaseController
 
     public function settings(): void
     {
-        $this->requirePermission('system_settings');
+        $this->requireActionPermission('settings');
+
         $model = new SystemSetting($this->db());
         $settings = $model->getAll();
 
@@ -2408,7 +2377,8 @@ final class AdminController extends BaseController
 
     public function payment_settings(): void
     {
-        $this->requirePermission('system_settings');
+        $this->requireActionPermission('payment_settings');
+
         $model = new SystemSetting($this->db());
         $settings = $model->getAll();
 
@@ -2424,7 +2394,8 @@ final class AdminController extends BaseController
 
     public function save_settings(): void
     {
-        $this->requirePermission('system_settings');
+        $this->requireActionPermission('save_settings');
+
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             echo json_encode(['success' => false, 'message' => 'Method Not Allowed']);
@@ -2453,14 +2424,14 @@ final class AdminController extends BaseController
             $file = $_FILES['company_logo'];
             $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
             $allowed = ['jpg', 'jpeg', 'png', 'webp', 'svg'];
-            
+
             if (!in_array($ext, $allowed)) {
                 $this->json(['success' => false, 'message' => 'Invalid logo format. Use JPG, PNG, WebP or SVG.']);
             }
 
             $newName = 'logo_' . time() . '.' . $ext;
             $uploadDir = 'public/uploads/system/';
-            
+
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
@@ -2519,8 +2490,9 @@ final class AdminController extends BaseController
 
     public function fetch_payment_methods(): void
     {
-        $this->requirePermission('system_settings');
-        
+        $this->requireActionPermission('fetch_payment_methods');
+
+
         $publicKey = $_POST['public_key'] ?? '';
         $secretKey = $_POST['secret_key'] ?? '';
 
@@ -2558,11 +2530,12 @@ final class AdminController extends BaseController
 
     public function logs(): void
     {
-        $this->requirePermission('view_logs');
-        
+        $this->requireActionPermission('logs');
+
+
         $role = strtolower($_SESSION['role'] ?? 'owner');
         $roleLabel = ($role === 'admin') ? 'Admin' : 'Owner';
-        
+
         $this->render('admin/logs', [
             'roleLabel' => $roleLabel,
             'pageTitle' => 'System Audit Logs'
@@ -2571,23 +2544,24 @@ final class AdminController extends BaseController
 
     public function logs_data(): void
     {
-        $this->requirePermission('view_logs');
+        $this->requireActionPermission('logs_data');
+
         header('Content-Type: application/json');
 
         $db = $this->db();
-        
+
         $draw   = (int)($_GET['draw'] ?? 1);
         $start  = (int)($_GET['start'] ?? 0);
         $length = (int)($_GET['length'] ?? 10);
         $search = trim($_GET['search']['value'] ?? '');
-        
+
         $orderColIdx = (int)($_GET['order'][0]['column'] ?? 0);
         $orderDir    = strtolower($_GET['order'][0]['dir'] ?? 'desc') === 'asc' ? 'ASC' : 'DESC';
 
         // Columns mapped to orderable fields
         $cols = ['l.id', 'u.first_name', 'l.action', 't.first_name', 'l.created_at', 'l.id'];
         $orderCol = $cols[$orderColIdx] ?? 'l.created_at';
-        
+
         $where = '1=1';
         $params = [];
         $types = '';
@@ -2626,7 +2600,7 @@ final class AdminController extends BaseController
                     WHERE $where
                     ORDER BY $orderCol $orderDir
                     LIMIT ?, ?";
-                    
+
         $params[] = $start;
         $params[] = $length;
         $types .= 'ii';
@@ -2645,6 +2619,7 @@ final class AdminController extends BaseController
 
     public function delete_logs(): void
     {
+        $this->requireActionPermission('delete_logs');
         $this->requireRole(['admin']);
         header('Content-Type: application/json');
 
@@ -2661,7 +2636,7 @@ final class AdminController extends BaseController
         }
 
         $logIds = array_map('intval', $logIds);
-        
+
         $logger = new ActivityLog($this->db());
         if ($logger->deleteMany($logIds)) {
             echo json_encode(['success' => true, 'message' => count($logIds) . ' log(s) successfully deleted.']);
@@ -2672,16 +2647,18 @@ final class AdminController extends BaseController
 
     public function profile(): void
     {
+        $this->requireActionPermission('profile');
         $this->requireLogin();
         $this->render('admin/profile', ['pageTitle' => 'Account Profile']);
     }
 
     public function get_profile_async(): void
     {
+        $this->requireActionPermission('get_profile_async');
         $this->requireLogin();
         $userModel = new User($this->db());
         $user = $userModel->findById((int)$_SESSION['user_id']);
-        
+
         if (!$user) {
             $this->json(['success' => false, 'message' => 'Identity not found.'], 404);
         }
@@ -2689,7 +2666,7 @@ final class AdminController extends BaseController
         $role = strtolower($_SESSION['role'] ?? 'owner');
         $roleLabel = ($role === 'admin') ? 'Admin' : 'Owner';
         if ($role === 'tenant' || $role === 'user') $roleLabel = 'Tenant';
-        
+
         $this->json([
             'success' => true,
             'user' => $user,
@@ -2699,8 +2676,9 @@ final class AdminController extends BaseController
 
     public function update_profile(): void
     {
+        $this->requireActionPermission('update_profile');
         $this->requireLogin();
-        
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->json(['success' => false, 'message' => 'Method not allowed.'], 405);
         }
@@ -2725,7 +2703,7 @@ final class AdminController extends BaseController
             $file = $_FILES['profile_image'];
             $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
             $allowed = ['jpg', 'jpeg', 'png', 'webp'];
-            
+
             if (!in_array($ext, $allowed)) {
                 $this->json(['success' => false, 'message' => 'Invalid image format. Use JPG, PNG or WebP.']);
             }
@@ -2736,7 +2714,7 @@ final class AdminController extends BaseController
 
             $newName = 'avatar_' . $userId . '_' . time() . '.' . $ext;
             $uploadDir = 'public/uploads/avatars/';
-            
+
             if (!is_dir($uploadDir)) {
                 mkdir($uploadDir, 0777, true);
             }
@@ -2783,7 +2761,7 @@ final class AdminController extends BaseController
                 'updated_fields' => ['first_name', 'last_name', 'username', 'email', 'phone'],
                 'image_updated' => ($imagePath !== null)
             ]);
-            
+
             $this->json([
                 'success' => true, 
                 'message' => 'Profile synchronized successfully.',
@@ -2799,6 +2777,7 @@ final class AdminController extends BaseController
 
     public function move_out(): void
     {
+        $this->requireActionPermission('move_out');
         $this->requireRole(['admin', 'owner']);
 
         $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
@@ -2855,10 +2834,11 @@ final class AdminController extends BaseController
 
     public function print_users(): void
     {
+        $this->requireActionPermission('print_users');
         $this->requireRole(['admin']);
         $userModel = new User($this->db());
         $users = $userModel->all();
-        
+
         $filter = $_GET['role'] ?? null;
         if ($filter === 'owners') {
             $users = array_filter($users, fn($u) => strtolower($u['role']) === 'owner');
@@ -2871,10 +2851,11 @@ final class AdminController extends BaseController
 
     public function get_users_json(): void
     {
-        $this->requirePermission('list_users');
+        $this->requireActionPermission('get_users_json');
+
         $userModel = new User($this->db());
         $users = $userModel->all();
-        
+
         $role = $_GET['role'] ?? null;
         if ($role === 'owners') {
             $users = array_filter($users, fn($u) => strtolower($u['role']) === 'owner');
@@ -2889,8 +2870,9 @@ final class AdminController extends BaseController
 
     public function print_payments(): void
     {
-        $this->requirePermission('audit_finances');
-        
+        $this->requireActionPermission('print_payments');
+
+
         $status = $_GET['status'] ?? null;
         $houseId = isset($_GET['house_id']) && $_GET['house_id'] !== '' ? (int)$_GET['house_id'] : null;
         $role = strtolower($_SESSION['role'] ?? 'owner');
@@ -2902,7 +2884,7 @@ final class AdminController extends BaseController
                 LEFT JOIN bookings b ON p.booking_id = b.id
                 LEFT JOIN rooms r ON b.room_id = r.id
                 LEFT JOIN boarding_houses bh ON r.boarding_house_id = bh.id";
-        
+
         $where = [];
         if ($status) $where[] = "p.status = '" . $this->db()->real_escape_string($status) . "'";
         if ($houseId) $where[] = "bh.id = $houseId";
@@ -2915,12 +2897,12 @@ final class AdminController extends BaseController
         }
 
         $sql .= " ORDER BY p.created_at DESC";
-        
+
         $res = $this->db()->query($sql);
         $payments = $res->fetch_all(MYSQLI_ASSOC);
 
         $totalAmount = array_reduce($payments, fn($carry, $item) => $carry + (float)$item['amount'], 0);
-        
+
         $this->render('admin/print_payments', [
             'payments' => $payments,
             'totalAmount' => $totalAmount,
@@ -2931,6 +2913,7 @@ final class AdminController extends BaseController
 
     public function toggle_user_status(): void
     {
+        $this->requireActionPermission('toggle_user_status');
         $this->requireRole(['admin']);
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -2968,7 +2951,7 @@ final class AdminController extends BaseController
                 'new_status' => $newStatus,
                 'event' => 'Administrative Access Lockdown/Release'
             ], $userId);
-            
+
             $_SESSION['success'] = "Identity status successfully updated to $newStatus.";
         } else {
             $_SESSION['error'] = 'Failed to modify identity status.';
@@ -3003,7 +2986,8 @@ final class AdminController extends BaseController
 
     public function amenities(): void
     {
-        $this->requirePermission('manage_amenities');
+        $this->requireActionPermission('amenities');
+
         $this->render('admin/amenities', [
             'pageTitle' => 'Amenities Management'
         ]);
@@ -3011,7 +2995,8 @@ final class AdminController extends BaseController
 
     public function amenities_data(): void
     {
-        $this->requirePermission('manage_amenities');
+        $this->requireActionPermission('amenities_data');
+
         header('Content-Type: application/json');
 
         $model = new Amenity($this->db());
@@ -3023,7 +3008,8 @@ final class AdminController extends BaseController
 
     public function store_amenity(): void
     {
-        $this->requirePermission('manage_amenities');
+        $this->requireActionPermission('store_amenity');
+
         header('Content-Type: application/json');
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -3062,7 +3048,8 @@ final class AdminController extends BaseController
 
     public function update_amenity(): void
     {
-        $this->requirePermission('manage_amenities');
+        $this->requireActionPermission('update_amenity');
+
         header('Content-Type: application/json');
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -3107,7 +3094,8 @@ final class AdminController extends BaseController
 
     public function delete_amenity(): void
     {
-        $this->requirePermission('manage_amenities');
+        $this->requireActionPermission('delete_amenity');
+
         header('Content-Type: application/json');
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -3145,46 +3133,55 @@ final class AdminController extends BaseController
 
     public function store_house(): void
     {
+        $this->requireActionPermission('store_house');
         (new OwnerController())->store_house();
     }
 
     public function update_house(): void
     {
+        $this->requireActionPermission('update_house');
         (new OwnerController())->update_house();
     }
 
     public function delete_house(): void
     {
+        $this->requireActionPermission('delete_house');
         (new OwnerController())->delete_house();
     }
 
     public function upload_house_images(): void
     {
+        $this->requireActionPermission('upload_house_images');
         (new OwnerController())->upload_house_images();
     }
 
     public function delete_house_image(): void
     {
+        $this->requireActionPermission('delete_house_image');
         (new OwnerController())->delete_house_image();
     }
 
     public function get_house_images(): void
     {
+        $this->requireActionPermission('get_house_images');
         (new OwnerController())->get_house_images();
     }
 
     public function get_house_amenities(): void
     {
+        $this->requireActionPermission('get_house_amenities');
         (new OwnerController())->get_house_amenities();
     }
 
     public function update_house_amenities(): void
     {
+        $this->requireActionPermission('update_house_amenities');
         (new OwnerController())->update_house_amenities();
     }
 
     public function load_more_houses(): void
     {
+        $this->requireActionPermission('load_more_houses');
         (new OwnerController())->load_more_houses();
     }
 

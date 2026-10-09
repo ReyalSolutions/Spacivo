@@ -153,7 +153,7 @@
 
     <div id="roomsContainer">
         <div class="text-center py-5">
-            <div class="spinner-border text-primary" role="status"></div>
+            <div class="ui-skeleton ui-skeleton-line text-primary" role="status"></div>
             <p class="mt-3 text-muted fw-bold">Loading your properties and rooms...</p>
         </div>
     </div>

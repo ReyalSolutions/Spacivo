@@ -54,6 +54,11 @@ final class Role
 
     public function syncPermissions(int $roleId, array $permissionIds): bool
     {
+        if ($roleId <= 0 || !$this->findById($roleId)) return false;
+        $permissionIds = array_values(array_unique($permissionIds));
+        foreach ($permissionIds as $id) {
+            if (!is_int($id) || $id <= 0 || !(new Permission($this->db))->findById($id)) return false;
+        }
         // Start transaction
         $this->db->begin_transaction();
         try {

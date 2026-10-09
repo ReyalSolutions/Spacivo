@@ -125,7 +125,7 @@
                 <option value="pending">PENDING ONLY</option>
                 <option value="failed">FAILED ONLY</option>
             </select>
-            <form action="/tenant/?url=owner/payments/print_transactions" method="POST" target="_blank" class="d-inline flex-grow-1 w-100 m-0">
+            <form action="/tenant/?url=owner/payments/print_transactions" method="POST" target="_blank" class="d-inline flex-grow-1 w-100 m-0"><input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Csrf::token(), ENT_QUOTES, 'UTF-8') ?>">
                 <?php if (isset($houseId)): ?>
                     <input type="hidden" name="house_id" value="<?= (int)$houseId ?>">
                 <?php endif; ?>

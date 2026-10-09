@@ -6,6 +6,7 @@ final class OwnerController extends BaseController
 
     public function bookings(): void
     {
+        $this->requireActionPermission('bookings');
         $this->requireRole(['owner', 'admin']);
         $ownerId = (int)$_SESSION['user_id'];
         $houseId = isset($_GET['house_id']) ? (int)$_GET['house_id'] : null;
@@ -14,7 +15,7 @@ final class OwnerController extends BaseController
         $houseModel = new BoardingHouse($this->db());
 
         $bookings = $bookingModel->getForOwner($ownerId, $houseId);
-        
+
         $house = null;
         if ($houseId) {
             $house = $houseModel->getById($houseId);
@@ -35,6 +36,7 @@ final class OwnerController extends BaseController
 
     public function bookings_data(): void
     {
+        $this->requireActionPermission('bookings_data');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -56,7 +58,7 @@ final class OwnerController extends BaseController
 
         $orderColumnIndex = (int)($_POST['order'][0]['column'] ?? 0);
         $orderDir = $_POST['order'][0]['dir'] ?? 'DESC';
-        
+
         $columns = [
             0 => 'b.created_at',
             1 => 'tenant_name',
@@ -103,6 +105,7 @@ final class OwnerController extends BaseController
 
     public function bookings_history(): void
     {
+        $this->requireActionPermission('bookings_history');
         $this->requireRole(['owner', 'admin']);
         $ownerId = (int)$_SESSION['user_id'];
         $houseId = isset($_GET['house_id']) ? (int)$_GET['house_id'] : null;
@@ -111,10 +114,10 @@ final class OwnerController extends BaseController
         $houseModel = new BoardingHouse($this->db());
 
         $allBookings = $bookingModel->getForOwner($ownerId, $houseId);
-        
+
         // Filter for moved out residents only
         $history = array_filter($allBookings, fn($b) => (bool)$b['is_moved_out']);
-        
+
         $house = null;
         if ($houseId) {
             $house = $houseModel->getById($houseId);
@@ -136,6 +139,7 @@ final class OwnerController extends BaseController
 
     public function bookings_print_history(): void
     {
+        $this->requireActionPermission('bookings_print_history');
         $this->requireRole(['owner', 'admin']);
         $ownerId = (int)$_SESSION['user_id'];
         $houseId = isset($_POST['house_id']) || isset($_GET['house_id']) ? (int)($_POST['house_id'] ?? $_GET['house_id']) : null;
@@ -163,9 +167,10 @@ final class OwnerController extends BaseController
 
     public function payments(): void
     {
+        $this->requireActionPermission('payments');
         $this->requireRole(['owner', 'admin']);
         $ownerId = (int)$_SESSION['user_id'];
-        
+
         $tenancyId = (int)($_POST['tenancy_id'] ?? $_GET['tenancy_id'] ?? 0);
         if ($tenancyId <= 0) {
             // If no tenancy specified, default to earnings dashboard
@@ -195,6 +200,7 @@ final class OwnerController extends BaseController
 
     public function payments_earnings(): void
     {
+        $this->requireActionPermission('payments_earnings');
         $this->requireRole(['owner', 'admin']);
         $ownerId = (int)$_SESSION['user_id'];
 
@@ -229,10 +235,11 @@ final class OwnerController extends BaseController
 
     public function payments_transactions(): void
     {
+        $this->requireActionPermission('payments_transactions');
         $this->requireRole(['owner', 'admin']);
         $ownerId = (int)$_SESSION['user_id'];
         $houseId = isset($_POST['house_id']) || isset($_GET['house_id']) ? (int)($_POST['house_id'] ?? $_GET['house_id']) : null;
-        
+
         $houseName = null;
         if ($houseId) {
             $bhModel = new BoardingHouse($this->db());
@@ -250,6 +257,7 @@ final class OwnerController extends BaseController
 
     public function transactions_data(): void
     {
+        $this->requireActionPermission('transactions_data');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -267,7 +275,7 @@ final class OwnerController extends BaseController
         // Sorting
         $orderColumnIndex = (int)($_POST['order'][0]['column'] ?? 0);
         $orderDir = $_POST['order'][0]['dir'] ?? 'DESC';
-        
+
         $columns = [
             0 => 'p.created_at',
             1 => 'u.first_name',
@@ -311,6 +319,7 @@ final class OwnerController extends BaseController
 
     public function payments_print_transactions(): void
     {
+        $this->requireActionPermission('payments_print_transactions');
         $this->requireRole(['owner', 'admin']);
         $ownerId = (int)$_SESSION['user_id'];
         $houseId = isset($_POST['house_id']) || isset($_GET['house_id']) ? (int)($_POST['house_id'] ?? $_GET['house_id']) : null;
@@ -350,17 +359,19 @@ final class OwnerController extends BaseController
 
     public function analytics(): void
     {
+        $this->requireActionPermission('analytics');
         $this->payments_earnings();
     }
 
     public function tenants(): void
     {
+        $this->requireActionPermission('tenants');
         $this->requireRole(['owner', 'admin']);
         $ownerId = (int)$_SESSION['user_id'];
-        
+
         $bookingModel = new Booking($this->db());
         $allBookings = $bookingModel->getForOwner($ownerId);
-        
+
         // Filter for active tenants only
         $tenants = array_filter($allBookings, fn($b) => $b['status'] === 'approved' && !(bool)$b['is_moved_out']);
 
@@ -376,6 +387,7 @@ final class OwnerController extends BaseController
 
     public function approve_booking(): void
     {
+        $this->requireActionPermission('approve_booking');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -405,6 +417,7 @@ final class OwnerController extends BaseController
 
     public function reject_booking(): void
     {
+        $this->requireActionPermission('reject_booking');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -434,6 +447,7 @@ final class OwnerController extends BaseController
 
     public function get_residency_payments_json(): void
     {
+        $this->requireActionPermission('get_residency_payments_json');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -502,6 +516,7 @@ final class OwnerController extends BaseController
 
     public function record_manual_payment(): void
     {
+        $this->requireActionPermission('record_manual_payment');
         $this->requireRole(['owner', 'admin']);
         $ownerId = (int)$_SESSION['user_id'];
 
@@ -563,7 +578,7 @@ final class OwnerController extends BaseController
 
         if ($paymentModel->createManual($tenantId, $tenancyId, $amount, $method, $type, $desc, $date, $months)) {
             $_SESSION['success'] = "Payment of ₱" . number_format($amount, 2) . " recorded successfully.";
-            
+
             // Log activity
             $logger = new ActivityLog($this->db());
             $logger->log($ownerId, 'OWNER_MANUAL_PAYMENT', [
@@ -585,9 +600,10 @@ final class OwnerController extends BaseController
 
     public function void_payment(): void
     {
+        $this->requireActionPermission('void_payment');
         $this->requireRole(['owner', 'admin']);
         $ownerId = (int)$_SESSION['user_id'];
-        
+
         $paymentId = (int)($_POST['payment_id'] ?? 0);
         $tenancyId = (int)($_POST['tenancy_id'] ?? 0);
 
@@ -622,9 +638,10 @@ final class OwnerController extends BaseController
 
     public function approve_pending_payment(): void
     {
+        $this->requireActionPermission('approve_pending_payment');
         $this->requireRole(['owner', 'admin']);
         $ownerId = (int)$_SESSION['user_id'];
-        
+
         $paymentId = (int)($_POST['payment_id'] ?? 0);
         $tenancyId = (int)($_POST['tenancy_id'] ?? 0);
 
@@ -659,9 +676,10 @@ final class OwnerController extends BaseController
 
     public function print_statement(): void
     {
+        $this->requireActionPermission('print_statement');
         $this->requireRole(['owner', 'admin']);
         $ownerId = (int)$_SESSION['user_id'];
-        
+
         $tenancyId = (int)($_POST['tenancy_id'] ?? $_GET['tenancy_id'] ?? 0);
         if ($tenancyId <= 0) {
             die("Invalid Request");
@@ -690,12 +708,14 @@ final class OwnerController extends BaseController
 
     public function houses(): void
     {
+        $this->requireActionPermission('houses');
         (new AdminController())->houses();
     }
 
     public function store_house(): void
     {
-        $this->requirePermission('add_houses');
+        $this->requireActionPermission('store_house');
+
         $this->requireRole(['owner', 'admin']);
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -761,7 +781,8 @@ final class OwnerController extends BaseController
 
     public function update_house(): void
     {
-        $this->requirePermission('edit_houses');
+        $this->requireActionPermission('update_house');
+
         $this->requireRole(['owner', 'admin']);
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -775,7 +796,7 @@ final class OwnerController extends BaseController
 
         $houseId = (int)($_POST['house_id'] ?? 0);
         $model = new BoardingHouse($this->db());
-        
+
         // Ownership Verification
         $existing = $model->getById($houseId);
         if (!$existing || (int)$existing['owner_id'] !== (int)$_SESSION['user_id']) {
@@ -823,9 +844,10 @@ final class OwnerController extends BaseController
 
     public function delete_house(): void
     {
-        $this->requirePermission('delete_houses');
+        $this->requireActionPermission('delete_house');
+
         $this->requireRole(['owner', 'admin']);
-        
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             $this->redirect('admin/houses');
         }
@@ -869,8 +891,9 @@ final class OwnerController extends BaseController
 
     public function move_out(): void
     {
+        $this->requireActionPermission('move_out');
         $this->requireRole(['owner', 'admin']);
-        
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             http_response_code(405);
             echo 'Method Not Allowed';
@@ -886,7 +909,7 @@ final class OwnerController extends BaseController
 
         $tenancyIdRaw = $_POST['tenancy_id'] ?? null;
         $tenancyId = is_numeric($tenancyIdRaw) ? (int)$tenancyIdRaw : 0;
-        
+
         $endDate = $_POST['end_date'] ?? null;
 
         if ($tenancyId <= 0) {
@@ -920,7 +943,8 @@ final class OwnerController extends BaseController
 
     public function upload_house_images(): void
     {
-        $this->requirePermission('edit_houses');
+        $this->requireActionPermission('upload_house_images');
+
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -1000,7 +1024,8 @@ final class OwnerController extends BaseController
 
     public function delete_house_image(): void
     {
-        $this->requirePermission('edit_houses');
+        $this->requireActionPermission('delete_house_image');
+
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -1048,7 +1073,8 @@ final class OwnerController extends BaseController
 
     public function get_house_images(): void
     {
-        $this->requirePermission('view_houses');
+        $this->requireActionPermission('get_house_images');
+
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -1066,7 +1092,8 @@ final class OwnerController extends BaseController
 
     public function get_house_amenities(): void
     {
-        $this->requirePermission('view_houses');
+        $this->requireActionPermission('get_house_amenities');
+
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -1083,13 +1110,14 @@ final class OwnerController extends BaseController
         $selected = $model->getAmenitiesForBoardingHouse($houseId);
 
         $selectedIds = array_column($selected, 'id');
-        
+
         echo json_encode(['success' => true, 'all' => $all, 'selected_ids' => $selectedIds]);
     }
 
     public function update_house_amenities(): void
     {
-        $this->requirePermission('edit_houses');
+        $this->requireActionPermission('update_house_amenities');
+
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -1138,21 +1166,22 @@ final class OwnerController extends BaseController
 
     public function load_more_houses(): void
     {
-        $this->requirePermission('view_houses');
+        $this->requireActionPermission('load_more_houses');
+
         $this->requireRole(['owner', 'admin']);
         $ownerId = (int)$_SESSION['user_id'];
         $offset = (int)($_GET['offset'] ?? 0);
         $limit = 10;
-        
+
         $model = new BoardingHouse($this->db());
         $houses = $model->getByOwnerId($ownerId, $limit, $offset);
-        
+
         foreach ($houses as &$house) {
             $house['rooms'] = $model->getRoomsByBoardingHouseId((int)$house['id']);
             $house['amenities'] = $model->getAmenitiesForBoardingHouse((int)$house['id']);
             $house['images'] = $model->getImages((int)$house['id']);
         }
-        
+
         foreach ($houses as $h) {
             include __DIR__ . '/../views/owner/_house_card.php';
         }
@@ -1160,21 +1189,22 @@ final class OwnerController extends BaseController
 
     public function rooms(): void
     {
+        $this->requireActionPermission('rooms');
         $this->requireRole(['owner', 'admin']);
         $ownerId = (int)$_SESSION['user_id'];
-        
+
         $houseModel = new BoardingHouse($this->db());
         $houses = $houseModel->getByOwnerId($ownerId, 100, 0); // Get all active houses for the dropdown
-        
+
         // Enrich houses with room stats
         foreach ($houses as &$house) {
             $house['rooms'] = $houseModel->getRoomsByBoardingHouseId((int)$house['id']);
             $house['images'] = $houseModel->getImages((int)$house['id']);
         }
-        
+
         $subModel = new Subscription($this->db());
         $limits = $subModel->getLimitsForOwner($ownerId);
-        
+
         // Fetch active sub ID for upgrade modal
         $activeSubQuery = $this->db()->prepare("SELECT id FROM subscriptions WHERE owner_id = ? AND status = 'active' ORDER BY id DESC LIMIT 1");
         $activeSubQuery->bind_param('i', $ownerId);
@@ -1200,22 +1230,24 @@ final class OwnerController extends BaseController
 
     public function get_all_rooms_json(): void
     {
+        $this->requireActionPermission('get_all_rooms_json');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
-        
+
         $ownerId = (int)$_SESSION['user_id'];
         $houseModel = new BoardingHouse($this->db());
         $houses = $houseModel->getByOwnerId($ownerId, 100, 0);
-        
+
         foreach ($houses as &$house) {
             $house['rooms'] = $houseModel->getRoomsByBoardingHouseId((int)$house['id']);
         }
-        
+
         echo json_encode(['success' => true, 'data' => $houses]);
     }
 
     public function get_room(): void
     {
+        $this->requireActionPermission('get_room');
         $this->requireRole(['owner', 'admin']);
         if (!isset($_GET['id'])) {
             echo json_encode(['success' => false, 'message' => 'Room ID required.']);
@@ -1240,9 +1272,10 @@ final class OwnerController extends BaseController
 
     public function store_room(): void
     {
+        $this->requireActionPermission('store_room');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
-        
+
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             echo json_encode(['success' => false, 'message' => 'Method not allowed.']); return;
         }
@@ -1252,7 +1285,7 @@ final class OwnerController extends BaseController
 
         $ownerId = (int)$_SESSION['user_id'];
         $bhModel = new BoardingHouse($this->db());
-        
+
         // Verify property ownership
         $houseId = (int)($_POST['boarding_house_id'] ?? 0);
         $house = $bhModel->getById($houseId);
@@ -1264,7 +1297,7 @@ final class OwnerController extends BaseController
         $subModel = new Subscription($this->db());
         $limits = $subModel->getLimitsForOwner($ownerId);
         $stats = $bhModel->getRoomStatsByOwner($ownerId);
-        
+
         if ($limits['room_limit'] > 0 && $stats['total_rooms'] >= $limits['room_limit']) {
             echo json_encode(['success' => false, 'message' => 'LIMIT_REACHED']); return;
         }
@@ -1290,6 +1323,7 @@ final class OwnerController extends BaseController
 
     public function update_room(): void
     {
+        $this->requireActionPermission('update_room');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -1337,6 +1371,7 @@ final class OwnerController extends BaseController
 
     public function delete_room(): void
     {
+        $this->requireActionPermission('delete_room');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -1368,6 +1403,7 @@ final class OwnerController extends BaseController
 
     public function subscription_simulation(): void
     {
+        $this->requireActionPermission('subscription_simulation');
         $planName = $_GET['plan'] ?? 'Pro';
         $status = $_GET['status'] ?? 'simulated';
 
@@ -1379,6 +1415,7 @@ final class OwnerController extends BaseController
     }
     public function get_available_rooms_json(): void
     {
+        $this->requireActionPermission('get_available_rooms_json');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -1404,6 +1441,7 @@ final class OwnerController extends BaseController
 
     public function store_tenant(): void
     {
+        $this->requireActionPermission('store_tenant');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -1497,6 +1535,7 @@ final class OwnerController extends BaseController
 
     public function get_tenant_json(): void
     {
+        $this->requireActionPermission('get_tenant_json');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -1542,6 +1581,7 @@ final class OwnerController extends BaseController
 
     public function update_tenant(): void
     {
+        $this->requireActionPermission('update_tenant');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 

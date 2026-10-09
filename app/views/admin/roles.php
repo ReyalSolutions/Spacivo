@@ -76,7 +76,7 @@ require __DIR__ . '/../layouts/management_header.php';
                                     </div>
                                 </div>
                                 <?php if (!in_array($role['slug'], ['admin', 'owner', 'tenant'])): ?>
-                                    <form action="/tenant/?url=admin/delete_role" method="POST" onsubmit="return confirm('Are you sure you want to delete this role?')">
+                                    <form action="/tenant/?url=admin/delete_role" method="POST" onsubmit="return confirm('Are you sure you want to delete this role?')"><input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Csrf::token(), ENT_QUOTES, 'UTF-8') ?>">
                                         <input type="hidden" name="role_id" value="<?= $role['id'] ?>">
                                         <button type="submit" class="btn btn-link text-danger p-0"><i class="fa-solid fa-trash-can"></i></button>
                                     </form>
@@ -202,7 +202,7 @@ require __DIR__ . '/../layouts/management_header.php';
                                     <h4 class="fw-800 m-0"><i class="fa-solid fa-pen-to-square me-2 text-primary"></i>Edit Authority</h4>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <form action="/tenant/?url=admin/update_role" method="POST">
+                                <form action="/tenant/?url=admin/update_role" method="POST"><input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Csrf::token(), ENT_QUOTES, 'UTF-8') ?>">
                                     <input type="hidden" name="role_id" value="<?= $role['id'] ?>">
                                     <div class="modal-body p-4">
                                         <div class="mb-4">
@@ -231,7 +231,7 @@ require __DIR__ . '/../layouts/management_header.php';
                                     <h4 class="fw-800 m-0"><i class="fa-solid fa-user-shield me-2 text-primary"></i>Assign Permissions</h4>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
-                                <form action="/tenant/?url=admin/update_role_permissions" method="POST">
+                                <form action="/tenant/?url=admin/update_role_permissions" method="POST"><input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Csrf::token(), ENT_QUOTES, 'UTF-8') ?>">
                                     <input type="hidden" name="role_id" value="<?= $role['id'] ?>">
                                     <div class="modal-body p-4">
                                         <p class="text-muted small mb-4">Synchronize authority levels for **<?= htmlspecialchars($role['name']) ?>** across module categories.</p>
@@ -312,7 +312,7 @@ require __DIR__ . '/../layouts/management_header.php';
                                             <code class="small text-muted"><?= $p['slug'] ?></code>
                                         </td>
                                         <td class="text-end px-4">
-                                            <form action="/tenant/?url=admin/delete_permission" method="POST" onsubmit="return confirm('Delete this permission permanently? This may affect role authority.')">
+                                            <form action="/tenant/?url=admin/delete_permission" method="POST" onsubmit="return confirm('Delete this permission permanently? This may affect role authority.')"><input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Csrf::token(), ENT_QUOTES, 'UTF-8') ?>">
                                                 <input type="hidden" name="permission_id" value="<?= $p['id'] ?>">
                                                 <button type="submit" class="btn btn-icon-only text-danger shadow-none">
                                                     <i class="fa-solid fa-trash-can"></i>
@@ -343,7 +343,7 @@ require __DIR__ . '/../layouts/management_header.php';
                                                 <div class="fw-bold text-dark mb-1"><?= htmlspecialchars($p['name']) ?></div>
                                                 <div class="badge bg-indigo-subtle text-indigo rounded-pill px-2 smaller" style="font-size: 0.6rem;"><?= strtoupper($p['category']) ?></div>
                                             </div>
-                                            <form action="/tenant/?url=admin/delete_permission" method="POST" onsubmit="return confirm('Delete this permission?')">
+                                            <form action="/tenant/?url=admin/delete_permission" method="POST" onsubmit="return confirm('Delete this permission?')"><input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Csrf::token(), ENT_QUOTES, 'UTF-8') ?>">
                                                 <input type="hidden" name="permission_id" value="<?= $p['id'] ?>">
                                                 <button type="submit" class="btn btn-link text-danger p-0"><i class="fa-solid fa-trash-can"></i></button>
                                             </form>
@@ -369,7 +369,7 @@ require __DIR__ . '/../layouts/management_header.php';
                 <h4 class="fw-800 m-0"><i class="fa-solid fa-key me-2 text-primary"></i>Define Access Token</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/tenant/?url=admin/store_permission" method="POST">
+            <form action="/tenant/?url=admin/store_permission" method="POST"><input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Csrf::token(), ENT_QUOTES, 'UTF-8') ?>">
                 <div class="modal-body p-4">
                     <div class="row g-4">
                         <div class="col-12">
@@ -410,7 +410,7 @@ require __DIR__ . '/../layouts/management_header.php';
                 <h4 class="fw-800 m-0"><i class="fa-solid fa-user-shield me-2 text-primary"></i>Define New Authority</h4>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form action="/tenant/?url=admin/store_role" method="POST">
+            <form action="/tenant/?url=admin/store_role" method="POST"><input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Csrf::token(), ENT_QUOTES, 'UTF-8') ?>">
                 <div class="modal-body p-4">
                     <div class="row g-4">
                         <div class="col-12">

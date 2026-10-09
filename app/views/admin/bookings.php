@@ -191,7 +191,7 @@ require __DIR__ . '/../layouts/management_header.php';
         <!-- Mobile Grid (Generated via JS) -->
         <div id="bookings-grid" class="d-md-none p-3 row g-3">
             <div class="col-12 text-center py-5 text-muted opacity-50">
-                <i class="fa-solid fa-spinner fa-spin fa-2x mb-2"></i>
+                <i class="fa-solid ui-skeleton ui-skeleton-line mb-2"></i>
                 <p class="small">Loading residents...</p>
             </div>
         </div>
@@ -235,7 +235,7 @@ $(document).ready(function () {
         pageLength: 10,
         lengthMenu: [[10, 25, 50, 100], [10, 25, 50, 100]],
         language: {
-            processing: '<div class="text-center py-4"><div class="spinner-border text-primary" role="status"></div><p class="mt-2 text-muted small">Synchronizing residency data...</p></div>',
+            processing: '<div class="text-center py-4"><div class="ui-skeleton ui-skeleton-line text-primary" role="status"></div><p class="mt-2 text-muted small">Synchronizing residency data...</p></div>',
             emptyTable: '<div class="text-center py-5 text-muted"><i class="fa-solid fa-inbox fa-3x mb-3 d-block opacity-20"></i>No active residents found.</div>',
             zeroRecords: '<div class="text-center py-5 text-muted"><i class="fa-solid fa-magnifying-glass fa-3x mb-3 d-block opacity-20"></i>No matching residency data found.</div>',
             search: '',
@@ -374,7 +374,7 @@ $(document).ready(function () {
         }).then((result) => {
             if (!result.isConfirmed) return;
 
-            btn.prop('disabled', true).html('<i class="fa-solid fa-spinner fa-spin"></i> Processing...');
+            btn.prop('disabled', true).html('<i class="fa-solid ui-skeleton ui-skeleton-line"></i> Processing...');
 
             $.ajax({
                 url: '/tenant/?url=admin/move_out',

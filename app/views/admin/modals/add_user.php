@@ -173,7 +173,7 @@ $(document).ready(function() {
             setTimeout(() => $('.modal-content').removeClass('shake-effect'), 500);
             return;
         }
-        $(this).html('<i class="fa-solid fa-spinner fa-spin me-2"></i> PROVISIONING...').attr('disabled', true);
+        $(this).html('<i class="fa-solid ui-skeleton ui-skeleton-line me-2"></i> PROVISIONING...').attr('disabled', true);
         $form.submit();
     });
 

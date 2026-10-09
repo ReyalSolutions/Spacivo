@@ -30,3 +30,6 @@ Hosted shared-UI source gate passed: run [37899186218](https://github.com/ReyalS
 User-priority paid-owner access repair implemented and locally verified before continuing marketplace work; hosted source gate pending.
 
 Hosted paid-owner repair gate passed: [run 37900510660](https://github.com/ReyalSolutions/Spacivo/actions/runs/37900510660), source commit a6627ad. All subscription repair acceptance checks are complete; browser visual automation remains unavailable as previously recorded.
+
+
+2026-10-09: User-priority action permissions and shared skeleton loading implemented and locally verified. Hosted gate pending; resume incremental shared-page consolidation afterward. Previously recorded Mapbox/browser limitations remain.

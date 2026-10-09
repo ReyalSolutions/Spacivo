@@ -88,3 +88,6 @@ User explicitly authorized incremental shared admin/owner implementations, with 
 Verification: 198 PHP files linted without errors, 29 foundation/mail assertions and 227 disposable database/HTTP assertions passed. Includes all-owner admin data, owner filter tampering, all three shared entry routes, direct write denial, edit permission with foreign property rejection, and permission revocation. No live rows or role grants changed. Hosted gate follows publication. Browser visual automation remains unavailable as previously recorded.
 
 Shared-listings hosted gate passed: [run 37905013391](https://github.com/ReyalSolutions/Spacivo/actions/runs/37905013391), source f555616. Six inline shared-page scripts passed Node syntax parsing. Next consolidation feature: rooms, then bookings and tenant operations, preserving explicit action permissions and data boundaries.
+
+
+2026-10-09: User-priority action permissions and shared skeleton loading implemented and locally verified. Hosted gate pending; resume incremental shared-page consolidation afterward. Previously recorded Mapbox/browser limitations remain.

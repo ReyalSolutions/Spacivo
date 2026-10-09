@@ -573,7 +573,7 @@ function saveCoordinates() {
     const btn = document.getElementById('saveCoordBtn');
 
     btn.disabled = true;
-    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Saving...';
+    btn.innerHTML = '<i class="fa-solid ui-skeleton ui-skeleton-line me-2"></i>Saving...';
 
     fetch('/tenant/?url=admin/map_update_coords', {
         method: 'POST',

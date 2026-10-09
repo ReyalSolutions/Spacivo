@@ -48,7 +48,7 @@
     <div id="houses-grid" class="row g-4">
         <!-- Dynamically architected via AJAX Orchestration -->
         <div class="col-12 py-5 text-center">
-            <div class="spinner-border text-primary" role="status">
+            <div class="ui-skeleton ui-skeleton-line text-primary" role="status">
                 <span class="visually-hidden">Loading properties...</span>
             </div>
             <p class="mt-2 text-muted">Intitializing property portfolio...</p>

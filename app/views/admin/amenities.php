@@ -308,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const url = id ? '/tenant/?url=admin/update_amenity' : '/tenant/?url=admin/store_amenity';
         const formData = $(this).serialize();
 
-        $('#saveBtn').prop('disabled', true).html('<span class="spinner-border spinner-border-sm me-2"></span>Saving...');
+        $('#saveBtn').prop('disabled', true).html('<span class="ui-skeleton ui-skeleton-line me-2"></span>Saving...');
 
         $.ajax({
             url: url,

@@ -507,7 +507,7 @@ $(document).ready(function() {
         language: {
             search: "SEARCH RECORDS",
             searchPlaceholder: "Ref#, Type, or Description...",
-            processing: '<div class="spinner-border text-primary" role="status"><span class="visually-hidden">Loading...</span></div>'
+            processing: '<div class="ui-skeleton ui-skeleton-line text-primary" role="status"><span class="visually-hidden">Loading...</span></div>'
         },
         drawCallback: function() {
             $('.dataTables_paginate .paginate_button').addClass('btn btn-sm');

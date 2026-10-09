@@ -30,5 +30,6 @@ jobs:
       - run: composer validate --strict
       - run: composer install --no-interaction --prefer-dist
       - run: composer check
+      - run: node tests/management-loading.js
       - run: php tests/run.php --integration
       - run: php tests/database.php

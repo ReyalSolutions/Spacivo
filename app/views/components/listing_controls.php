@@ -83,7 +83,7 @@
                 <!-- Upload progress -->
                 <div id="uploadProgress" class="d-none mt-3">
                     <div class="d-flex align-items-center gap-2 mb-1">
-                        <div class="spinner-border spinner-border-sm text-primary"></div>
+                        <div class="ui-skeleton ui-skeleton-line text-primary"></div>
                         <span class="small fw-600 text-primary" id="uploadProgressText">Uploading...</span>
                     </div>
                     <div class="progress" style="height:6px;border-radius:10px;">
@@ -136,7 +136,7 @@
             </div>
             <div class="modal-body p-4 bg-light">
                 <div id="amenitiesLoader" class="text-center py-4">
-                    <div class="spinner-border text-warning mb-2" role="status"></div>
+                    <div class="ui-skeleton ui-skeleton-line text-warning mb-2" role="status"></div>
                     <p class="text-muted small fw-bold">Loading amenities...</p>
                 </div>
                 <form id="amenitiesForm" class="d-none">
@@ -181,7 +181,7 @@ document.getElementById('houseForm').onsubmit = function(e) {
     }
     
     document.getElementById('submitBtn').disabled = true;
-    document.getElementById('submitBtn').innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>SUBMITTING...';
+    document.getElementById('submitBtn').innerHTML = '<span class="ui-skeleton ui-skeleton-line me-2"></span>SUBMITTING...';
 };
 
 
@@ -414,7 +414,7 @@ function saveAmenities() {
     const btn = document.getElementById('saveAmenitiesBtn');
     const originalText = btn.innerText;
     btn.disabled = true;
-    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>SAVING...';
+    btn.innerHTML = '<span class="ui-skeleton ui-skeleton-line me-2"></span>SAVING...';
     
     fetch('/tenant/?url=admin/update_house_amenities', { method: 'POST', body: formData })
         .then(r => r.json())

@@ -18,3 +18,6 @@ Preserve the working StayHub system while migrating to PHP 7.4+ (explicit user o
 10. Flutter: shared API/authentication, maps/discovery/booking, push/payments, Android tests/release. Supported flows against production API.
 
 Each gate uses architecture.md's full requirements. Complete small testable tasks; never mark generated files or legacy overlap as verified functionality. Repair regressions before continuing. Record external blockers honestly. Production data changes and deployment require authorization.
+
+
+2026-10-09: User-priority action permissions and shared skeleton loading implemented and locally verified. Hosted gate pending; resume incremental shared-page consolidation afterward. Previously recorded Mapbox/browser limitations remain.

@@ -86,6 +86,7 @@ try {
     require __DIR__ . '/properties.php';
     require __DIR__ . '/property-metadata.php';
     require __DIR__ . '/subscriptions.php';
+    require __DIR__ . '/permission-catalog.php';
 } catch (Throwable $error) {
     $check(false, 'Integration error: ' . get_class($error) . ' ' . $error->getMessage());
 } finally {

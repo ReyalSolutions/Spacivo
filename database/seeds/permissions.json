@@ -1,0 +1,905 @@
+[
+    {
+        "name": "Global System Config",
+        "slug": "system_config",
+        "category": "core",
+        "module": "General System",
+        "description": "Manage global settings"
+    },
+    {
+        "name": "Identity Orchestration",
+        "slug": "identity_crud",
+        "category": "users",
+        "module": "General System",
+        "description": "Manage users"
+    },
+    {
+        "name": "Financial Analytics",
+        "slug": "finance_audit",
+        "category": "finance",
+        "module": "General System",
+        "description": "View reports"
+    },
+    {
+        "name": "Audit Logs",
+        "slug": "view_logs",
+        "category": "core",
+        "module": "General System",
+        "description": "View activity logs"
+    },
+    {
+        "name": "Portfolio Mgmt",
+        "slug": "property_mgmt",
+        "category": "assets",
+        "module": "General System",
+        "description": "Manage houses"
+    },
+    {
+        "name": "Booking Operations",
+        "slug": "booking_ops",
+        "category": "assets",
+        "module": "General System",
+        "description": "Handle bookings"
+    },
+    {
+        "name": "Occupancy Analytics",
+        "slug": "occupancy_view",
+        "category": "assets",
+        "module": "General System",
+        "description": "View stats"
+    },
+    {
+        "name": "View Dashboard",
+        "slug": "view_dashboard",
+        "category": "Communication & System",
+        "module": "Dashboard",
+        "description": "Access to the administrative overview"
+    },
+    {
+        "name": "Access Notifications",
+        "slug": "view_notifications",
+        "category": "core",
+        "module": "General System",
+        "description": "View system and user notifications"
+    },
+    {
+        "name": "Manage Own Profile",
+        "slug": "manage_profile",
+        "category": "core",
+        "module": "General System",
+        "description": "Update personal credentials"
+    },
+    {
+        "name": "List All Users",
+        "slug": "list_users",
+        "category": "users",
+        "module": "General System",
+        "description": "View the complete identity directory"
+    },
+    {
+        "name": "Manage Staff\/Admin",
+        "slug": "manage_admins",
+        "category": "users",
+        "module": "General System",
+        "description": "Create and modify administrative accounts"
+    },
+    {
+        "name": "Manage Property Owners",
+        "slug": "manage_owners",
+        "category": "users",
+        "module": "General System",
+        "description": "Oversee owner identities"
+    },
+    {
+        "name": "Manage Tenants",
+        "slug": "manage_tenants",
+        "category": "users",
+        "module": "General System",
+        "description": "Oversee tenant identities"
+    },
+    {
+        "name": "Manage Roles & RBAC",
+        "slug": "manage_roles",
+        "category": "users",
+        "module": "General System",
+        "description": "Define authority levels and permission matrices"
+    },
+    {
+        "name": "View All Listings",
+        "slug": "view_houses",
+        "category": "assets",
+        "module": "General System",
+        "description": "Access the complete property portfolio"
+    },
+    {
+        "name": "Approve\/Reject Houses",
+        "slug": "approve_houses",
+        "category": "assets",
+        "module": "General System",
+        "description": "Verify and activate pending properties"
+    },
+    {
+        "name": "Manage All Bookings",
+        "slug": "manage_bookings",
+        "category": "assets",
+        "module": "General System",
+        "description": "Oversee system-wide reservation lifecycle"
+    },
+    {
+        "name": "Manage Rooms & Units",
+        "slug": "manage_rooms",
+        "category": "assets",
+        "module": "General System",
+        "description": "Create and modify room availability"
+    },
+    {
+        "name": "Audit Transactions",
+        "slug": "audit_finances",
+        "category": "finance",
+        "module": "General System",
+        "description": "View and verify payment transactions"
+    },
+    {
+        "name": "Manage Subscription Plans",
+        "slug": "manage_plans",
+        "category": "finance",
+        "module": "General System",
+        "description": "Define and modify pricing tiers"
+    },
+    {
+        "name": "Oversee Active Subs",
+        "slug": "manage_subscriptions",
+        "category": "finance",
+        "module": "General System",
+        "description": "Manage active subscriptions"
+    },
+    {
+        "name": "View Revenue Analytics",
+        "slug": "view_revenue",
+        "category": "finance",
+        "module": "General System",
+        "description": "Access financial performance data"
+    },
+    {
+        "name": "General Settings",
+        "slug": "system_settings",
+        "category": "config",
+        "module": "General System",
+        "description": "Modify global platform configuration"
+    },
+    {
+        "name": "Feature Controls",
+        "slug": "feature_flags",
+        "category": "config",
+        "module": "General System",
+        "description": "Enable or disable platform-wide modules"
+    },
+    {
+        "name": "Manage Reviews",
+        "slug": "manage_reviews",
+        "category": "insights",
+        "module": "General System",
+        "description": "Moderate and respond to user reviews"
+    },
+    {
+        "name": "Generate Reports",
+        "slug": "generate_reports",
+        "category": "insights",
+        "module": "General System",
+        "description": "Export system-wide analytics and PDFs"
+    },
+    {
+        "name": "Manage Global Amenities",
+        "slug": "manage_amenities",
+        "category": "assets",
+        "module": "General System",
+        "description": "Configure standard property amenities"
+    },
+    {
+        "name": "View Users",
+        "slug": "view_users",
+        "category": "Management",
+        "module": "User Management",
+        "description": "Can view the list of system users and their profiles."
+    },
+    {
+        "name": "Add Users",
+        "slug": "add_users",
+        "category": "Management",
+        "module": "User Management",
+        "description": "Can create new administrative and staff accounts."
+    },
+    {
+        "name": "Edit Users",
+        "slug": "edit_users",
+        "category": "Management",
+        "module": "User Management",
+        "description": "Can modify existing user accounts and profile details."
+    },
+    {
+        "name": "Delete Users",
+        "slug": "delete_users",
+        "category": "Management",
+        "module": "User Management",
+        "description": "Can remove user accounts from the system."
+    },
+    {
+        "name": "View Roles",
+        "slug": "view_roles",
+        "category": "Management",
+        "module": "Roles & Permissions",
+        "description": "Can view the list of administrative roles and their assigned permissions."
+    },
+    {
+        "name": "Add Roles",
+        "slug": "add_roles",
+        "category": "Management",
+        "module": "Roles & Permissions",
+        "description": "Can create new security roles."
+    },
+    {
+        "name": "Edit Roles",
+        "slug": "edit_roles",
+        "category": "Management",
+        "module": "Roles & Permissions",
+        "description": "Can modify role names and adjust granular permissions."
+    },
+    {
+        "name": "Delete Roles",
+        "slug": "delete_roles",
+        "category": "Management",
+        "module": "Roles & Permissions",
+        "description": "Can remove custom roles that are not currently assigned to users."
+    },
+    {
+        "name": "View Tenants",
+        "slug": "view_tenants",
+        "category": "Management",
+        "module": "Tenants",
+        "description": "Can view the registered tenant directory and their status."
+    },
+    {
+        "name": "Add Tenants",
+        "slug": "add_tenants",
+        "category": "Management",
+        "module": "Tenants",
+        "description": "Can register new tenants into the boarding house system."
+    },
+    {
+        "name": "Edit Tenants",
+        "slug": "edit_tenants",
+        "category": "Management",
+        "module": "Tenants",
+        "description": "Can update tenant contact info and contract details."
+    },
+    {
+        "name": "Delete Tenants",
+        "slug": "delete_tenants",
+        "category": "Management",
+        "module": "Tenants",
+        "description": "Can remove tenant records from the database."
+    },
+    {
+        "name": "Add Houses",
+        "slug": "add_houses",
+        "category": "Property",
+        "module": "Boarding House",
+        "description": "Can register new boarding house properties."
+    },
+    {
+        "name": "Edit Houses",
+        "slug": "edit_houses",
+        "category": "Property",
+        "module": "Boarding House",
+        "description": "Can update property details, images, and descriptions."
+    },
+    {
+        "name": "Delete Houses",
+        "slug": "delete_houses",
+        "category": "Property",
+        "module": "Boarding House",
+        "description": "Can remove property records from the system."
+    },
+    {
+        "name": "View Rooms",
+        "slug": "view_rooms",
+        "category": "Property",
+        "module": "Rooms",
+        "description": "Can view room inventory and occupancy status."
+    },
+    {
+        "name": "Add Rooms",
+        "slug": "add_rooms",
+        "category": "Property",
+        "module": "Rooms",
+        "description": "Can create new room entries for properties."
+    },
+    {
+        "name": "Edit Rooms",
+        "slug": "edit_rooms",
+        "category": "Property",
+        "module": "Rooms",
+        "description": "Can modify room numbers, pricing, and capacity."
+    },
+    {
+        "name": "Delete Rooms",
+        "slug": "delete_rooms",
+        "category": "Property",
+        "module": "Rooms",
+        "description": "Can remove room entries."
+    },
+    {
+        "name": "Rooms Amen. View",
+        "slug": "view_room_amenities",
+        "category": "Property",
+        "module": "Room Amenities",
+        "description": "Can view specific amenities assigned to rooms."
+    },
+    {
+        "name": "Rooms Amen. Add",
+        "slug": "add_room_amenities",
+        "category": "Property",
+        "module": "Room Amenities",
+        "description": "Can assign new amenities to specific rooms."
+    },
+    {
+        "name": "Rooms Amen. Edit",
+        "slug": "edit_room_amenities",
+        "category": "Property",
+        "module": "Room Amenities",
+        "description": "Can update room-specific amenity details."
+    },
+    {
+        "name": "Rooms Amen. Delete",
+        "slug": "delete_room_amenities",
+        "category": "Property",
+        "module": "Room Amenities",
+        "description": "Can remove amenities from rooms."
+    },
+    {
+        "name": "Global Amen. View",
+        "slug": "view_global_amenities",
+        "category": "Property",
+        "module": "Global Amenities",
+        "description": "Can view the master list of system-wide amenities."
+    },
+    {
+        "name": "Global Amen. Add",
+        "slug": "add_global_amenities",
+        "category": "Property",
+        "module": "Global Amenities",
+        "description": "Can create new global amenity options."
+    },
+    {
+        "name": "Global Amen. Edit",
+        "slug": "edit_global_amenities",
+        "category": "Property",
+        "module": "Global Amenities",
+        "description": "Can modify global amenity names and categories."
+    },
+    {
+        "name": "Global Amen. Delete",
+        "slug": "delete_global_amenities",
+        "category": "Property",
+        "module": "Global Amenities",
+        "description": "Can remove amenities from the master list."
+    },
+    {
+        "name": "View Map",
+        "slug": "view_property_map",
+        "category": "Property",
+        "module": "Property Map",
+        "description": "Can view the visual property layout and floor plans."
+    },
+    {
+        "name": "Edit Map",
+        "slug": "edit_property_map",
+        "category": "Property",
+        "module": "Property Map",
+        "description": "Can update the interactive property map and hotspots."
+    },
+    {
+        "name": "View Earnings",
+        "slug": "view_earnings",
+        "category": "Financial",
+        "module": "Total Earnings",
+        "description": "Can access the total revenue and earnings dashboard."
+    },
+    {
+        "name": "View Payments",
+        "slug": "view_payments",
+        "category": "Financial",
+        "module": "Transactions",
+        "description": "Can view the complete transaction and payment history."
+    },
+    {
+        "name": "Record Payments",
+        "slug": "record_payments",
+        "category": "Financial",
+        "module": "Transactions",
+        "description": "Can manually log tenant payments and deposits."
+    },
+    {
+        "name": "Edit Payments",
+        "slug": "edit_payments",
+        "category": "Financial",
+        "module": "Transactions",
+        "description": "Can correct payment records and transaction details."
+    },
+    {
+        "name": "Refund Payments",
+        "slug": "refund_payments",
+        "category": "Financial",
+        "module": "Transactions",
+        "description": "Can process and log payment refunds."
+    },
+    {
+        "name": "View Plans",
+        "slug": "view_plans",
+        "category": "Financial",
+        "module": "Plans",
+        "description": "Can view available boarding house subscription plans."
+    },
+    {
+        "name": "Add Plans",
+        "slug": "add_plans",
+        "category": "Financial",
+        "module": "Plans",
+        "description": "Can create new subscription or pricing plans."
+    },
+    {
+        "name": "Edit Plans",
+        "slug": "edit_plans",
+        "category": "Financial",
+        "module": "Plans",
+        "description": "Can modify plan features, trial periods, and pricing."
+    },
+    {
+        "name": "Delete Plans",
+        "slug": "delete_plans",
+        "category": "Financial",
+        "module": "Plans",
+        "description": "Can archive or remove obsolete plans."
+    },
+    {
+        "name": "View Subs",
+        "slug": "view_subscriptions",
+        "category": "Financial",
+        "module": "Subscriptions",
+        "description": "Can view current active and expired owner subscriptions."
+    },
+    {
+        "name": "Audit Payments",
+        "slug": "audit_payments",
+        "category": "Financial",
+        "module": "Plan Payments Audit",
+        "description": "Can perform deep-dive payment audits and reconciliation."
+    },
+    {
+        "name": "View Analytics",
+        "slug": "view_analytics",
+        "category": "Communication & System",
+        "module": "Reports\/Analytics",
+        "description": "Can access advanced growth reports and business analytics."
+    },
+    {
+        "name": "View Logs",
+        "slug": "view_activity_logs",
+        "category": "Communication & System",
+        "module": "Activity Logs",
+        "description": "Can monitor total system activity and administrative changes."
+    },
+    {
+        "name": "View Messages",
+        "slug": "view_messages",
+        "category": "Communication & System",
+        "module": "Messages",
+        "description": "Can read incoming messages from tenants and owners."
+    },
+    {
+        "name": "Send Messages",
+        "slug": "send_messages",
+        "category": "Communication & System",
+        "module": "Messages",
+        "description": "Can compose and send messages\/announcements via the system."
+    },
+    {
+        "name": "View Reviews",
+        "slug": "view_reviews",
+        "category": "Communication & System",
+        "module": "Reviews",
+        "description": "Can view property reviews and tenant feedback."
+    },
+    {
+        "name": "Delete Reviews",
+        "slug": "delete_reviews",
+        "category": "Communication & System",
+        "module": "Reviews",
+        "description": "Can remove inappropriate or fraudulent reviews."
+    },
+    {
+        "name": "View Settings",
+        "slug": "view_settings",
+        "category": "Communication & System",
+        "module": "General Settings",
+        "description": "Can view basic system configuration and branding."
+    },
+    {
+        "name": "Update Branding",
+        "slug": "update_settings",
+        "category": "Communication & System",
+        "module": "General Settings",
+        "description": "Can modify site name, logo, and global administrative preferences."
+    },
+    {
+        "name": "Reset Password",
+        "slug": "reset_password",
+        "category": "Management",
+        "module": "User Management",
+        "description": "Can reset user passwords for account recovery."
+    },
+    {
+        "name": "Audit Status",
+        "slug": "audit_user_status",
+        "category": "Management",
+        "module": "User Management",
+        "description": "Can view account login history and active sessions."
+    },
+    {
+        "name": "Export User List",
+        "slug": "export_users",
+        "category": "Management",
+        "module": "User Management",
+        "description": "Can download the user directory in CSV\/Excel format."
+    },
+    {
+        "name": "Sync Perms",
+        "slug": "sync_permissions",
+        "category": "Management",
+        "module": "Roles & Permissions",
+        "description": "Can force synchronize permissions across various role layers."
+    },
+    {
+        "name": "Export Roles",
+        "slug": "export_roles",
+        "category": "Management",
+        "module": "Roles & Permissions",
+        "description": "Can download the role-permission matrix report."
+    },
+    {
+        "name": "Print Contract",
+        "slug": "print_tenant_contract",
+        "category": "Management",
+        "module": "Tenants",
+        "description": "Can generate and print tenant lease agreements."
+    },
+    {
+        "name": "Download Docs",
+        "slug": "download_tenant_docs",
+        "category": "Management",
+        "module": "Tenants",
+        "description": "Can download uploaded tenant identification and requirements."
+    },
+    {
+        "name": "Export CSV",
+        "slug": "export_tenants",
+        "category": "Management",
+        "module": "Tenants",
+        "description": "Can export the tenant directory for external processing."
+    },
+    {
+        "name": "Audit History",
+        "slug": "audit_tenant_history",
+        "category": "Management",
+        "module": "Tenants",
+        "description": "Can view tenant stay history and room movements."
+    },
+    {
+        "name": "Print Summary",
+        "slug": "print_house_summary",
+        "category": "Property",
+        "module": "Boarding House",
+        "description": "Can generate and print property overview reports."
+    },
+    {
+        "name": "Export List",
+        "slug": "export_houses",
+        "category": "Property",
+        "module": "Boarding House",
+        "description": "Can download the property roster."
+    },
+    {
+        "name": "Change Status",
+        "slug": "change_room_status",
+        "category": "Property",
+        "module": "Rooms",
+        "description": "Can manually toggle room status between Available, Occupied, or Pending."
+    },
+    {
+        "name": "Print Label",
+        "slug": "print_room_label",
+        "category": "Property",
+        "module": "Rooms",
+        "description": "Can generate and print QR codes or labels for specific rooms."
+    },
+    {
+        "name": "Export Census",
+        "slug": "export_rooms",
+        "category": "Property",
+        "module": "Rooms",
+        "description": "Can download the complete room occupancy census."
+    },
+    {
+        "name": "Bulk Assign",
+        "slug": "bulk_assign_amenities",
+        "category": "Property",
+        "module": "Room Amenities",
+        "description": "Can apply amenities to multiple rooms at once."
+    },
+    {
+        "name": "Import Am.",
+        "slug": "import_global_amenities",
+        "category": "Property",
+        "module": "Global Amenities",
+        "description": "Can bulk import amenities from external sources."
+    },
+    {
+        "name": "Print Map",
+        "slug": "print_property_map",
+        "category": "Property",
+        "module": "Property Map",
+        "description": "Can generate a printable version of the property floor plan."
+    },
+    {
+        "name": "Export Assets",
+        "slug": "export_map_assets",
+        "category": "Property",
+        "module": "Property Map",
+        "description": "Can download map-related images and metadata."
+    },
+    {
+        "name": "Export CSV",
+        "slug": "export_earnings",
+        "category": "Financial",
+        "module": "Total Earnings",
+        "description": "Can download revenue streams in Excel\/CSV format."
+    },
+    {
+        "name": "Print Report",
+        "slug": "print_earnings_report",
+        "category": "Financial",
+        "module": "Total Earnings",
+        "description": "Can generate a formal financial summary report for printing."
+    },
+    {
+        "name": "View Trends",
+        "slug": "view_earning_trends",
+        "category": "Financial",
+        "module": "Total Earnings",
+        "description": "Can access advanced revenue forecasting and growth trends."
+    },
+    {
+        "name": "Print Receipt",
+        "slug": "print_payment_receipt",
+        "category": "Financial",
+        "module": "Transactions",
+        "description": "Can generate and print transaction receipts for tenants."
+    },
+    {
+        "name": "Download Invoice",
+        "slug": "download_invoice",
+        "category": "Financial",
+        "module": "Transactions",
+        "description": "Can download digital invoices for transactions."
+    },
+    {
+        "name": "Export Payments",
+        "slug": "export_transactions",
+        "category": "Financial",
+        "module": "Transactions",
+        "description": "Can download the complete payment history."
+    },
+    {
+        "name": "Audit Trail",
+        "slug": "audit_transaction_trail",
+        "category": "Financial",
+        "module": "Transactions",
+        "description": "Can view modification logs for specific financial records."
+    },
+    {
+        "name": "Extend Trial",
+        "slug": "extend_trial",
+        "category": "Financial",
+        "module": "Subscriptions",
+        "description": "Can grant extra trial days to property owners."
+    },
+    {
+        "name": "Cancel Sub",
+        "slug": "cancel_subscription",
+        "category": "Financial",
+        "module": "Subscriptions",
+        "description": "Can terminate active subscription plans."
+    },
+    {
+        "name": "Download History",
+        "slug": "download_sub_history",
+        "category": "Financial",
+        "module": "Subscriptions",
+        "description": "Can export the subscription billing history."
+    },
+    {
+        "name": "Export Logs",
+        "slug": "export_audit_logs",
+        "category": "Financial",
+        "module": "Plan Payments Audit",
+        "description": "Can download payment audit sessions."
+    },
+    {
+        "name": "Download Report",
+        "slug": "download_audit_report",
+        "category": "Financial",
+        "module": "Plan Payments Audit",
+        "description": "Can generate a PDF summary of the audit findings."
+    },
+    {
+        "name": "Verify Payouts",
+        "slug": "verify_payouts",
+        "category": "Financial",
+        "module": "Plan Payments Audit",
+        "description": "Can process and confirm payouts for system partners."
+    },
+    {
+        "name": "Export Stats",
+        "slug": "export_dashboard_stats",
+        "category": "Communication & System",
+        "module": "Dashboard",
+        "description": "Can download dashboard metrics as an image or sheet."
+    },
+    {
+        "name": "Print Overview",
+        "slug": "print_dashboard_overview",
+        "category": "Communication & System",
+        "module": "Dashboard",
+        "description": "Can generate a summary view for printing."
+    },
+    {
+        "name": "Live Metrics",
+        "slug": "view_live_metrics",
+        "category": "Communication & System",
+        "module": "Dashboard",
+        "description": "Can monitor real-time user activity and system load."
+    },
+    {
+        "name": "Export PDF",
+        "slug": "export_analytics_pdf",
+        "category": "Communication & System",
+        "module": "Reports\/Analytics",
+        "description": "Can download comprehensive analytics reports as PDF."
+    },
+    {
+        "name": "Print Analytics",
+        "slug": "print_analytics_report",
+        "category": "Communication & System",
+        "module": "Reports\/Analytics",
+        "description": "Can generate a formal printed version of analytics data."
+    },
+    {
+        "name": "Business Insights",
+        "slug": "view_business_insights",
+        "category": "Communication & System",
+        "module": "Reports\/Analytics",
+        "description": "Can access AI-driven or deep business intelligence reports."
+    },
+    {
+        "name": "Search Logs",
+        "slug": "search_activity_logs",
+        "category": "Communication & System",
+        "module": "Activity Logs",
+        "description": "Can perform advanced keyword\/date-based log searches."
+    },
+    {
+        "name": "Export Logs",
+        "slug": "export_activity_logs",
+        "category": "Communication & System",
+        "module": "Activity Logs",
+        "description": "Can download activity logs in CSV\/JSON format."
+    },
+    {
+        "name": "Clear History",
+        "slug": "clear_activity_logs",
+        "category": "Communication & System",
+        "module": "Activity Logs",
+        "description": "Can purge old activity logs to maintain system speed."
+    },
+    {
+        "name": "Print Log",
+        "slug": "print_activity_log",
+        "category": "Communication & System",
+        "module": "Activity Logs",
+        "description": "Can print specific activity log segments or audits."
+    },
+    {
+        "name": "Delete Msg",
+        "slug": "delete_messages",
+        "category": "Communication & System",
+        "module": "Messages",
+        "description": "Can remove messages from the system inbox."
+    },
+    {
+        "name": "Archive Msg",
+        "slug": "archive_messages",
+        "category": "Communication & System",
+        "module": "Messages",
+        "description": "Can move messages to the archive for organization."
+    },
+    {
+        "name": "Print Thread",
+        "slug": "print_message_thread",
+        "category": "Communication & System",
+        "module": "Messages",
+        "description": "Can generate a printable transcript of message threads."
+    },
+    {
+        "name": "Export Conv.",
+        "slug": "export_conversations",
+        "category": "Communication & System",
+        "module": "Messages",
+        "description": "Can download conversation history."
+    },
+    {
+        "name": "Reply Reviews",
+        "slug": "reply_to_reviews",
+        "category": "Communication & System",
+        "module": "Reviews",
+        "description": "Can post official owner\/admin responses to reviews."
+    },
+    {
+        "name": "Approve Reviews",
+        "slug": "approve_reviews",
+        "category": "Communication & System",
+        "module": "Reviews",
+        "description": "Can moderate and approve pending reviews before they go live."
+    },
+    {
+        "name": "Export Reviews",
+        "slug": "export_reviews",
+        "category": "Communication & System",
+        "module": "Reviews",
+        "description": "Can download user reviews as a report."
+    },
+    {
+        "name": "Update Branding",
+        "slug": "update_branding",
+        "category": "Communication & System",
+        "module": "General Settings",
+        "description": "Can modify site name, logo, and visual preferences."
+    },
+    {
+        "name": "Security Config",
+        "slug": "manage_security_settings",
+        "category": "Communication & System",
+        "module": "General Settings",
+        "description": "Can update password policies, firewall, and access rules."
+    },
+    {
+        "name": "System Backup",
+        "slug": "perform_system_backup",
+        "category": "Communication & System",
+        "module": "General Settings",
+        "description": "Can manually trigger a complete system and database backup."
+    },
+    {
+        "name": "Print Info",
+        "slug": "print_system_info",
+        "category": "Communication & System",
+        "module": "General Settings",
+        "description": "Can generate a summary sheet of current system settings."
+    },
+    {
+        "name": "Print Users",
+        "slug": "print_users",
+        "category": "Management",
+        "module": "User Management",
+        "description": null
+    }
+]

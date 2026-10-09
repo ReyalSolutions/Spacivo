@@ -18,7 +18,7 @@
 
     <!-- Main Container: Populated via loadProfileData() -->
     <div id="profileLoading" class="text-center py-5">
-        <div class="spinner-border text-primary" role="status">
+        <div class="ui-skeleton ui-skeleton-line text-primary" role="status">
             <span class="visually-hidden">Loading...</span>
         </div>
         <p class="mt-2 text-muted fw-semibold">Synchronizing with identity server...</p>
@@ -314,7 +314,7 @@ $(document).ready(function() {
         const $btn = $('#submitBtn');
         const originalBtnHtml = $btn.html();
         
-        $btn.prop('disabled', true).html('<i class="fa-solid fa-spinner-third fa-spin me-2"></i>Synchronizing Identity...');
+        $btn.prop('disabled', true).html('<i class="fa-solid ui-skeleton ui-skeleton-line me-2"></i>Synchronizing Identity...');
         
         const formData = new FormData(this);
         

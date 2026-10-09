@@ -227,7 +227,7 @@ require __DIR__ . '/../layouts/management_header.php';
         <!-- Mobile Grid -->
         <div id="plan-payments-grid" class="d-md-none p-3 row g-3">
              <div class="col-12 text-center py-5 text-muted opacity-50">
-                <i class="fa-solid fa-spinner fa-spin fa-2x mb-2"></i>
+                <i class="fa-solid ui-skeleton ui-skeleton-line mb-2"></i>
                 <p class="small">Loading Ledger...</p>
             </div>
         </div>

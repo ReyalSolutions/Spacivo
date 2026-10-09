@@ -155,7 +155,7 @@
                 </select>
             </div>
 
-            <form method="POST" action="/tenant/?url=owner/bookings/print_history" target="_blank" class="d-inline">
+            <form method="POST" action="/tenant/?url=owner/bookings/print_history" target="_blank" class="d-inline"><input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Csrf::token(), ENT_QUOTES, 'UTF-8') ?>">
                 <?php if ($house): ?>
                     <input type="hidden" name="house_id" value="<?= (int)$house['id'] ?>">
                 <?php endif; ?>
