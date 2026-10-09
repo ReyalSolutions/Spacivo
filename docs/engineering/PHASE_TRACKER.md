@@ -41,3 +41,6 @@ Hosted action-permissions/loading gate passed: [run 37908631123](https://github.
 ## 2026-10-09 — Global toast across pages
 
 Notification feedback uses the existing ToastStack engine across admin, owner, tenant, public and authentication views, including role/recovery flash messages and organization/category/inventory saves. Shared headers load the engine before page scripts. Feedback.fire sends notices to ToastStack and preserves interactive confirmations, input prompts and loading dialogs. Post-notice redirects retain display delays; success/error notices close pending loading dialogs. Titles/messages are escaped, server flash values are JSON encoded and toast roles support accessible announcements. Browser visual verification remains unavailable. Local verification: 202 PHP files linted, 29 foundation assertions, 348 database/HTTP assertions, skeleton checks and global-toast safety/confirmation/callback tests passed. Hosted gate pending.
+
+
+Global-toast hosted gate passed: [run 37909608793](https://github.com/ReyalSolutions/Spacivo/actions/runs/37909608793), source b26529e. All PHP, integration, database, skeleton and toast checks succeeded. User-priority toast implementation loop complete.

@@ -1,4 +1,4 @@
-<?php 
+<?php
 $hideAdminHeaderTitle = true;
 require __DIR__ . '/../layouts/management_header.php';
 ?>
@@ -87,7 +87,7 @@ require __DIR__ . '/../layouts/management_header.php';
     <!-- Header Section -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4 p-4 bg-white rounded-4 shadow-sm border">
         <div>
-            <?php 
+            <?php
                 $role = strtolower($_SESSION['role'] ?? 'admin');
                 if ($role === 'owner') {
                     $title = "My Subscription Plan";
@@ -145,23 +145,23 @@ require __DIR__ . '/../layouts/management_header.php';
 <script>
 $(document).ready(function() {
     <?php if (isset($_SESSION['success'])): ?>
-        Feedback.fire({ 
-            icon: 'success', 
-            title: 'Success', 
-            text: <?= json_encode($_SESSION['success'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>, 
-            timer: 3000, 
-            showConfirmButton: false, 
-            background: '#f8fafc' 
+        Feedback.fire({
+            icon: 'success',
+            title: 'Success',
+            text: <?= json_encode($_SESSION['success'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>,
+            timer: 3000,
+            showConfirmButton: false,
+            background: '#f8fafc'
         });
         <?php unset($_SESSION['success']); ?>
     <?php endif; ?>
 
     <?php if (isset($_SESSION['error'])): ?>
-        Feedback.fire({ 
-            icon: 'error', 
-            title: 'Error', 
-            text: <?= json_encode($_SESSION['error'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>, 
-            background: '#f8fafc' 
+        Feedback.fire({
+            icon: 'error',
+            title: 'Error',
+            text: <?= json_encode($_SESSION['error'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>,
+            background: '#f8fafc'
         });
         <?php unset($_SESSION['error']); ?>
     <?php endif; ?>
@@ -169,14 +169,14 @@ $(document).ready(function() {
     if ($.fn.DataTable.isDataTable('#subscriptionsTable')) {
         $('#subscriptionsTable').DataTable().destroy();
     }
-    
+
     window.subscriptionsTable = $('#subscriptionsTable').DataTable({
         ajax: '/tenant/?url=admin/get_subscriptions_json',
         order: [[0, 'asc']], // Order by Plan Name by default Name
         pageLength: 10,
         responsive: true,
         columns: [
-            { 
+            {
                 data: 'plan_name',
                 render: function(data, type, row) {
                     const colors = { Starter: '#2563eb', Standard: '#0ea5e9', Premium: '#f59e0b', Enterprise: '#10b981' };
@@ -192,7 +192,7 @@ $(document).ready(function() {
                             </div>`;
                 }
             },
-            { 
+            {
                 data: 'first_name',
                 render: function(data, type, row) {
                     const initials = (data ? data[0] : '') + (row.last_name ? row.last_name[0] : '');
@@ -205,7 +205,7 @@ $(document).ready(function() {
                             </div>`;
                 }
             },
-            { 
+            {
                 data: 'price_monthly',
                 render: function(data, type, row) {
                     const isYearly = row.billing_cycle === 'yearly';
@@ -219,7 +219,7 @@ $(document).ready(function() {
                             </div>`;
                 }
             },
-            { 
+            {
                 data: 'room_limit',
                 render: function(data) {
                     const isUnlimited = parseInt(data) >= 9999;
@@ -228,7 +228,7 @@ $(document).ready(function() {
                         : `<span class="sub-badge sub-badge-slate"><i class="fa-solid fa-door-open me-1"></i>${data} Rooms</span>`;
                 }
             },
-            { 
+            {
                 data: 'status',
                 render: function(data) { return renderStatusBadge(data); }
             },
@@ -259,7 +259,7 @@ $(document).ready(function() {
             const api = this.api();
             const data = api.rows({ page: 'current' }).data();
             const $grid = $('#subscriptions-grid');
-            
+
             // Generate Mobile Cards
             $grid.empty();
             if (data.length === 0) {
@@ -271,7 +271,7 @@ $(document).ready(function() {
                     const price = isYearly ? parseFloat(row.price_yearly) : parseFloat(row.price_monthly);
                     const cycleLabel = isYearly ? 'YEARLY' : 'MONTHLY';
                     const cycleClass = isYearly ? 'bg-primary' : 'bg-info';
-                    
+
                     const colors = { Starter: '#2563eb', Standard: '#0ea5e9', Premium: '#f59e0b', Enterprise: '#10b981' };
                     const planColor = colors[row.plan_name] || '#2563eb';
                     const statusBadge = renderStatusBadge(row.status);
@@ -373,7 +373,7 @@ $(document).ready(function() {
             const id = parseInt(idText.replace('SUB-', ''));
             row = table.rows().data().toArray().find(r => r.id == id);
         }
-        
+
         if (!row) return;
 
         const colors = { Starter: '#2563eb', Standard: '#0ea5e9', Premium: '#f59e0b', Enterprise: '#10b981' };
@@ -433,10 +433,10 @@ $(document).ready(function() {
             ? `<span class="cycle-badge cycle-yearly"><i class="fa-solid fa-calendar me-1"></i>Yearly Billing</span>`
             : `<span class="cycle-badge cycle-monthly"><i class="fa-solid fa-rotate me-1"></i>Monthly Billing</span>`;
         $('#subDetailBillingCycle').html(cycleHtml);
-        
+
         $('#subDetailMonthly').html(`₱${parseFloat(row.price_monthly).toFixed(2)}`);
         $('#subDetailMonthlyActive').html(!isYearly ? `<span class="cycle-badge cycle-monthly" style="font-size:0.65rem;">Active Plan</span>` : '');
-        
+
         if (isYearly && row.status !== 'cancelled' && row.status !== 'expired') {
             $('#switchToMonthlyBtnContainer').html(
                 `<button class="btn btn-sm btn-outline-primary rounded-pill py-0 px-2 fw-semibold" onclick="switchToMonthly(${row.id})" style="font-size:0.7rem; letter-spacing:0.02em;">Switch</button>`
@@ -444,10 +444,10 @@ $(document).ready(function() {
         } else {
             $('#switchToMonthlyBtnContainer').html('');
         }
-        
+
         $('#subDetailYearly').html(`₱${parseFloat(row.price_yearly).toFixed(2)}`);
         $('#subDetailYearlyActive').html(isYearly ? `<span class="cycle-badge cycle-yearly" style="font-size:0.65rem;">Active Plan</span>` : '');
-        
+
         if (!isYearly && row.status !== 'cancelled' && row.status !== 'expired') {
             $('#upgradeYearlyBtnContainer').html(
                 `<button class="btn btn-sm btn-outline-primary rounded-pill py-0 px-2 fw-semibold" onclick="upgradeToYearly(${row.id}, ${row.plan_id}, '${row.plan_name}', ${row.price_yearly})" style="font-size:0.7rem; letter-spacing:0.02em;">Upgrade</button>`
@@ -600,7 +600,7 @@ function cancelSubscription(subId) {
 function openUpgradePlanModal(subId, planId, billingCycle) {
     $('#subDetailModal').modal('hide');
     $('#upgradePlanActiveSubId').val(subId);
-    
+
     if (typeof setUpgradeBilling === 'function') {
         setUpgradeBilling(billingCycle);
     }
@@ -1161,7 +1161,7 @@ function renderStatusBadge(status) {
 }
 </style>
 
-<?php 
+<?php
 if (isset($_SESSION['role']) && ($_SESSION['role'] === 'owner' || $_SESSION['role'] === 'admin')) {
     include __DIR__ . '/../components/upgrade_modal.php';
     include __DIR__ . '/../components/payment_modal.php';
