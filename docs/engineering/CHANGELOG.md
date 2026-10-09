@@ -31,3 +31,5 @@ User selected PHPMailer. Installed Composer-locked PHPMailer 7.1.1; added SMTP d
 PHPMailer implementation commit 486df96 passed hosted run 37892943844 on PHP 7.4/MariaDB 10.4. Remaining Phase 2 gate: private SMTP configuration and actual inbox delivery.
 
 Configured the user-selected Gmail SMTP in ignored .env. Verified TLS/authentication and sent one explicitly approved Spacivo delivery test, accepted by Gmail. No application account changes. The user confirmed receipt.
+
+Phase 3 category task: normalized tables, validated configurable capabilities, administrator UI, versioned public/admin API and optimistic writes. 180 PHP files, 29 foundation/mail and 114 database/HTTP assertions pass. Migration 004 remains pending in the existing database; no real category records were added.

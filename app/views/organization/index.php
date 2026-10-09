@@ -2,6 +2,9 @@
 <main class="container py-5">
     <h1>Organizations</h1>
     <p>Manage your business accounts and staff access.</p>
+    <?php if ($platform_role === 'admin' && getenv('CATEGORIES_ENABLED') === 'true'): ?>
+    <p><a href="/tenant/?url=category/index">Manage space categories</a></p>
+    <?php endif; ?>
     <div id="organization-message" class="alert d-none" role="status"></div>
     <?php if ($platform_role === 'owner'): ?>
         <section class="card card-body mb-4">

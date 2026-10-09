@@ -11,6 +11,10 @@ if (!is_string($url)) {
     return;
 }
 
+if (strpos($url, 'api/') === 0) {
+    (new App\Core\ApiRouter())->dispatch($url);
+    return;
+}
 $router = new Router($url, __DIR__ . '/../app/controllers');
 $router->dispatch();
 

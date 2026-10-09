@@ -527,6 +527,9 @@ $siteName = $sysSettings['site_name'] ?? 'StayHub';
                                 </div>
                             </li>
                             <li><a class="dropdown-item" href="/tenant/?url=admin/profile"><i class="fa-solid fa-circle-user"></i> My Profile</a></li>
+                            <?php if (getenv('CATEGORIES_ENABLED') === 'true' && ($_SESSION['role'] ?? '') === 'admin'): ?>
+                            <li><a class="dropdown-item" href="/tenant/?url=category/index">Space categories</a></li>
+                            <?php endif; ?>
                             <?php if (getenv('ORGANIZATIONS_ENABLED') === 'true'): ?>
                             <li><a class="dropdown-item" href="/tenant/?url=organization/index"><i class="fas fa-building"></i> Organizations</a></li>
                             <?php endif; ?>

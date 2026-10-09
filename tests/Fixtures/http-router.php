@@ -9,6 +9,11 @@ if (strpos($path, '/tenant/') !== 0) {
     return;
 }
 $relative = substr($path, strlen('/tenant/'));
+if (strpos($relative, 'api/v1/') === 0) {
+    $_GET['url'] = $relative;
+    require $root . '/index.php';
+    return;
+}
 if ($relative === '' || $relative === 'index.php') {
     require $root . '/index.php';
     return;

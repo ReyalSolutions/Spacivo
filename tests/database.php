@@ -27,7 +27,7 @@ try {
     $server->select_db($name);
     $baseline = json_decode(file_get_contents(__DIR__ . '/../database/schema/legacy-baseline.json'), true, 512, JSON_THROW_ON_ERROR);
     $runner = new App\Core\MigrationRunner($server, __DIR__ . '/../database/migrations');
-    $expectedMigrations = ['001_legacy_baseline.php', '002_organizations.php', '003_password_recovery.php'];
+    $expectedMigrations = ['001_legacy_baseline.php', '002_organizations.php', '003_password_recovery.php', '004_categories.php'];
     $check($runner->migrate() === $expectedMigrations, 'Fresh application migrations install');
     $check(App\Core\SchemaBaseline::inspect($server, $baseline) === [], 'Installed schema matches captured baseline');
     $check($runner->migrate() === [], 'Application migrations are idempotent');
@@ -82,6 +82,7 @@ try {
     require __DIR__ . '/http-smoke.php';
     require __DIR__ . '/organization-security.php';
     require __DIR__ . '/password-recovery.php';
+    require __DIR__ . '/categories.php';
 } catch (Throwable $error) {
     $check(false, 'Integration error: ' . get_class($error) . ' ' . $error->getMessage());
 } finally {

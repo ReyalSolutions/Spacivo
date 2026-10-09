@@ -44,6 +44,8 @@ $savedDatabase = getenv('DB_NAME');
 putenv('DB_NAME=' . $name);
 $savedOrganizationFlag = getenv('ORGANIZATIONS_ENABLED');
 putenv('ORGANIZATIONS_ENABLED=true');
+$savedCategoryFlag = getenv('CATEGORIES_ENABLED');
+putenv('CATEGORIES_ENABLED=true');
 $savedRecoveryFlag = getenv('PASSWORD_RECOVERY_ENABLED');
 $savedOutbox = getenv('PASSWORD_RESET_OUTBOX');
 $savedMailDriver = getenv('MAIL_DRIVER');
@@ -57,6 +59,7 @@ $command = [PHP_BINARY, '-d', 'session.save_path=' . $temporaryDirectory . '/ses
 $pipes = [];
 $process = proc_open($command, [0 => ['pipe', 'r'], 1 => ['file', $temporaryDirectory . '/http.log', 'a'], 2 => ['file', $temporaryDirectory . '/http.log', 'a']], $pipes, dirname(__DIR__));
 putenv($savedOrganizationFlag === false ? 'ORGANIZATIONS_ENABLED' : 'ORGANIZATIONS_ENABLED=' . $savedOrganizationFlag);
+putenv($savedCategoryFlag === false ? 'CATEGORIES_ENABLED' : 'CATEGORIES_ENABLED=' . $savedCategoryFlag);
 putenv($savedRecoveryFlag === false ? 'PASSWORD_RECOVERY_ENABLED' : 'PASSWORD_RECOVERY_ENABLED=' . $savedRecoveryFlag);
 putenv($savedOutbox === false ? 'PASSWORD_RESET_OUTBOX' : 'PASSWORD_RESET_OUTBOX=' . $savedOutbox);
 putenv($savedMailDriver === false ? 'MAIL_DRIVER' : 'MAIL_DRIVER=' . $savedMailDriver);
@@ -71,14 +74,14 @@ if (!is_resource($process)) {
 }
 fclose($pipes[0]);
 $cookie = '';
-$request = static function (string $path, ?array $data = null) use ($port, &$cookie): array {
+$request = static function (string $path, ?array $data = null, ?string $jsonMethod = null) use ($port, &$cookie): array {
     $headers = 'Cookie: ' . $cookie . "\r\n";
     if ($data !== null) {
-        $headers .= "Content-Type: application/x-www-form-urlencoded\r\nX-Requested-With: XMLHttpRequest\r\n";
+        $headers .= 'Content-Type: ' . ($jsonMethod ? 'application/json' : 'application/x-www-form-urlencoded') . "\r\nX-Requested-With: XMLHttpRequest\r\n";
     }
     $context = stream_context_create(['http' => [
-        'method' => $data === null ? 'GET' : 'POST', 'header' => $headers,
-        'content' => $data === null ? '' : http_build_query($data),
+        'method' => $jsonMethod ?? ($data === null ? 'GET' : 'POST'), 'header' => $headers,
+        'content' => $data === null ? '' : ($jsonMethod ? json_encode($data) : http_build_query($data)),
         'ignore_errors' => true, 'follow_location' => 0, 'timeout' => 5,
     ]]);
     $body = file_get_contents('http://127.0.0.1:' . $port . '/tenant/' . $path, false, $context);
@@ -109,6 +112,10 @@ try {
     $check($response[0] === 200 && strpos($response[1], '<!doctype html>') !== false, 'Fresh database marketplace renders shared layout');
     $response = $request('?url=organization/show&organization_id=1');
     $check($response[0] === 401, 'Organization API rejects unauthenticated requests');
+    $response = $request('api/v1/categories');
+    $check($response[0] === 200 && json_decode($response[1], true)['data'] === [], 'Versioned public category API boots with empty catalog');
+    $response = $request('api/v1/admin/categories');
+    $check($response[0] === 401, 'Category administration API requires authentication');
     $ownerOrganization = null;
     foreach (['admin', 'owner', 'tenant'] as $role) {
         $cookie = '';
@@ -123,6 +130,22 @@ try {
         $response = $request($dashboard);
         $check($response[0] === 200 && stripos($response[1], '<html') !== false && strpos($response[1], 'Something went wrong') === false, $role . ' portal boots');
         if ($role === 'admin') {
+            $response = $request('?url=category/index');
+            $check($response[0] === 200 && strpos($response[1], 'Space categories') !== false, 'Category administration page renders');
+            $configuration = ['name' => 'HTTP Court', 'slug' => 'http_court', 'active' => true, 'capabilities' => ['hourly_booking' => true]];
+            $response = $request('api/v1/admin/categories', $configuration, 'POST');
+            $check($response[0] === 403, 'Category writes reject missing CSRF');
+            $configuration['csrf_token'] = $token;
+            $response = $request('api/v1/admin/categories', $configuration, 'POST');
+            $categoryPayload = json_decode($response[1], true);
+            $httpCategoryId = (int)($categoryPayload['data']['id'] ?? 0);
+            $check($response[0] === 201 && $httpCategoryId > 0, 'Administrator creates category over versioned API');
+            $configuration['version'] = 1; $configuration['active'] = false;
+            $response = $request('api/v1/admin/categories/' . $httpCategoryId, $configuration, 'PATCH');
+            $check($response[0] === 200, 'Administrator updates category over PATCH API');
+            $response = $request('api/v1/categories');
+            $check(json_decode($response[1], true)['data'] === [], 'Public API excludes deactivated category');
+            $server->query('DELETE FROM space_categories WHERE id = ' . $httpCategoryId);
             $response = $request('admin/users.php');
             $check($response[0] === 200, 'Legacy admin user-management page boots');
             $adminId = (int)$server->query("SELECT id FROM users WHERE username = 'fixture_admin'")->fetch_row()[0];
@@ -132,6 +155,8 @@ try {
             $server->query('UPDATE users SET role_id = 1 WHERE id = ' . $adminId);
         }
         if ($role === 'owner') {
+            $response = $request('api/v1/admin/categories');
+            $check($response[0] === 403, 'Owner cannot read category administration API');
             $response = $request('?url=owner/get_room&id=' . $fixtureForeignRoom);
             $check($response[0] === 403, 'Legacy owner cannot read another owner room');
             $response = $request('?url=owner/get_residency_payments_json&tenancy_id=' . $fixtureForeignBooking);

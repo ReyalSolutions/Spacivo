@@ -71,6 +71,9 @@
                                 <span class="fs-3">Activity Logs</span>
                             </a>
                             <div class="dropdown-divider my-1"></div>
+                            <?php if (getenv('CATEGORIES_ENABLED') === 'true'): ?>
+                            <a href="/tenant/?url=category/index" class="d-flex align-items-center gap-2 dropdown-item py-2 px-3">Space categories</a>
+                            <?php endif; ?>
                             <?php if (getenv('ORGANIZATIONS_ENABLED') === 'true'): ?>
                             <a href="/tenant/?url=organization/index" class="d-flex align-items-center gap-2 dropdown-item py-2 px-3">Organizations</a>
                             <?php endif; ?>

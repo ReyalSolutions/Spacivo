@@ -1,4 +1,6 @@
 Options -Indexes
+RewriteEngine On
+RewriteRule ^(api/v1(?:/.*)?)$ index.php?url=$1 [QSA,L]
 <FilesMatch "^(phpinfo\.php|\.env.*)$">
     Require all denied
 </FilesMatch>

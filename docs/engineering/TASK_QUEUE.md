@@ -34,9 +34,21 @@
 - [x] Verify PHPMailer source commit 486df96 in hosted run 37892943844 (success).
 - [x] Review passing hosted CI and Phase 2 acceptance; test transport isolation is verified locally.
 
+## Phase 3
+
+- [x] Inspect existing inventory and architecture capability requirements.
+- [x] Implement normalized category/capability tables and restartable migration without seeded application data.
+- [x] Implement administrator configuration, capability validation, optimistic versions and public active-only reads.
+- [x] Add category management UI and versioned category REST endpoints.
+- [x] Verify category authorization, malformed combinations, activation/deactivation, duplicate codes, stale writes and HTTP/CSRF behavior.
+- [ ] Verify category commit in hosted CI.
+- [ ] Apply tested category migration and enable the category feature in the local application.
+- [ ] Implement organization-owned properties and rentable units with scoped CRUD.
+- [ ] Implement amenities, safe photos, location, approval and listing lifecycle.
+- [ ] Verify that verified owners can publish approved listings.
+
 ## Following phases (strict order)
 
-3. Configurable categories/capabilities and organization-owned inventory.
 4. Published inventory discovery and Mapbox.
 5. Reservation/pricing/availability services with concurrency tests.
 6. Payment sandbox/webhooks/reconciliation and rental operations.
