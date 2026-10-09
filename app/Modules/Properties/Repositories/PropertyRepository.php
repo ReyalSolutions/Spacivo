@@ -105,4 +105,15 @@ final class PropertyRepository
                     WHERE r.organization_id = p.organization_id AND r.property_id = p.id AND r.state = 'active' AND rc.active = 1)
             ORDER BY p.id DESC LIMIT 100")->get_result()->fetch_all(MYSQLI_ASSOC);
     }
+    public function publicFind(int $id): ?array
+    {
+        return $this->query("SELECT p.id, p.organization_id FROM properties p
+            JOIN organizations o ON o.id = p.organization_id JOIN space_categories c ON c.id = p.category_id
+            JOIN users u ON u.id = o.owner_user_id
+            WHERE p.id = ? AND p.state = 'published' AND p.approval_status = 'approved'
+                AND o.status = 'active' AND o.verification_status = 'verified' AND c.active = 1
+                AND u.status = 1 AND u.is_deleted = 0
+                AND EXISTS (SELECT 1 FROM rental_units r JOIN space_categories rc ON rc.id = r.category_id
+                    WHERE r.organization_id = p.organization_id AND r.property_id = p.id AND r.state = 'active' AND rc.active = 1)", 'i', [$id])->get_result()->fetch_assoc() ?: null;
+    }
 }

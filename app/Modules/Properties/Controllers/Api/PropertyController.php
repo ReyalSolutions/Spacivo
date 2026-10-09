@@ -9,7 +9,9 @@ use App\Shared\Exceptions\AuthorizationException;
 final class PropertyController
 {
     private PropertyService $service;
-    public function __construct(PropertyService $service) { $this->service = $service; }
+    private ?\App\Modules\Properties\Services\PropertyMetadataService $metadata;
+    public function __construct(PropertyService $service, ?\App\Modules\Properties\Services\PropertyMetadataService $metadata = null)
+    { $this->service = $service; $this->metadata = $metadata; }
     public function handle(string $action, string $method, int $property = 0, int $unit = 0): void
     {
         header('Content-Type: application/json; charset=utf-8');
@@ -33,7 +35,14 @@ final class PropertyController
                 if ($organization === false || $organization < 1 || $version === false) { throw new \InvalidArgumentException('Invalid organization or version.'); }
                 $data = null;
                 if ($action === 'list') { $data = $this->service->list($actor, $organization); }
-                elseif ($action === 'show') { $data = $this->service->show($actor, $organization, $property); }
+                elseif ($action === 'show') {
+                    $data = $this->service->show($actor, $organization, $property);
+                    if ($this->metadata !== null) {
+                        $data['metadata'] = $this->metadata->details($actor, $organization, $property);
+                        foreach ($data['units'] as &$row) { $row['metadata'] = $this->metadata->details($actor, $organization, $property, (int)$row['id']); }
+                        unset($row);
+                    }
+                }
                 elseif ($action === 'save') { $data = ['id' => $this->service->save($actor, $organization, $property, $version, $input)]; }
                 elseif ($action === 'unit_save') { $data = ['id' => $this->service->saveUnit($actor, $organization, $property, $unit, $version, $input)]; }
                 elseif ($action === 'unit_archive') { $this->service->archiveUnit($actor, $organization, $property, $unit, $version); }

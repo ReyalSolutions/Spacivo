@@ -48,6 +48,10 @@ $savedCategoryFlag = getenv('CATEGORIES_ENABLED');
 putenv('CATEGORIES_ENABLED=true');
 $savedInventoryFlag = getenv('INVENTORY_ENABLED');
 putenv('INVENTORY_ENABLED=true');
+$savedMetadataFlag = getenv('INVENTORY_METADATA_ENABLED');
+$savedUploadDirectory = getenv('INVENTORY_UPLOAD_DIR');
+putenv('INVENTORY_METADATA_ENABLED=true');
+putenv('INVENTORY_UPLOAD_DIR=' . $temporaryDirectory . '/inventory-images');
 $savedRecoveryFlag = getenv('PASSWORD_RECOVERY_ENABLED');
 $savedOutbox = getenv('PASSWORD_RESET_OUTBOX');
 $savedMailDriver = getenv('MAIL_DRIVER');
@@ -63,6 +67,8 @@ $process = proc_open($command, [0 => ['pipe', 'r'], 1 => ['file', $temporaryDire
 putenv($savedOrganizationFlag === false ? 'ORGANIZATIONS_ENABLED' : 'ORGANIZATIONS_ENABLED=' . $savedOrganizationFlag);
 putenv($savedCategoryFlag === false ? 'CATEGORIES_ENABLED' : 'CATEGORIES_ENABLED=' . $savedCategoryFlag);
 putenv($savedInventoryFlag === false ? 'INVENTORY_ENABLED' : 'INVENTORY_ENABLED=' . $savedInventoryFlag);
+putenv($savedMetadataFlag === false ? 'INVENTORY_METADATA_ENABLED' : 'INVENTORY_METADATA_ENABLED=' . $savedMetadataFlag);
+putenv($savedUploadDirectory === false ? 'INVENTORY_UPLOAD_DIR' : 'INVENTORY_UPLOAD_DIR=' . $savedUploadDirectory);
 putenv($savedRecoveryFlag === false ? 'PASSWORD_RECOVERY_ENABLED' : 'PASSWORD_RECOVERY_ENABLED=' . $savedRecoveryFlag);
 putenv($savedOutbox === false ? 'PASSWORD_RESET_OUTBOX' : 'PASSWORD_RESET_OUTBOX=' . $savedOutbox);
 putenv($savedMailDriver === false ? 'MAIL_DRIVER' : 'MAIL_DRIVER=' . $savedMailDriver);
@@ -96,6 +102,16 @@ $request = static function (string $path, ?array $data = null, ?string $jsonMeth
         }
     }
     return [(int)($status[1] ?? 0), (string)$body, $responseHeaders];
+};
+$uploadPhoto = static function (string $path, array $fields, string $pixels) use ($port, &$cookie): array {
+    $boundary = 'spacivo-' . bin2hex(random_bytes(16));
+    $body = '';
+    foreach ($fields as $key => $value) { $body .= '--' . $boundary . "\r\nContent-Disposition: form-data; name=\"" . $key . "\"\r\n\r\n" . $value . "\r\n"; }
+    $body .= '--' . $boundary . "\r\nContent-Disposition: form-data; name=\"photo\"; filename=\"unsafe.php\"\r\nContent-Type: image/png\r\n\r\n" . $pixels . "\r\n--" . $boundary . "--\r\n";
+    $context = stream_context_create(['http' => ['method' => 'POST', 'header' => 'Cookie: ' . $cookie . "\r\nContent-Type: multipart/form-data; boundary=" . $boundary . "\r\n", 'content' => $body, 'ignore_errors' => true, 'follow_location' => 0, 'timeout' => 5]]);
+    $response = file_get_contents('http://127.0.0.1:' . $port . '/tenant/' . $path, false, $context);
+    preg_match('/\s(\d{3})\s/', $http_response_header[0] ?? '', $status);
+    return [(int)($status[1] ?? 0), (string)$response];
 };
 try {
     $ready = false;
@@ -192,10 +208,50 @@ try {
             $response = $request('api/v1/owner/properties/' . $httpInventoryProperty . '/units', $httpUnitInput, 'POST');
             $httpInventoryUnit = (int)(json_decode($response[1], true)['data']['id'] ?? 0);
             $check($response[0] === 201 && $httpInventoryUnit > 0, 'Owner creates scoped rental unit through REST API');
+            $testImage = imagecreatetruecolor(2, 2); ob_start(); imagepng($testImage); $testPixels = ob_get_clean(); imagedestroy($testImage);
+            $photoFields = ['organization_id' => $ownerOrganization, 'version' => 2];
+            $response = $uploadPhoto('api/v1/owner/properties/' . $httpInventoryProperty . '/photos', $photoFields, $testPixels);
+            $check($response[0] === 403, 'Photo upload rejects missing CSRF');
+            $photoFields['csrf_token'] = $token;
+            $response = $uploadPhoto('api/v1/owner/properties/' . $httpInventoryProperty . '/photos', $photoFields, $testPixels . '<?php echo "EXECUTABLE_TEST_MARKER"; ?>');
+            $httpInventoryPhoto = (int)(json_decode($response[1], true)['data']['id'] ?? 0);
+            $check($response[0] === 201 && $httpInventoryPhoto > 0, 'Multipart raster upload stored with generated safe filename');
+            $response = $request('api/v1/owner/properties/' . $httpInventoryProperty . '/photos/' . $httpInventoryPhoto . '?organization_id=' . $ownerOrganization);
+            $check($response[0] === 200 && @getimagesizefromstring($response[1]) !== false && strpos($response[1], 'EXECUTABLE_TEST_MARKER') === false, 'Private photo preview contains reencoded pixels without executable payload');
+            $response = $request('api/v1/properties/' . $httpInventoryProperty . '/photos/' . $httpInventoryPhoto);
+            $check($response[0] === 403, 'Draft photo cannot be downloaded publicly');
+            $response = $uploadPhoto('api/v1/owner/properties/' . $httpInventoryProperty . '/photos', $photoFields, $testPixels);
+            $check($response[0] === 422 && count(glob($temporaryDirectory . '/inventory-images/*')) === 1, 'Stale photo upload rolls back metadata and cleans its file');
+            $photoFields['version'] = 3;
+            $response = $uploadPhoto('api/v1/owner/properties/' . $httpInventoryProperty . '/photos', $photoFields, '<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>');
+            $check($response[0] === 422 && count(glob($temporaryDirectory . '/inventory-images/*')) === 1, 'SVG active content rejected without storing a file');
+            $response = $request('api/v1/owner/properties/' . $httpInventoryProperty . '/amenities', ['organization_id' => $ownerOrganization, 'version' => 3, 'amenities' => [], 'csrf_token' => $token], 'PUT');
+            $check($response[0] === 200, 'Owner updates scoped amenities through REST API');
             $response = $request('api/v1/owner/properties/' . $httpInventoryProperty . '/state', ['organization_id' => $ownerOrganization, 'version' => 2, 'state' => 'published', 'csrf_token' => $token], 'POST');
             $check($response[0] === 422, 'REST API refuses unverified unapproved publication');
             $response = $request('api/v1/properties');
             $check(json_decode($response[1], true)['data'] === [], 'Public property API excludes drafts');
+            $httpOrgRepository = new App\Modules\Organizations\Repositories\OrganizationRepository($server);
+            (new App\Modules\Organizations\Services\OrganizationService($httpOrgRepository))->verify($adminId, $ownerOrganization, 'verified');
+            $httpPropertyService = new App\Modules\Properties\Services\PropertyService(new App\Modules\Properties\Repositories\PropertyRepository($server), $httpOrgRepository);
+            $httpPropertyService->review($adminId, $ownerOrganization, $httpInventoryProperty, 4, 'approved');
+            $response = $request('api/v1/owner/properties/' . $httpInventoryProperty . '/state', ['organization_id' => $ownerOrganization, 'version' => 5, 'state' => 'published', 'csrf_token' => $token], 'POST');
+            $check($response[0] === 200, 'Verified owner publishes approved listing through REST API');
+            $savedPhotoCookie = $cookie; $cookie = '';
+            $response = $request('api/v1/properties/' . $httpInventoryProperty . '/photos/' . $httpInventoryPhoto);
+            $check($response[0] === 200 && @getimagesizefromstring($response[1]) !== false, 'Published photo is available to anonymous visitors');
+            $cookie = $savedPhotoCookie;
+            $httpPropertyService->moderate($adminId, $ownerOrganization, $httpInventoryProperty, 6, 'suspended');
+            $response = $request('api/v1/properties/' . $httpInventoryProperty . '/photos/' . $httpInventoryPhoto);
+            $check($response[0] === 403, 'Suspending listing revokes public photo downloads');
+            $response = $request('api/v1/owner/properties/' . $httpInventoryProperty . '/state', ['organization_id' => $ownerOrganization, 'version' => 7, 'state' => 'published', 'csrf_token' => $token], 'POST');
+            $check($response[0] === 422, 'Owner REST API cannot bypass platform suspension');
+            $httpPropertyService->moderate($adminId, $ownerOrganization, $httpInventoryProperty, 7, 'draft');
+            $response = $request('api/v1/owner/properties/' . $httpInventoryProperty . '?organization_id=' . $ownerOrganization);
+            $photoDetails = json_decode($response[1], true)['data'] ?? [];
+            $check($response[0] === 200 && count($photoDetails['metadata']['photos'] ?? []) === 1, 'Scoped property API includes photo and amenity metadata');
+            $response = $request('?url=property/index&organization_id=' . $ownerOrganization);
+            $check($response[0] === 200 && strpos($response[1], '/photos/' . $httpInventoryPhoto) !== false && strpos($response[1], 'Upload photo') !== false, 'Inventory page renders private photo preview and metadata controls');
             $response = $request('?url=organization/show&organization_id=' . $ownerOrganization);
             $check($response[0] === 200, 'Owner API reads own organization');
             $response = $request('?url=organization/index');
@@ -204,6 +260,8 @@ try {
         if ($role === 'tenant' && $ownerOrganization !== null) {
             $response = $request('api/v1/owner/properties/' . $httpInventoryProperty . '?organization_id=' . $ownerOrganization);
             $check($response[0] === 403, 'Cross-account inventory API access denied');
+            $response = $request('api/v1/owner/properties/' . $httpInventoryProperty . '/photos/' . $httpInventoryPhoto . '?organization_id=' . $ownerOrganization);
+            $check($response[0] === 403, 'Foreign account cannot download private draft photos');
             $response = $request('?url=organization/show&organization_id=' . $ownerOrganization);
             $check($response[0] === 403, 'Cross-account organization API access denied');
             $response = $request('?url=payment/checkout&payment_id=' . $fixtureForeignPayment);
@@ -218,6 +276,8 @@ try {
         $response = $request('?url=auth/logout', ['csrf_token' => $token]);
         $check($response[0] === 302, $role . ' logout accepts valid CSRF');
     }
+    $server->query('DELETE FROM property_media WHERE property_id = ' . $httpInventoryProperty);
+    $server->query('DELETE FROM property_amenities WHERE property_id = ' . $httpInventoryProperty);
     $server->query('DELETE FROM rental_units WHERE property_id = ' . $httpInventoryProperty);
     $server->query('DELETE FROM properties WHERE id = ' . $httpInventoryProperty);
     $server->query('DELETE FROM space_categories WHERE id = ' . $httpInventoryCategory);
@@ -280,6 +340,8 @@ try {
 } finally {
     proc_terminate($process);
     proc_close($process);
+    foreach (glob($temporaryDirectory . '/inventory-images/*') ?: [] as $file) { unlink($file); }
+    if (is_dir($temporaryDirectory . '/inventory-images')) { rmdir($temporaryDirectory . '/inventory-images'); }
     foreach (glob($temporaryDirectory . '/sessions/*') ?: [] as $file) {
         unlink($file);
     }

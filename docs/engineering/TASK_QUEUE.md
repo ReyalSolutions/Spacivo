@@ -44,8 +44,8 @@
 - [x] Verify category commit 5c4263e in hosted run 37894183813.
 - [x] Apply migration 004 and enable categories with explicit user approval; Apache category API returns 200.
 - [x] Implement/test organization-owned property/unit CRUD, staff grants, REST/UI, approval/reviewer records and listing lifecycle.
-- [ ] Implement amenities, safe photos, location, approval and listing lifecycle.
-- [ ] Verify that verified owners can publish approved listings.
+- [x] Implement/test amenities, safe private raster photos, location, approval and listing lifecycle.
+- [x] Verify approved publication and anonymous photo access through REST/HTTP; edits and suspension revoke visibility.
 
 ## Following phases (strict order)
 
@@ -59,4 +59,4 @@
 
 Break each phase into small tasks during inspect/plan. Do not substitute legacy feature overlap for architecture acceptance tests.
 
-Inventory task gates: hosted verification and approved migration 005/feature activation remain pending. Photos/amenities are still required before Phase 3 acceptance.
+Inventory task gate passed: hosted run 37895621406 succeeded for 8ea45f8; migration 005 applied and inventory enabled with explicit user approval. Metadata migration 006/activation and hosted verification remain pending before Phase 3 acceptance.

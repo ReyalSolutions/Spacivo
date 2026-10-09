@@ -24,9 +24,11 @@
         </form>
         <?php else: ?><p><?= $escape($property['address']) ?></p><p><?= $escape($property['description']) ?></p><?php endif; ?>
         <?php if ($property['id']): ?>
+        <?php if (isset($property['metadata'])): $metadata = $property['metadata']; $metadata_unit = 0; $metadata_editable = $editable; $metadata_admin = false; require __DIR__ . '/metadata.php'; endif; ?>
         <h3 class="h5 mt-4">Rental units</h3>
         <?php $units = $property['units']; if ($editable && $categories) { $units[] = ['id' => 0, 'version' => 0, 'name' => '', 'capacity' => 1, 'category_id' => $property['category_id'], 'state' => 'active']; } ?>
         <?php foreach ($units as $unit): ?>
+            <?php if (isset($unit['metadata'])): $metadata = $unit['metadata']; $metadata_unit = (int)$unit['id']; $metadata_editable = $editable && $unit['state'] === 'active'; require __DIR__ . '/metadata.php'; endif; ?>
             <?php if ($editable && $unit['state'] === 'active'): ?>
             <form class="inventory-form border rounded p-3 mb-3" data-path="owner/properties/<?= (int)$property['id'] ?>/units<?= $unit['id'] ? '/' . (int)$unit['id'] : '' ?>" data-method="<?= $unit['id'] ? 'PATCH' : 'POST' ?>">
                 <input type="hidden" name="version" value="<?= (int)$unit['version'] ?>">

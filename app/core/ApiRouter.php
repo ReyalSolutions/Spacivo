@@ -8,6 +8,7 @@ final class ApiRouter
     public function dispatch(string $path): void
     {
         header('Content-Type: application/json; charset=utf-8');
+        if ($this->metadata($path)) { return; }
         if ($this->inventory($path)) { return; }
         if ($path === 'api/v1/categories') { $action = 'public'; $id = null; }
         elseif ($path === 'api/v1/admin/categories') {
@@ -52,7 +53,32 @@ final class ApiRouter
             new \App\Modules\Properties\Repositories\PropertyRepository($db),
             new \App\Modules\Organizations\Repositories\OrganizationRepository($db)
         );
-        (new \App\Modules\Properties\Controllers\Api\PropertyController($service))->handle($action, $expected, $property, $unit);
+        $metadata = null;
+        if (getenv('INVENTORY_METADATA_ENABLED') === 'true') {
+            $metadata = new \App\Modules\Properties\Services\PropertyMetadataService(new \App\Modules\Properties\Repositories\PropertyRepository($db), new \App\Modules\Properties\Repositories\PropertyMetadataRepository($db), new \App\Modules\Organizations\Repositories\OrganizationRepository($db));
+        }
+        (new \App\Modules\Properties\Controllers\Api\PropertyController($service, $metadata))->handle($action, $expected, $property, $unit);
+        return true;
+    }
+
+    private function metadata(string $path): bool
+    {
+        if (!preg_match('/^api\/v1\/(owner\/|admin\/)?properties\/([1-9][0-9]{0,8})(?:\/units\/([1-9][0-9]{0,8}))?\/(photos|amenities)(?:\/([1-9][0-9]{0,8}))?$/D', $path, $matches)) { return false; }
+        $audience = empty($matches[1]) ? 'public' : rtrim($matches[1], '/');
+        $photo = (int)($matches[5] ?? 0);
+        $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+        if ($matches[4] === 'amenities' && $photo === 0 && $audience === 'owner') { $action = 'amenities'; $expected = 'PUT'; }
+        elseif ($matches[4] === 'photos' && $photo > 0) {
+            $action = $method === 'DELETE' && $audience === 'owner' ? 'delete' : 'read'; $expected = $action === 'delete' ? 'DELETE' : 'GET';
+        } elseif ($matches[4] === 'photos' && $photo === 0 && $audience === 'owner') { $action = 'upload'; $expected = 'POST'; }
+        else { return false; }
+        $db = \Database::get();
+        $service = new \App\Modules\Properties\Services\PropertyMetadataService(
+            new \App\Modules\Properties\Repositories\PropertyRepository($db), new \App\Modules\Properties\Repositories\PropertyMetadataRepository($db),
+            new \App\Modules\Organizations\Repositories\OrganizationRepository($db)
+        );
+        $storage = new \App\Integrations\Storage\InventoryImageStorage(getenv('INVENTORY_UPLOAD_DIR') ?: dirname(__DIR__, 2) . '/storage/private/inventory');
+        (new \App\Modules\Properties\Controllers\Api\PropertyMetadataController($service, $storage))->handle($action, $expected, (int)$matches[2], (int)($matches[3] ?? 0), $photo, $audience);
         return true;
     }
 }

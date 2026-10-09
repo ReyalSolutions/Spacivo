@@ -9,6 +9,8 @@
         <p><?= htmlspecialchars($property['address'], ENT_QUOTES, 'UTF-8') ?></p>
         <p><?= htmlspecialchars($property['description'], ENT_QUOTES, 'UTF-8') ?></p>
         <p>Status: <?= htmlspecialchars($property['state'], ENT_QUOTES, 'UTF-8') ?> · Review: <?= htmlspecialchars($property['approval_status'], ENT_QUOTES, 'UTF-8') ?></p>
+        <?php if (isset($property['metadata'])): $metadata = $property['metadata']; $metadata_unit = 0; $metadata_editable = false; $metadata_admin = true; require __DIR__ . '/metadata.php'; endif; ?>
+        <?php foreach ($property['units'] as $unit): if (isset($unit['metadata'])): $metadata = $unit['metadata']; $metadata_unit = (int)$unit['id']; $metadata_editable = false; require __DIR__ . '/metadata.php'; endif; endforeach; ?>
         <ul><?php foreach ($property['units'] as $unit): ?><li><?= htmlspecialchars($unit['name'], ENT_QUOTES, 'UTF-8') ?> · <?= (int)$unit['capacity'] ?> guests · <?= htmlspecialchars($unit['state'], ENT_QUOTES, 'UTF-8') ?></li><?php endforeach; ?></ul>
         <?php if ($property['state'] === 'draft'): ?>
         <form class="inventory-form" data-path="admin/properties/<?= (int)$property['id'] ?>/review" data-method="POST">

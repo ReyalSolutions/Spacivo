@@ -31,3 +31,5 @@ Organization roles/grants are separate from platform roles. Platform administrat
 Local password recovery defaults to a private outbox adapter. The user selected PHPMailer on 2026-10-09; Composer installed 7.1.1 on the existing PHP 7.4 runtime. SMTP delivery uses TLS and configured sender/authentication, with debug disabled and sanitized errors. Production refuses local delivery and incomplete configuration. Actual inbox delivery awaits private SMTP configuration and verification. Reset tokens revoke existing sessions through versioned credentials; role changes refresh from the database on protected requests.
 
 The empty user-supplied GitHub repository is public. Publish reviewed source only; exclude .env, SQL dumps, uploaded user media, diagnostics, dependencies/cache and the separate nested application.
+
+Inventory photos are private raster files, reencoded with GD and served through permission/visibility checks. No draft or suspended photo is served directly from public uploads. Metadata edits invalidate listing approval. Existing legacy inventory stays intact; organization ownership is never inferred or fabricated from old records.

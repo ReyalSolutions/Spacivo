@@ -35,3 +35,5 @@ Configured the user-selected Gmail SMTP in ignored .env. Verified TLS/authentica
 Phase 3 category task: normalized tables, validated configurable capabilities, administrator UI, versioned public/admin API and optimistic writes. 180 PHP files, 29 foundation/mail and 114 database/HTTP assertions pass. Migration 004 remains pending in the existing database; no real category records were added.
 
 Category migration 004 applied/enabled with explicit approval; hosted run 37894183813 passed. Property/unit task implemented/tested: scoped CRUD, REST/UI, staff grants, reviewer records and publication/moderation lifecycle. 189 PHP files linted, 29 foundation/mail and 154 database/HTTP assertions pass. Migration 005 remains pending; photos/amenities and final Phase 3 acceptance remain open.
+
+Inventory migration 005 applied/enabled with explicit approval; hosted run 37895621406 passed. Photos/amenities implemented/tested with private storage, raster reencoding, scoped access, composite foreign keys and publication/suspension image controls. 196 PHP files linted, 29 foundation/mail and 183 database/HTTP assertions pass. Migration 006 and metadata activation remain pending.
