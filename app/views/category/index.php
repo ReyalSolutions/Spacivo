@@ -1,12 +1,11 @@
 <?php require __DIR__ . '/../layouts/management_header.php'; ?>
-<main class="container py-5">
-    <h1>Space categories</h1>
-    <p>Choose the rental modes and services supported by each kind of space.</p>
+<main class="module-page">
+    <div class="module-header"><div><h1>Space categories</h1><p>Choose the rental modes and services supported by each kind of space.</p></div><div class="module-actions"><a class="btn btn-outline-primary" href="/tenant/?url=organization/index">Organizations</a></div></div>
     <div id="category-message" class="alert d-none" role="status"></div>
-    <?php $categories[] = ['id' => 0, 'version' => 0, 'name' => '', 'slug' => '', 'active' => false, 'capabilities' => []]; ?>
+    <?php $categories = array_merge([['id' => 0, 'version' => 0, 'name' => '', 'slug' => '', 'active' => false, 'capabilities' => []]], $categories); ?>
     <?php foreach ($categories as $category): ?>
-    <section class="card card-body mb-4">
-        <h2 class="h4"><?= $category['id'] ? htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8') : 'Add a category' ?></h2>
+    <section class="module-card">
+        <details <?= $category['id'] ? '' : 'open' ?>><summary><div><h2 class="h4"><?= $category['id'] ? htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8') : 'Add a category' ?></h2><?php if ($category['id']): ?><span class="module-status"><?= $category['active'] ? 'Available for listings' : 'Inactive' ?></span><?php endif; ?></div></summary><div class="module-card-body">
         <form class="category-form" data-id="<?= (int)$category['id'] ?>">
             <input type="hidden" name="version" value="<?= (int)$category['version'] ?>">
             <label class="form-label">Category name<input class="form-control" name="name" maxlength="100" required value="<?= htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8') ?>"></label>
@@ -16,9 +15,10 @@
                 <label class="d-block"><input type="checkbox" name="capabilities" value="<?= $code ?>" <?= !empty($category['capabilities'][$code]) ? 'checked' : '' ?>> <?= $label ?></label>
             <?php endforeach; ?>
             </fieldset>
-            <label class="d-block mb-3"><input type="checkbox" name="active" <?= $category['active'] ? 'checked' : '' ?>> Available for listings</label>
+            <label class="module-wide d-block mb-3"><input type="checkbox" name="active" <?= $category['active'] ? 'checked' : '' ?>> Available for listings</label>
             <button class="btn btn-primary" type="submit">Save category</button>
         </form>
+        </div></details>
     </section>
     <?php endforeach; ?>
 </main>

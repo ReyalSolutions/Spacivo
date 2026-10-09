@@ -1,11 +1,11 @@
 <?php require __DIR__ . '/../layouts/management_header.php'; ?>
-<main class="container py-5">
-    <h1>Listing review</h1>
+<main class="module-page">
+    <div class="module-header"><div><h1>Listing review</h1><p>Review property details, rental units and photos before approving a listing.</p></div><div class="module-actions"><a class="btn btn-outline-primary" href="/tenant/?url=organization/index">Organizations</a></div></div>
     <div id="inventory-message" class="alert d-none" role="status"></div>
-    <?php if (!$properties): ?><p>No listings are awaiting review.</p><?php endif; ?>
+    <?php if (!$properties): ?><div class="module-empty">No listings are awaiting review.</div><?php endif; ?>
     <?php foreach ($properties as $property): ?>
-    <section class="card card-body mb-3">
-        <h2 class="h5"><?= htmlspecialchars($property['name'], ENT_QUOTES, 'UTF-8') ?></h2>
+    <section class="module-card">
+        <details><summary><div><h2 class="h5"><?= htmlspecialchars($property['name'], ENT_QUOTES, 'UTF-8') ?></h2><span class="module-status"><?= htmlspecialchars(ucfirst($property['approval_status']), ENT_QUOTES, 'UTF-8') ?></span></div></summary><div class="module-card-body">
         <p><?= htmlspecialchars($property['address'], ENT_QUOTES, 'UTF-8') ?></p>
         <p><?= htmlspecialchars($property['description'], ENT_QUOTES, 'UTF-8') ?></p>
         <p>Status: <?= htmlspecialchars($property['state'], ENT_QUOTES, 'UTF-8') ?> · Review: <?= htmlspecialchars($property['approval_status'], ENT_QUOTES, 'UTF-8') ?></p>
@@ -26,6 +26,7 @@
             <input type="hidden" name="state" value="<?= $property['state'] === 'suspended' ? 'draft' : 'suspended' ?>">
             <button class="btn btn-outline-danger" type="submit"><?= $property['state'] === 'suspended' ? 'Return to draft for review' : 'Suspend listing' ?></button>
         </form>
+        </div></details>
     </section>
     <?php endforeach; ?>
 </main>

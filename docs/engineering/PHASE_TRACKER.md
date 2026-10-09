@@ -76,3 +76,6 @@ Upgrade-page hosted gate passed: [run 37911984985](https://github.com/ReyalSolut
 
 
 Upgrade prompt/focused-page hosted gate passed: [run 37912562022](https://github.com/ReyalSolutions/Spacivo/actions/runs/37912562022), source 90bf515. All PHP, integration/database and JavaScript checks succeeded, including 356 database assertions, prompt cancellation/context and absence of dashboard navigation. User-requested flow loop complete.
+
+
+2026-10-09 - Organization/category/property workspace design organized: added one scoped shared module stylesheet with consistent headings/actions, neutral bordered cards, responsive grouped form fields, capability grids, clear empty states and compact status badges. Existing category/property records are expandable; new forms remain open. Organization staff access is expandable and admin property/index review uses the same layout. Form controls, permissions, ownership guards and request scripts remain unchanged. Local checks: 356 database/HTTP assertions, 29 foundation assertions, 203 PHP files linted, and form/control/script comparison passed. Browser visual verification remains unavailable; hosted gate pending.

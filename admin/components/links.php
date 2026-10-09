@@ -37,3 +37,5 @@
 <script src="/tenant/public/assets/js/management-loading.js"></script>
 
 <script src="/tenant/public/assets/js/upgrade-prompt.js"></script>
+
+<link rel="stylesheet" href="/tenant/public/assets/css/management-modules.css">

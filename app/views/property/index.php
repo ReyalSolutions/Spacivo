@@ -1,14 +1,13 @@
 <?php require __DIR__ . '/../layouts/management_header.php'; $escape = static function ($value): string { return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8'); }; ?>
-<main class="container py-5">
-    <h1>Properties and rental units</h1>
-    <p>New listings begin as drafts. An administrator must approve each listing before a verified organization can publish it.</p>
-    <p><a href="/tenant/?url=organization/index">Back to organizations</a></p>
+<main class="module-page">
+    <div class="module-header"><div><h1>Properties and rental units</h1><p>Manage listings, rental units, photos and amenities for this organization.</p></div><div class="module-actions"><a class="btn btn-outline-primary" href="/tenant/?url=organization/index">Organizations</a></div></div>
+    <div class="module-note">Listings start as drafts. Once approved, a verified organization can publish them.</div>
     <div id="inventory-message" class="alert d-none" role="status"></div>
-    <?php if (!$categories): ?><p>No categories are available yet. Ask your administrator to configure a category.</p><?php endif; ?>
+    <?php if (!$categories): ?><div class="module-empty">No categories are available yet. Ask your administrator to configure a category.</div><?php endif; ?>
     <?php if ($can_manage && $categories): $properties[] = ['id' => 0, 'version' => 0, 'category_id' => 0, 'name' => '', 'description' => '', 'address' => '', 'timezone' => 'Asia/Singapore', 'latitude' => '', 'longitude' => '', 'state' => 'draft', 'approval_status' => 'pending', 'units' => []]; endif; ?>
     <?php foreach ($properties as $property): $editable = $can_manage && !in_array($property['state'], ['archived', 'suspended'], true); ?>
-    <section class="card card-body mb-4">
-        <h2 class="h4"><?= $property['id'] ? $escape($property['name']) : 'Add a property' ?></h2>
+    <section class="module-card">
+        <details <?= $property['id'] ? '' : 'open' ?>><summary><div><h2 class="h4"><?= $property['id'] ? $escape($property['name']) : 'Add a property' ?></h2><?php if ($property['id']): ?><span class="module-status"><?= $escape(ucfirst($property['state'])) ?></span><span class="module-status"><?= count($property['units']) ?> rental units</span><?php endif; ?></div></summary><div class="module-card-body">
         <?php if ($property['id']): ?><p>Status: <?= $escape($property['state']) ?> · Review: <?= $escape($property['approval_status']) ?></p><?php endif; ?>
         <?php if ($editable): ?>
         <form class="inventory-form" data-path="owner/properties<?= $property['id'] ? '/' . (int)$property['id'] : '' ?>" data-method="<?= $property['id'] ? 'PATCH' : 'POST' ?>">
@@ -47,6 +46,7 @@
             <button class="btn btn-outline-primary" type="submit">Update status</button>
         </form>
         <?php endif; endif; ?>
+        </div></details>
     </section>
     <?php endforeach; ?>
 </main>
