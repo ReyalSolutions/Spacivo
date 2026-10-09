@@ -13,7 +13,7 @@
 - [x] Verify admin/owner/tenant login and real portal/shared layout boot on a disposable database.
 - [x] Run lint, foundation tests, database/HTTP tests and Composer validation locally.
 - [x] Publish user-approved source; hosted run 37892096783 passed for c73f304.
-- [ ] Verify final expanded-check source commit in hosted CI.
+- [x] Verify expanded-check commit e043b77 in hosted run 37892501297 (success).
 
 ## Phase 2
 
@@ -28,7 +28,9 @@
 - [x] Implement hashed/single-use/expiring reset tokens, request limits and session-version invalidation.
 - [x] Test full registration/login/logout/recovery HTTP flows and selected legacy room/ledger/statement/checkout boundaries.
 - [x] Apply organization/recovery migrations and enable features with explicit approval.
-- [ ] Connect the chosen real email provider and verify actual delivery.
+- [x] Install user-selected PHPMailer and implement/test secure SMTP delivery configuration.
+- [ ] Configure private SMTP settings and verify actual inbox delivery.
+- [ ] Verify PHPMailer source commit in hosted CI.
 - [ ] Review hosted CI and final phase acceptance before proceeding.
 
 ## Following phases (strict order)

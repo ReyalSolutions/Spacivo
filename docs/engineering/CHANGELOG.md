@@ -23,3 +23,7 @@ Final local verification: 142 PHP files linted; 21 foundation and 90 database/HT
 ## 2026-10-09: Approved publication and hosted verification
 
 Published reviewed source after explicit user approval, excluding local secrets, SQL dumps, uploaded media and diagnostic phpinfo. GitHub Actions run 37892096783 passed for c73f304 with PHP 7.4 and MariaDB 10.4. Expanded lint to include the root entry point and legacy admin application: 168 files pass. Include the private storage Apache denial in source control. Real password-recovery email delivery awaits provider configuration; Phase 2 acceptance and subsequent phases remain open.
+
+## 2026-10-09: PHPMailer recovery delivery
+
+User selected PHPMailer. Installed Composer-locked PHPMailer 7.1.1; added SMTP delivery with TLS, environment configuration, sender validation, recipient isolation, disabled debug and sanitized failures. Recovery supports configured SMTP outside local/testing; local outbox remains the development default. MIME and configuration tests pass: 171 PHP files linted, 29 foundation/mail and 90 database/HTTP assertions. Expanded foundation run 37892501297 passed for e043b77. Private SMTP settings and actual inbox delivery remain external gates.

@@ -223,17 +223,16 @@ final class AuthController extends BaseController
 
     private function recoveryService(): App\Modules\Identity\Services\PasswordResetService
     {
-        $outbox = getenv('PASSWORD_RESET_OUTBOX') ?: __DIR__ . '/../../storage/private/password-reset-outbox';
         return new App\Modules\Identity\Services\PasswordResetService(
             new App\Modules\Identity\Repositories\PasswordResetRepository($this->db()),
-            new App\Integrations\Email\LocalPasswordResetDelivery($outbox),
+            App\Integrations\Email\PasswordResetDeliveryFactory::create(),
             getenv('APP_URL') ?: 'http://localhost/tenant'
         );
     }
 
     public function forgot_password(): void
     {
-        if (getenv('PASSWORD_RECOVERY_ENABLED') !== 'true' || getenv('APP_ENV') !== 'local' && getenv('APP_ENV') !== 'testing') {
+        if (getenv('PASSWORD_RECOVERY_ENABLED') !== 'true' || !App\Integrations\Email\PasswordResetDeliveryFactory::configured()) {
             http_response_code(503);
             echo 'Account recovery is temporarily unavailable.';
             return;
@@ -248,7 +247,11 @@ final class AuthController extends BaseController
                 http_response_code(422);
                 $error = 'Please enter a valid email address.';
             } else {
-                $this->recoveryService()->request($_POST['email']);
+                try {
+                    $this->recoveryService()->request($_POST['email']);
+                } catch (Throwable $failure) {
+                    error_log('Password recovery delivery or persistence failed.');
+                }
                 $message = 'If an eligible account exists, recovery instructions have been queued.';
             }
         } elseif ($_SERVER['REQUEST_METHOD'] !== 'GET') {
@@ -261,7 +264,7 @@ final class AuthController extends BaseController
 
     public function reset_password(): void
     {
-        if (getenv('PASSWORD_RECOVERY_ENABLED') !== 'true' || getenv('APP_ENV') !== 'local' && getenv('APP_ENV') !== 'testing') {
+        if (getenv('PASSWORD_RECOVERY_ENABLED') !== 'true' || !App\Integrations\Email\PasswordResetDeliveryFactory::configured()) {
             http_response_code(503);
             echo 'Account recovery is temporarily unavailable.';
             return;

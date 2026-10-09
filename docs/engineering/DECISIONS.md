@@ -28,6 +28,6 @@ Capture and verify the actual schema structure, excluding identity counters and 
 
 Organization roles/grants are separate from platform roles. Platform administrators can explicitly verify an organization but do not automatically become members. Membership grants are owner-controlled. New organization services do not yet port legacy boarding-house records into organization inventory; that belongs to Phase 3.
 
-Local password recovery uses a private outbox adapter, not simulated claims of email delivery. Production recovery is disabled until a real provider adapter is configured. Reset tokens revoke existing sessions through versioned credentials; role changes refresh from the database on protected requests.
+Local password recovery defaults to a private outbox adapter. The user selected PHPMailer on 2026-10-09; Composer installed 7.1.1 on the existing PHP 7.4 runtime. SMTP delivery uses TLS and configured sender/authentication, with debug disabled and sanitized errors. Production refuses local delivery and incomplete configuration. Actual inbox delivery awaits private SMTP configuration and verification. Reset tokens revoke existing sessions through versioned credentials; role changes refresh from the database on protected requests.
 
 The empty user-supplied GitHub repository is public. Publish reviewed source only; exclude .env, SQL dumps, uploaded user media, diagnostics, dependencies/cache and the separate nested application.

@@ -4,8 +4,8 @@ Updated: 2026-10-09, Asia/Singapore. PHP 7.4.33 is the user-approved target.
 
 | Phase | Status | Remaining gate |
 | --- | --- | --- |
-| 1 Foundation | Verified locally and in hosted CI | Final expanded-check commit verification |
-| 2 Identity and permissions | Implemented/tested locally and in hosted CI | Real email provider and delivery verification |
+| 1 Foundation | Complete | Hosted run 37892501297 passed for e043b77 |
+| 2 Identity and permissions | Implemented/tested; PHPMailer added | SMTP settings, inbox delivery and PHPMailer commit hosted verification |
 | 3 Categories and inventory | Pending Phase 2 | Configurable categories, capabilities and organization-owned properties/units |
 | 4 Marketplace | Pending Phase 3 | Cross-category discovery and Mapbox |
 | 5 Booking engine | Pending Phase 4 | Holds/pricing/idempotency/concurrency/timezones |

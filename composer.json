@@ -3,7 +3,8 @@
   "description": "Spacivo modular rental platform with a legacy StayHub compatibility layer",
   "type": "project",
   "license": "proprietary",
-  "require": {"php": ">=7.4", "ext-mysqli": "*", "ext-json": "*"},
+  "require": {"php": ">=7.4", "ext-mysqli": "*", "ext-json": "*",
+    "phpmailer/phpmailer": "^7.1"},
   "autoload": {"psr-4": {"App\\Core\\": "app/core/", "App\\": "app/"}},
   "scripts": {
     "test": "@php tests/run.php",

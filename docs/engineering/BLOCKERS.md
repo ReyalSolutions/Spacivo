@@ -2,9 +2,9 @@
 
 Resolved: PHP version decision, Composer installation, baseline reconciliation/testing, portal boot verification, and approval to apply the first three migrations. Existing PHP 7.4.33 is explicitly authorized.
 
-Resolved: the user explicitly approved publication to https://github.com/ReyalSolutions/Spacivo.git. Source is published on main; GitHub Actions run 37892096783 passed for c73f304. Final expanded-check commit verification follows.
+Resolved: the user explicitly approved publication to https://github.com/ReyalSolutions/Spacivo.git. Source is published on main; GitHub Actions runs 37892096783 and 37892501297 passed for c73f304 and e043b77 respectively. PHPMailer commit verification follows.
 
-Awaiting the email provider choice for real password recovery delivery. The local/testing adapter queues private messages only. Do not claim those messages were sent as email; recovery is intentionally unavailable outside local/testing until a production adapter exists.
+User selected PHPMailer. The SMTP adapter is implemented and locally tested; private SMTP host, sender and authentication settings plus inbox delivery verification remain outstanding. Local/testing defaults to the private outbox. Production permits only configured SMTP; configuration and MIME tests do not prove actual delivery.
 
 Future Mapbox, payment sandbox, Firebase, hosting and mobile production configuration are not available yet. Those remain later-phase external dependencies, not invented integrations.
 

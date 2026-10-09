@@ -45,6 +45,7 @@ $check(App\Modules\Identity\Services\RegistrationPolicy::passwordFromInput($secr
 $check(!App\Modules\Identity\Services\RegistrationPolicy::validNewPassword(str_repeat('a', 73)), 'Passwords exceeding bcrypt byte limit rejected');
 
 require __DIR__ . '/Fixtures/controllers/ProbeController.php';
+require __DIR__ . '/mail.php';
 foreach ([
     ['probe/index', 200, 'probe-ok'],
     ['probe/bookings/history', 200, 'history-ok'],
