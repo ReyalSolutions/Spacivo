@@ -33,6 +33,7 @@ return [
     'create_plan' => ['add_plans'],
     'update_plan' => ['edit_plans'],
     'delete_plan' => ['delete_plans'],
+    'upgrade' => ['view_subscriptions', 'manage_subscriptions'],
     'subscriptions' => ['view_subscriptions', 'manage_subscriptions'],
     'get_subscriptions_json' => ['view_subscriptions', 'manage_subscriptions'],
     'upgrade_subscription_yearly' => ['manage_subscriptions'],

@@ -454,8 +454,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 <?php unset($_SESSION['error']); endif; ?>
 
-<?php 
-include __DIR__ . '/../components/upgrade_modal.php';
+<?php
 include __DIR__ . '/../components/payment_modal.php';
 ?>
 
@@ -465,7 +464,7 @@ const CURRENT_BHOUSE_COUNT = <?= (int)($totalHousesCount ?? count($houses)) ?>;
 
 function openAddModal() {
     if (BHOUSE_LIMIT > 0 && CURRENT_BHOUSE_COUNT >= BHOUSE_LIMIT) {
-        new bootstrap.Modal(document.getElementById('upgradePlanModal')).show();
+        window.location.href = '/tenant/?url=admin/upgrade';
         return;
     }
     document.getElementById('modalTitle').innerText = 'Register New Property';

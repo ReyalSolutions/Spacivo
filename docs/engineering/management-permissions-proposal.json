@@ -518,5 +518,10 @@
     "route": "owner/update_tenant",
     "proposed_permission": "edit_tenants",
     "status": "enforced"
+  },
+  {
+    "route": "admin/upgrade",
+    "proposed_permission": "view_subscriptions",
+    "status": "enforced"
   }
 ]

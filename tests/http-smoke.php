@@ -230,6 +230,14 @@ try {
             $server->query('UPDATE users SET role_id = 1 WHERE id = ' . $adminId);
         }
         if ($role === 'owner') {
+            $upgradePage = $request('?url=admin/upgrade&cycle=yearly');
+            $check($upgradePage[0] === 200 && strpos($upgradePage[1], '<section id="upgradePlans"') !== false && strpos($upgradePage[1], 'id="upgradePlanModal"') === false, 'Upgrade plans render as a page without a plan modal');
+            $check(strpos($upgradePage[1], 'setUpgradeBilling("yearly")') !== false && strpos($upgradePage[1], 'id="paymentGatewayModal"') !== false, 'Upgrade page retains billing cycle and payment selection');
+            $server->query("INSERT INTO subscriptions (owner_id, plan_id, status, start_date) VALUES (" . $fixtureOtherOwner . ', ' . $fixturePlan . ", 'active', CURRENT_DATE)");
+            $otherSubscription = (int)$server->insert_id;
+            $foreignUpgrade = $request('?url=admin/upgrade&subscription_id=' . $otherSubscription);
+            $check($foreignUpgrade[0] === 403, 'Upgrade page rejects another owner subscription');
+            $server->query('DELETE FROM subscriptions WHERE id = ' . $otherSubscription);
             foreach (['?url=admin/houses', '?url=owner/houses', 'admin/houses.php'] as $listingRoute) {
                 $listingPage = $request($listingRoute);
                 $check($listingPage[0] === 200 && strpos($listingPage[1], 'id="houses-table"') !== false, 'Both listing entry routes render canonical admin page: ' . $listingRoute);

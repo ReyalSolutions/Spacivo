@@ -200,7 +200,7 @@ $(document).ready(function() {
                 } else {
                     if (data.message === 'LIMIT_REACHED') {
                         $('#roomModal').modal('hide');
-                        $('#upgradePlanModal').modal('show');
+                        window.location.href = '/tenant/?url=admin/upgrade';
                     } else {
                         Feedback.fire('Error', data.message || 'Operation failed', 'error');
                     }
@@ -460,7 +460,6 @@ function deleteRoom() {
 <?php 
 // Include Upgrade & Payment Modals if limit reached
 if (isset($limits)) {
-    include __DIR__ . '/../components/upgrade_modal.php';
     include __DIR__ . '/../components/payment_modal.php';
 }
 

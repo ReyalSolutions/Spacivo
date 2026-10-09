@@ -599,13 +599,7 @@ function cancelSubscription(subId) {
 
 function openUpgradePlanModal(subId, planId, billingCycle) {
     $('#subDetailModal').modal('hide');
-    $('#upgradePlanActiveSubId').val(subId);
-
-    if (typeof setUpgradeBilling === 'function') {
-        setUpgradeBilling(billingCycle);
-    }
-
-    new bootstrap.Modal(document.getElementById('upgradePlanModal')).show();
+    window.location.href = '/tenant/?url=admin/upgrade&subscription_id=' + encodeURIComponent(subId) + '&cycle=' + encodeURIComponent(billingCycle);
 }
 
 // ── Shared status badge helper ──
@@ -1163,7 +1157,6 @@ function renderStatusBadge(status) {
 
 <?php
 if (isset($_SESSION['role']) && ($_SESSION['role'] === 'owner' || $_SESSION['role'] === 'admin')) {
-    include __DIR__ . '/../components/upgrade_modal.php';
     include __DIR__ . '/../components/payment_modal.php';
 }
 ?>

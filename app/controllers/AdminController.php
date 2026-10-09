@@ -1508,6 +1508,30 @@ final class AdminController extends BaseController
         exit;
     }
 
+    public function upgrade(): void
+    {
+        $this->requireActionPermission('upgrade');
+        $ownerId = (int)$_SESSION['user_id'];
+        $subscription = (new Subscription($this->db()))->getOwnerSubscriptionStatus($ownerId);
+        $subId = (int)($_GET['subscription_id'] ?? ($subscription['id'] ?? 0));
+        if ($subId > 0) {
+            $statement = $this->db()->prepare('SELECT id, owner_id FROM subscriptions WHERE id = ?');
+            $statement->bind_param('i', $subId);
+            $statement->execute();
+            $row = $statement->get_result()->fetch_assoc();
+            if (!$row || (strtolower($_SESSION['role']) !== 'admin' && (int)$row['owner_id'] !== $ownerId)) {
+                $this->json(['success' => false, 'message' => 'Subscription unavailable.'], 403);
+            }
+        }
+        $this->render('admin/upgrade', [
+            'activeSubId' => $subId,
+            'allPlans' => (new Plan($this->db()))->getAll(),
+            'paymentSettings' => (new SystemSetting($this->db()))->getAll(),
+            'roleLabel' => ucfirst($_SESSION['role']),
+            'billingCycle' => ($_GET['cycle'] ?? 'monthly') === 'yearly' ? 'yearly' : 'monthly'
+        ]);
+    }
+
     public function subscriptions(): void
     {
         $this->requireActionPermission('subscriptions');
