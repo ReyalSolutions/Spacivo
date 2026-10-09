@@ -1,6 +1,6 @@
 <?php
 $title = "Administrative Audit Manifest";
-require_once 'app/views/layouts/admin_header.php';
+require_once 'app/views/layouts/management_header.php';
 ?>
 
 <div class="container-fluid py-4">
@@ -487,4 +487,4 @@ $(document).ready(function() {
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
 </style>
 
-<?php require_once 'app/views/layouts/footer.php'; ?>
+<?php require_once 'app/views/layouts/management_footer.php'; ?>

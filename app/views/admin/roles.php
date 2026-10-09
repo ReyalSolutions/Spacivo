@@ -1,6 +1,6 @@
 <?php 
 $hideAdminHeaderTitle = true;
-require __DIR__ . '/../layouts/admin_header.php'; 
+require __DIR__ . '/../layouts/management_header.php';
 ?>
 
 <div class="animate-fade-up">
@@ -597,4 +597,4 @@ function toggleCategory(category, roleId, state) {
     });
 }
 </script>
-<?php require __DIR__ . '/../layouts/admin_footer.php'; ?>
+<?php require __DIR__ . '/../layouts/management_footer.php'; ?>

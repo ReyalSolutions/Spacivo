@@ -1,4 +1,4 @@
-<?php require __DIR__ . '/../layouts/admin_header.php'; ?>
+<?php require __DIR__ . '/../layouts/management_header.php'; ?>
 
 <style>
 /* Elite Room Management Design System */
@@ -464,5 +464,5 @@ if (isset($limits)) {
     include __DIR__ . '/../components/payment_modal.php';
 }
 
-require __DIR__ . '/../layouts/admin_footer.php'; 
+require __DIR__ . '/../layouts/management_footer.php'; 
 ?>

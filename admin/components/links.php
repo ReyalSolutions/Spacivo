@@ -1,13 +1,13 @@
   <link rel="shortcut icon" type="image/png" href="<?php echo '/tenant/' . htmlspecialchars($siteFavicon ?? 'public/assets/images/favicon.png'); ?>" />
-  <!-- Google Fonts — Plus Jakarta Sans (matching reyal_solutions) -->
+  <!-- Google Fonts â€” Plus Jakarta Sans (matching reyal_solutions) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/styles.min.css" />
-  <link rel="stylesheet" href="assets/css/custom_modern.css" />
-  <link rel="stylesheet" href="assets/css/datatables_pagination_modern.css" />
+  <link rel="stylesheet" href="/tenant/admin/assets/css/styles.min.css" />
+  <link rel="stylesheet" href="/tenant/admin/assets/css/custom_modern.css" />
+  <link rel="stylesheet" href="/tenant/admin/assets/css/datatables_pagination_modern.css" />
   <!-- Tabler Icons -->
-  <link rel="stylesheet" href="assets/css/icons/tabler-icons/tabler-icons.css" />
+  <link rel="stylesheet" href="/tenant/admin/assets/css/icons/tabler-icons/tabler-icons.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.47.0/tabler-icons.min.css">
   <!-- FontAwesome -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -27,3 +27,7 @@
   <!-- Global Toast Notification System CSS -->
   <link rel="stylesheet" href="/tenant/public/assets/css/toast.css" />
 
+
+<script src="/tenant/admin/assets/libs/jquery/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<link rel="stylesheet" href="/tenant/public/assets/css/management.css">

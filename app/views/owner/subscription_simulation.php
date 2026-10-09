@@ -1,4 +1,4 @@
-<?php require __DIR__ . '/../layouts/admin_header.php'; ?>
+<?php require __DIR__ . '/../layouts/management_header.php'; ?>
 
 <div class="container-fluid py-5">
     <div class="row justify-content-center">
@@ -49,7 +49,7 @@
     </div>
 </div>
 
-<?php require __DIR__ . '/../layouts/admin_footer.php'; ?>
+<?php require __DIR__ . '/../layouts/management_footer.php'; ?>
 
 <style>
 .fw-900 { font-weight: 900; }

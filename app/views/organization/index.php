@@ -1,4 +1,4 @@
-<?php require __DIR__ . '/../layouts/header.php'; ?>
+<?php require __DIR__ . '/../layouts/management_header.php'; ?>
 <main class="container py-5">
     <h1>Organizations</h1>
     <p>Manage your business accounts and staff access.</p>
@@ -81,4 +81,4 @@ document.querySelectorAll('.organization-form').forEach(form => {
     });
 });
 </script>
-<?php require __DIR__ . '/../layouts/footer.php'; ?>
+<?php require __DIR__ . '/../layouts/management_footer.php'; ?>

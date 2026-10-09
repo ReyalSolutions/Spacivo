@@ -1,6 +1,6 @@
 <?php 
 $hideAdminHeaderTitle = true;
-require __DIR__ . '/../layouts/admin_header.php'; 
+require __DIR__ . '/../layouts/management_header.php';
 ?>
 
 <style>
@@ -354,7 +354,7 @@ $(document).ready(function () {
         table.ajax.reload();
     });
 
-    // Move Out — SweetAlert2 + AJAX (no page reload)
+    // Move Out â€” SweetAlert2 + AJAX (no page reload)
     $(document).on('click', '.btn-move-out', function() {
         const btn      = $(this);
         const id       = btn.data('id');
@@ -406,4 +406,4 @@ $(document).ready(function () {
 });
 </script>
 
-<?php require __DIR__ . '/../layouts/admin_footer.php'; ?>
+<?php require __DIR__ . '/../layouts/management_footer.php'; ?>

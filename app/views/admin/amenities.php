@@ -1,6 +1,6 @@
 <?php 
 $hideAdminHeaderTitle = true;
-require __DIR__ . '/../layouts/admin_header.php'; 
+require __DIR__ . '/../layouts/management_header.php';
 ?>
 <style>
 /* Premium Stat Card Styling */
@@ -449,4 +449,4 @@ function previewIcon() {
 }
 </script>
 
-<?php require __DIR__ . '/../layouts/admin_footer.php'; ?>
+<?php require __DIR__ . '/../layouts/management_footer.php'; ?>

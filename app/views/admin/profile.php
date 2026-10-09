@@ -1,4 +1,4 @@
-<?php require __DIR__ . '/../layouts/admin_header.php'; ?>
+<?php require __DIR__ . '/../layouts/management_header.php'; ?>
 
 <!-- Zero-Embedded PHP Architecture: Data Orchestrated via AJAX -->
 <div class="container-fluid px-4 py-4 animate-fade-up">
@@ -428,4 +428,4 @@ $(document).ready(function() {
 });
 </script>
 
-<?php require __DIR__ . '/../layouts/admin_footer.php'; ?>
+<?php require __DIR__ . '/../layouts/management_footer.php'; ?>

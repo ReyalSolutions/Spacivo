@@ -39,3 +39,8 @@ Category migration 004 applied/enabled with explicit approval; hosted run 378941
 Inventory migration 005 applied/enabled with explicit approval; hosted run 37895621406 passed. Photos/amenities implemented/tested with private storage, raster reencoding, scoped access, composite foreign keys and publication/suspension image controls. 196 PHP files linted, 29 foundation/mail and 183 database/HTTP assertions pass. Migration 006 and metadata activation remain pending.
 
 Metadata hosted run 37896990758 passed. Applied migration 006 and enabled photos/amenities with explicit approval. Added public listing page and navigation; HTTP tests verify approved listings appear and suspended listings disappear. 197 PHP files, 29 foundation/mail and 185 database/HTTP assertions pass. Mapbox token is unavailable for the next phase.
+
+
+## 2026-10-09 — Shared management interface
+
+Consolidated owner/admin layouts using the existing light design; migrated management views and new organization/category/inventory screens; fixed asset/account URLs and role-specific menus; removed app/views/layouts/admin_header.php, app/views/layouts/admin_footer.php and public/assets/css/admin.css after eliminating their references.

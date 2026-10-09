@@ -10,7 +10,7 @@ Date: 2026-10-09, Asia/Singapore. Runtime: user-approved PHP 7.4.33; local Compo
 - Database tests created uniquely named disposable *_test databases and removed only the databases they created. No fixture users were added to the existing application database.
 - Composer install/autoload/lockfile and strict manifest validation pass.
 - All health checks pass: approved PHP version, mysqli/JSON, writable logs, environment configuration and read-only database connectivity.
-- Migrations 001–006 report applied locally following explicit user approval.
+- Migrations 001â€“006 report applied locally following explicit user approval.
 - Apache login/recovery HTTP 200; unauthenticated organization API 401; GET logout 405; diagnostics/private source 403; unauthenticated admin page 302.
 
 ## Remaining verification
@@ -24,3 +24,8 @@ Category task: versioned public/admin API, page rendering, CSRF, create/PATCH/de
 Inventory task: property/unit service and REST/UI assertions pass for scoped CRUD, read/manage grants, invalid coordinates/timezones, stale writes, verification/approval publication gates, reviewer identity/time, category/owner/organization suspension, platform listing suspension/restoration and archival. Inventory hosted run 37895621406 passed; migration 005 is applied and inventory is enabled following explicit approval.
 
 Metadata task: real multipart raster reencoding strips embedded executable content; SVG rejection, CSRF, private previews, public published photos, suspension revocation, failed-upload file cleanup, scoped amenity replacement/rollback, photo removal and composite media foreign keys pass. 196 PHP files, 29 foundation/mail and 183 database/HTTP assertions pass. Migration 006 applied and metadata enabled with explicit approval; hosted run 37896990758 passed for 35bf315. Public marketplace publication/suspension HTTP assertions pass; final visibility commit hosted verification follows.
+
+
+## 2026-10-09 — Shared management interface
+
+Shared management UI: 190 database/HTTP assertions passed, including both portals using the light assets, owner subscriptions using the shared sidebar, administrator-only menus absent for owners, and direct owner access to physical admin pages denied. Foundation/mail assertions: 29 passed. Browser visual check could not run: CUA automation helper failed during initialization. No live database rows or credentials changed by this task.

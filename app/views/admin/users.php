@@ -1,6 +1,6 @@
 <?php 
 $hideAdminHeaderTitle = true;
-require __DIR__ . '/../layouts/admin_header.php'; 
+require __DIR__ . '/../layouts/management_header.php'; 
 ?>
 
 <div class="animate-fade-up">
@@ -484,5 +484,5 @@ $(document).ready(function() {
 require_once __DIR__ . '/modals/add_user.php'; 
 require_once __DIR__ . '/modals/edit_user.php';
 require_once __DIR__ . '/modals/view_user.php';
-require_once __DIR__ . '/../layouts/admin_footer.php'; 
+require_once __DIR__ . '/../layouts/management_footer.php'; 
 ?>

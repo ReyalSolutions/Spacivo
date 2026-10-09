@@ -59,4 +59,9 @@
 
 Break each phase into small tasks during inspect/plan. Do not substitute legacy feature overlap for architecture acceptance tests.
 
-Inventory task gate passed: hosted run 37895621406 succeeded for 8ea45f8; migration 005 applied and inventory enabled with explicit user approval. Metadata migration 006/activation and hosted verification remain pending before Phase 3 acceptance.
+Inventory task gate passed: hosted run 37895621406 succeeded for 8ea45f8; migration 005 applied and inventory enabled with explicit user approval. Metadata migration 006/activation and hosted verification passed; shared UI gate and final acceptance remain.
+
+
+## 2026-10-09 — Shared management interface
+
+[x] User-priority shared admin/owner light UI implementation, obsolete layout cleanup and permission regression verification. Browser visual acceptance remains to be confirmed because the automation helper failed. Metadata migration 006 and activation are complete; hosted metadata run 37896990758 and public listing run 37897515890 passed. Shared UI hosted gate follows publication.

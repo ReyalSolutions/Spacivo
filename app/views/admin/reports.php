@@ -1,5 +1,5 @@
 <?php 
-require __DIR__ . '/../layouts/admin_header.php'; 
+require __DIR__ . '/../layouts/management_header.php';
 ?>
 
 <!-- Chart.js -->
@@ -42,7 +42,7 @@ require __DIR__ . '/../layouts/admin_header.php';
                     </div>
                     <div>
                         <h6 class="text-secondary small fw-semibold mb-1">Total Revenue</h6>
-                        <h3 class="fw-bold mb-0 text-dark" id="statRevenue">₱ 0.00</h3>
+                        <h3 class="fw-bold mb-0 text-dark" id="statRevenue">â‚± 0.00</h3>
                     </div>
                 </div>
             </div>
@@ -222,7 +222,7 @@ function loadReportsData() {
 }
 
 function updateKPIs(data) {
-    $('#statRevenue').text(`₱ ${data.revenue}`);
+    $('#statRevenue').text(`â‚± ${data.revenue}`);
     $('#statBookings').text(data.bookings);
     $('#statTenants').text(data.tenants);
     $('#statOwners').text(data.owners);
@@ -337,7 +337,7 @@ function renderTopProperties(data) {
             <tr>
                 <td><div class="d-flex align-items-center gap-3">${rankBadge} <div class="fw-bold text-dark text-truncate" style="max-width: 250px;">${p.name}</div></div></td>
                 <td class="text-center"><span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3">${p.booking_count}</span></td>
-                <td class="text-end fw-semibold">₱ ${revenue}</td>
+                <td class="text-end fw-semibold">â‚± ${revenue}</td>
                 <td>
                     <div class="progress rounded-pill shadow-sm border" style="height: 8px;">
                         <div class="progress-bar bg-success" style="width: ${progressWidth}%"></div>
@@ -366,7 +366,7 @@ function renderTopProperties(data) {
                         </div>
                         <div class="d-flex justify-content-between align-items-center pt-1">
                             <span class="fw-800 opacity-50 text-uppercase" style="font-size: 0.65rem; letter-spacing: 0.05em;">Est. Revenue</span>
-                            <div class="fw-900 text-dark fs-5 text-truncate" style="letter-spacing: -0.02em;">₱ ${revenue}</div>
+                            <div class="fw-900 text-dark fs-5 text-truncate" style="letter-spacing: -0.02em;">â‚± ${revenue}</div>
                         </div>
                     </div>
 
@@ -387,4 +387,4 @@ function renderTopProperties(data) {
 }
 </script>
 
-<?php require __DIR__ . '/../layouts/admin_footer.php'; ?>
+<?php require __DIR__ . '/../layouts/management_footer.php'; ?>

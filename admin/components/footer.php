@@ -5,7 +5,7 @@
                 <p class="mb-0 text-muted">&copy; <?= date('Y') ?> <strong><?= htmlspecialchars($siteName ?? 'StayHub') ?></strong>. All rights reserved.</p>
             </div>
             <div class="d-flex gap-3 text-muted">
-                <span>Version 2.0 (Monolith)</span>
+                <span>Management Console</span>
                 <span>&bull;</span>
                 <a href="/tenant/" target="_blank" class="text-muted text-decoration-none">Main Site</a>
             </div>

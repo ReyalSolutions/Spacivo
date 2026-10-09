@@ -33,3 +33,8 @@ Local password recovery defaults to a private outbox adapter. The user selected 
 The empty user-supplied GitHub repository is public. Publish reviewed source only; exclude .env, SQL dumps, uploaded user media, diagnostics, dependencies/cache and the separate nested application.
 
 Inventory photos are private raster files, reencoded with GD and served through permission/visibility checks. No draft or suspended photo is served directly from public uploads. Metadata edits invalidate listing approval. Existing legacy inventory stays intact; organization ownership is never inferred or fabricated from old records.
+
+
+## 2026-10-09 — Shared management interface
+
+Admin and owner share one presentation shell (admin/components with MVC management_header/footer adapters). Role and permission checks control navigation; existing server authorization and ownership boundaries remain authoritative. Keep active legacy business pages during phased replacement; remove superseded presentation code only after reference checks.

@@ -4,7 +4,7 @@
  * Purely AJAX-driven interface for monitoring owner subscription payments.
  */
 $hideAdminHeaderTitle = true;
-require __DIR__ . '/../layouts/admin_header.php'; 
+require __DIR__ . '/../layouts/management_header.php';
 ?>
 <style>
 /* Premium Stat Card Styling */
@@ -167,7 +167,7 @@ require __DIR__ . '/../layouts/admin_header.php';
                 </div>
                 <div class="flex-grow-1">
                     <div class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.7rem; letter-spacing: 0.08em; opacity: 0.8;">Total Collected</div>
-                    <h4 id="statTotalCollected" class="fw-bold m-0 text-success" style="font-size: 1.5rem; letter-spacing: -0.02em;">₱0.00</h4>
+                    <h4 id="statTotalCollected" class="fw-bold m-0 text-success" style="font-size: 1.5rem; letter-spacing: -0.02em;">â‚±0.00</h4>
                 </div>
             </div>
         </div>
@@ -178,7 +178,7 @@ require __DIR__ . '/../layouts/admin_header.php';
                 </div>
                 <div class="flex-grow-1">
                     <div class="text-muted fw-bold text-uppercase mb-0" style="font-size: 0.7rem; letter-spacing: 0.08em; opacity: 0.8;">Pending Volume</div>
-                    <h4 id="statPendingVolume" class="fw-bold m-0 text-warning" style="font-size: 1.5rem; letter-spacing: -0.02em;">₱0.00</h4>
+                    <h4 id="statPendingVolume" class="fw-bold m-0 text-warning" style="font-size: 1.5rem; letter-spacing: -0.02em;">â‚±0.00</h4>
                 </div>
             </div>
         </div>
@@ -315,7 +315,7 @@ $(document).ready(function() {
                 data: 'amount',
                 className: 'text-center',
                 render: function(amt) {
-                    return `<div class="fw-bold text-dark fs-5">₱${parseFloat(amt).toLocaleString(undefined, {minimumFractionDigits: 2})}</div>`;
+                    return `<div class="fw-bold text-dark fs-5">â‚±${parseFloat(amt).toLocaleString(undefined, {minimumFractionDigits: 2})}</div>`;
                 }
             },
             {
@@ -449,7 +449,7 @@ $(document).ready(function() {
                                     </div>
                                     <div class="col-6 text-end">
                                         <div class="text-xs text-muted text-uppercase fw-800 mb-1 opacity-50">Amount</div>
-                                        <div class="fw-900 text-dark fs-5">₱${parseFloat(row.amount).toLocaleString(undefined, {minimumFractionDigits: 2})}</div>
+                                        <div class="fw-900 text-dark fs-5">â‚±${parseFloat(row.amount).toLocaleString(undefined, {minimumFractionDigits: 2})}</div>
                                     </div>
                                 </div>
 
@@ -503,8 +503,8 @@ $(document).ready(function() {
             }
         });
 
-        $('#statTotalCollected').text('₱' + totalPaid.toLocaleString(undefined, {minimumFractionDigits: 2}));
-        $('#statPendingVolume').text('₱' + totalPending.toLocaleString(undefined, {minimumFractionDigits: 2}));
+        $('#statTotalCollected').text('â‚±' + totalPaid.toLocaleString(undefined, {minimumFractionDigits: 2}));
+        $('#statPendingVolume').text('â‚±' + totalPending.toLocaleString(undefined, {minimumFractionDigits: 2}));
         $('#statPaidCount').text(paidCount);
         $('#statSuccessRate').text(totalCount > 0 ? Math.round((paidCount / totalCount) * 100) + '%' : '0%');
     }
@@ -576,4 +576,4 @@ $(document).ready(function() {
 });
 </script>
 
-<?php require __DIR__ . '/../layouts/admin_footer.php'; ?>
+<?php require __DIR__ . '/../layouts/management_footer.php'; ?>

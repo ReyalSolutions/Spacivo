@@ -1,4 +1,4 @@
-<?php require __DIR__ . '/../layouts/header.php'; $escape = static function ($value): string { return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8'); }; ?>
+<?php require __DIR__ . '/../layouts/management_header.php'; $escape = static function ($value): string { return htmlspecialchars((string)$value, ENT_QUOTES, 'UTF-8'); }; ?>
 <main class="container py-5">
     <h1>Properties and rental units</h1>
     <p>New listings begin as drafts. An administrator must approve each listing before a verified organization can publish it.</p>
@@ -50,4 +50,4 @@
     </section>
     <?php endforeach; ?>
 </main>
-<?php require __DIR__ . '/script.php'; require __DIR__ . '/../layouts/footer.php'; ?>
+<?php require __DIR__ . '/script.php'; require __DIR__ . '/../layouts/management_footer.php'; ?>

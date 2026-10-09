@@ -1,4 +1,4 @@
-<?php require __DIR__ . '/../layouts/admin_header.php'; ?>
+<?php require __DIR__ . '/../layouts/management_header.php'; ?>
 
 <div class="container-fluid px-4 py-4">
     <!-- Header & Filter Section -->
@@ -414,5 +414,5 @@ function resetFilters() {
 }
 </style>
 
-<?php require __DIR__ . '/../layouts/admin_footer.php'; ?>
+<?php require __DIR__ . '/../layouts/management_footer.php'; ?>
 

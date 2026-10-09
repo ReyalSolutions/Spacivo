@@ -58,20 +58,22 @@
                             <span class="badge bg-light-primary text-primary mt-1" style="font-size:0.7rem;"><?= $userRole ?></span>
                         </div>
                         <div class="message-body">
-                            <a href="profile.php" class="d-flex align-items-center gap-2 dropdown-item py-2 px-3">
+                            <a href="<?= $currentRole === 'admin' ? '/tenant/admin/profile.php' : '/tenant/?url=admin/profile' ?>" class="d-flex align-items-center gap-2 dropdown-item py-2 px-3">
                                 <i class="ti ti-user fs-5 text-primary"></i>
                                 <span class="fs-3">My Profile</span>
                             </a>
-                            <a href="settings.php" class="d-flex align-items-center gap-2 dropdown-item py-2 px-3">
+                            <?php if ($currentRole === 'admin'): ?>
+                            <a href="/tenant/admin/settings.php" class="d-flex align-items-center gap-2 dropdown-item py-2 px-3">
                                 <i class="ti ti-settings fs-5 text-secondary"></i>
                                 <span class="fs-3">System Settings</span>
                             </a>
-                            <a href="logs.php" class="d-flex align-items-center gap-2 dropdown-item py-2 px-3">
+                            <a href="/tenant/admin/logs.php" class="d-flex align-items-center gap-2 dropdown-item py-2 px-3">
                                 <i class="ti ti-activity fs-5 text-info"></i>
                                 <span class="fs-3">Activity Logs</span>
                             </a>
+                            <?php endif; ?>
                             <div class="dropdown-divider my-1"></div>
-                            <?php if (getenv('CATEGORIES_ENABLED') === 'true'): ?>
+                            <?php if ($currentRole === 'admin' && getenv('CATEGORIES_ENABLED') === 'true'): ?>
                             <a href="/tenant/?url=category/index" class="d-flex align-items-center gap-2 dropdown-item py-2 px-3">Space categories</a>
                             <?php endif; ?>
                             <?php if (getenv('ORGANIZATIONS_ENABLED') === 'true'): ?>
@@ -98,7 +100,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body py-3 text-muted">
-                Are you sure you want to log out of the StayHub administration console? You will need to log in again to access system controls.
+                Are you sure you want to log out of the management console? You will need to log in again to access system controls.
             </div>
             <div class="modal-footer border-0 pt-0">
                 <button type="button" class="btn btn-light" data-bs-dismiss="modal" style="border-radius:8px;">Cancel</button>

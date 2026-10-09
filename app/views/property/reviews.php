@@ -1,4 +1,4 @@
-<?php require __DIR__ . '/../layouts/header.php'; ?>
+<?php require __DIR__ . '/../layouts/management_header.php'; ?>
 <main class="container py-5">
     <h1>Listing review</h1>
     <div id="inventory-message" class="alert d-none" role="status"></div>
@@ -29,4 +29,4 @@
     </section>
     <?php endforeach; ?>
 </main>
-<?php require __DIR__ . '/script.php'; require __DIR__ . '/../layouts/footer.php'; ?>
+<?php require __DIR__ . '/script.php'; require __DIR__ . '/../layouts/management_footer.php'; ?>

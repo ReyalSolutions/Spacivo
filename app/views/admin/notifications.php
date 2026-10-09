@@ -1,4 +1,4 @@
-<?php require __DIR__ . '/../layouts/admin_header.php'; ?>
+<?php require __DIR__ . '/../layouts/management_header.php'; ?>
 <div class="animate-fade-up text-center py-5">
     <div class="premium-stat-card d-inline-block p-5 shadow-lg border-0 rounded-4" style="background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); max-width: 600px;">
         <i class="fa-solid fa-screwdriver-wrench display-1 text-primary opacity-25 mb-4 d-block"></i>
@@ -9,4 +9,4 @@
         </a>
     </div>
 </div>
-<?php require __DIR__ . '/../layouts/admin_footer.php'; ?>
+<?php require __DIR__ . '/../layouts/management_footer.php'; ?>

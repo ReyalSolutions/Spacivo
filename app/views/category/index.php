@@ -1,4 +1,4 @@
-<?php require __DIR__ . '/../layouts/header.php'; ?>
+<?php require __DIR__ . '/../layouts/management_header.php'; ?>
 <main class="container py-5">
     <h1>Space categories</h1>
     <p>Choose the rental modes and services supported by each kind of space.</p>
@@ -46,4 +46,4 @@ document.querySelectorAll('.category-form').forEach(form => form.addEventListene
     }
 }));
 </script>
-<?php require __DIR__ . '/../layouts/footer.php'; ?>
+<?php require __DIR__ . '/../layouts/management_footer.php'; ?>

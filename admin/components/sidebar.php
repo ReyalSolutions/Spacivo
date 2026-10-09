@@ -1,17 +1,50 @@
 <?php
-$currentPage = basename($_SERVER['PHP_SELF'] ?? '');
+$currentRole = strtolower($_SESSION['role'] ?? '');
+$portalCan = $portalCan ?? static function (string $permission): bool { return function_exists('hasPermission') && hasPermission($permission); };
+$portalAdmin = $currentRole === 'admin';
+$portalOwner = $currentRole === 'owner';
+$portalGroups = [];
+$portalAdd = static function ($group, $label, $icon, $href, $allowed) use (&$portalGroups): void {
+    if ($allowed) $portalGroups[$group][] = [$label, $icon, $href];
+};
+$portalAdd('Overview', 'Dashboard', 'layout-dashboard', $portalAdmin ? '/tenant/admin/index.php' : '/tenant/?url=admin/index', $portalAdmin || $portalCan('view_dashboard'));
+$portalAdd('Overview', 'Notifications', 'bell', $portalAdmin ? '/tenant/admin/notifications.php' : '/tenant/?url=admin/notifications', $portalAdmin || $portalCan('view_notifications'));
+$portalAdd('Identity & Access', 'User Accounts', 'users', '/tenant/admin/users.php', $portalAdmin && $portalCan('list_users'));
+$portalAdd('Identity & Access', 'Roles & Permissions', 'shield-lock', '/tenant/admin/roles.php', $portalAdmin && $portalCan('manage_roles'));
+$portalAdd('Property Management', 'Boarding Houses', 'home', $portalAdmin ? '/tenant/admin/houses.php' : '/tenant/?url=owner/houses', ($portalAdmin && $portalCan('view_houses')) || $portalOwner);
+$portalAdd('Property Management', 'Rooms', 'door', '/tenant/?url=owner/rooms', $portalOwner);
+$portalAdd('Property Management', 'Amenities Catalog', 'sparkles', $portalAdmin ? '/tenant/admin/amenities.php' : '/tenant/?url=admin/amenities', ($portalAdmin && $portalCan('manage_amenities')) || $portalOwner);
+$portalAdd('Property Management', 'Reviews & Ratings', 'star', '/tenant/admin/reviews.php', $portalAdmin && $portalCan('manage_reviews'));
+$portalAdd('Property Management', 'Property Map', 'map-pin', '/tenant/admin/map.php', $portalAdmin && $portalCan('view_houses'));
+$portalAdd('Property Management', 'Organizations', 'building-community', '/tenant/?url=organization/index', getenv('ORGANIZATIONS_ENABLED') === 'true');
+$portalAdd('Property Management', 'Space Categories', 'category', '/tenant/?url=category/index', $portalAdmin && getenv('CATEGORIES_ENABLED') === 'true');
+$portalAdd('Property Management', 'Inventory Review', 'building', '/tenant/?url=property/index', $portalAdmin && getenv('INVENTORY_ENABLED') === 'true');
+$portalAdd('Operations', 'Bookings', 'calendar', $portalAdmin ? '/tenant/admin/bookings.php' : '/tenant/?url=owner/bookings', ($portalAdmin && $portalCan('manage_bookings')) || $portalOwner);
+$portalAdd('Operations', 'Booking History', 'history', '/tenant/?url=owner/bookings_history', $portalOwner);
+$portalAdd('Operations', 'Tenants', 'users', '/tenant/?url=owner/tenants', $portalOwner);
+$portalAdd('Financial & Billing', 'Subscription Plans', 'crown', '/tenant/admin/plans.php', $portalAdmin && $portalCan('manage_plans'));
+$portalAdd('Financial & Billing', 'Subscriptions', 'file-invoice', $portalAdmin ? '/tenant/admin/subscriptions.php' : '/tenant/?url=admin/subscriptions', ($portalAdmin && $portalCan('manage_subscriptions')) || $portalOwner);
+$portalAdd('Financial & Billing', 'Payments', 'credit-card', $portalAdmin ? '/tenant/admin/payments.php' : '/tenant/?url=owner/payments', ($portalAdmin && $portalCan('audit_finances')) || $portalOwner);
+$portalAdd('Financial & Billing', 'Plan Payments', 'receipt', '/tenant/admin/plan_payments.php', $portalAdmin && $portalCan('manage_subscriptions'));
+$portalAdd('Financial & Billing', 'Payment Settings', 'settings', '/tenant/admin/payment_settings.php', $portalAdmin && $portalCan('system_settings'));
+$portalAdd('Reports & System', 'Reports', 'chart-line', '/tenant/admin/reports.php', $portalAdmin && $portalCan('generate_reports'));
+$portalAdd('Reports & System', 'Activity Logs', 'activity', '/tenant/admin/logs.php', $portalAdmin && $portalCan('view_logs'));
+$portalAdd('Reports & System', 'Settings', 'settings', '/tenant/admin/settings.php', $portalAdmin && $portalCan('system_settings'));
+$portalAdd('Reports & System', 'My Profile', 'user', $portalAdmin ? '/tenant/admin/profile.php' : '/tenant/?url=admin/profile', $portalAdmin || $portalOwner || $portalCan('manage_profile'));
+$portalCurrentPath = parse_url($_SERVER['REQUEST_URI'] ?? '', PHP_URL_PATH);
+$portalCurrentRoute = trim($_GET['url'] ?? '', '/');
 ?>
 <aside class="left-sidebar">
     <!-- Sidebar scroll-->
     <div>
         <div class="brand-logo d-flex align-items-center justify-content-between px-4 py-3">
-            <a href="index.php" class="text-nowrap logo-img d-flex align-items-center gap-2 text-decoration-none">
+            <a href="<?= $currentRole === 'admin' ? '/tenant/admin/index.php' : '/tenant/?url=admin/index' ?>" class="text-nowrap logo-img d-flex align-items-center gap-2 text-decoration-none">
                 <div class="bg-primary text-white rounded-3 d-flex align-items-center justify-content-center" style="width:38px;height:38px;">
                     <i class="ti ti-building-community fs-6"></i>
                 </div>
                 <div class="d-flex flex-column">
                     <span class="fw-bold fs-5 text-dark lh-1" style="letter-spacing: -0.5px;"><?= htmlspecialchars($siteName ?? 'StayHub') ?></span>
-                    <small class="text-muted" style="font-size: 0.68rem; font-weight: 600; letter-spacing: 0.5px;">ADMIN PANEL</small>
+                    <small class="text-muted" style="font-size: 0.68rem; font-weight: 600; letter-spacing: 0.5px;"><?= htmlspecialchars(strtoupper($currentRole), ENT_QUOTES, 'UTF-8') ?> PANEL</small>
                 </div>
             </a>
             <div class="close-btn d-xl-none d-block sidebartoggler cursor-pointer" id="sidebarCollapse">
@@ -19,182 +52,17 @@ $currentPage = basename($_SERVER['PHP_SELF'] ?? '');
             </div>
         </div>
 
-        <!-- Sidebar navigation-->
-        <nav class="sidebar-nav scroll-sidebar" data-simplebar="">
-            <ul id="sidebarnav">
-                <!-- CORE OVERVIEW -->
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">OVERVIEW</span>
-                </li>
-
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?= ($currentPage === 'index.php') ? 'active' : '' ?>" href="index.php">
-                        <span><i class="ti ti-layout-dashboard"></i></span>
-                        <span class="hide-menu">Dashboard</span>
-                    </a>
-                </li>
-
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?= ($currentPage === 'notifications.php') ? 'active' : '' ?>" href="notifications.php">
-                        <span><i class="ti ti-bell"></i></span>
-                        <span class="hide-menu">Notifications</span>
-                    </a>
-                </li>
-
-                <!-- IDENTITY & ACCESS -->
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">IDENTITY & ACCESS</span>
-                </li>
-
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?= ($currentPage === 'users.php') ? 'active' : '' ?>" href="users.php">
-                        <span><i class="ti ti-users"></i></span>
-                        <span class="hide-menu">User Accounts</span>
-                    </a>
-                </li>
-
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?= ($currentPage === 'roles.php') ? 'active' : '' ?>" href="roles.php">
-                        <span><i class="ti ti-shield-lock"></i></span>
-                        <span class="hide-menu">Roles & Permissions</span>
-                    </a>
-                </li>
-
-                <!-- PROPERTIES -->
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">PROPERTY MANAGEMENT</span>
-                </li>
-
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?= ($currentPage === 'houses.php') ? 'active' : '' ?>" href="houses.php">
-                        <span><i class="ti ti-home-2"></i></span>
-                        <span class="hide-menu">Boarding Houses</span>
-                    </a>
-                </li>
-
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?= ($currentPage === 'amenities.php') ? 'active' : '' ?>" href="amenities.php">
-                        <span><i class="ti ti-sparkles"></i></span>
-                        <span class="hide-menu">Amenities Catalog</span>
-                    </a>
-                </li>
-
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?= ($currentPage === 'reviews.php') ? 'active' : '' ?>" href="reviews.php">
-                        <span><i class="ti ti-star"></i></span>
-                        <span class="hide-menu">Reviews & Ratings</span>
-                    </a>
-                </li>
-
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?= ($currentPage === 'map.php') ? 'active' : '' ?>" href="map.php">
-                        <span><i class="ti ti-map-pin"></i></span>
-                        <span class="hide-menu">Property Map</span>
-                    </a>
-                </li>
-
-                <!-- OPERATIONS -->
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">OPERATIONS</span>
-                </li>
-
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?= ($currentPage === 'bookings.php') ? 'active' : '' ?>" href="bookings.php">
-                        <span><i class="ti ti-calendar-event"></i></span>
-                        <span class="hide-menu">Bookings</span>
-                    </a>
-                </li>
-
-                <!-- FINANCIAL -->
-                <?php
-                $billingPages = ['plans.php', 'subscriptions.php', 'payments.php', 'plan_payments.php', 'payment_settings.php'];
-                $isBillingActive = in_array($currentPage, $billingPages);
-                ?>
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">FINANCIAL & BILLING</span>
-                </li>
-
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?= $isBillingActive ? 'active' : '' ?>" href="javascript:void(0)" onclick="toggleSubmenu(this, 'billingSubmenu')">
-                        <span><i class="ti ti-credit-card"></i></span>
-                        <span class="hide-menu d-flex align-items-center justify-content-between w-100">
-                            Billing Center
-                            <i class="ti ti-chevron-down ms-auto" style="font-size:13px; transition:transform 0.25s ease; <?= $isBillingActive ? 'transform:rotate(180deg);' : '' ?>"></i>
-                        </span>
-                    </a>
-                    <ul id="billingSubmenu" style="list-style:none; padding-left:16px; overflow:hidden; max-height:<?= $isBillingActive ? '500px' : '0' ?>; transition:max-height 0.3s ease;">
-                        <li class="sidebar-item">
-                            <a class="sidebar-link <?= ($currentPage === 'plans.php') ? 'active' : '' ?>" href="plans.php">
-                                <span><i class="ti ti-tags"></i></span>
-                                <span class="hide-menu">Subscription Plans</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link <?= ($currentPage === 'subscriptions.php') ? 'active' : '' ?>" href="subscriptions.php">
-                                <span><i class="ti ti-crown"></i></span>
-                                <span class="hide-menu">Owner Subscriptions</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link <?= ($currentPage === 'payments.php') ? 'active' : '' ?>" href="payments.php">
-                                <span><i class="ti ti-receipt-2"></i></span>
-                                <span class="hide-menu">Tenant Payments</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link <?= ($currentPage === 'plan_payments.php') ? 'active' : '' ?>" href="plan_payments.php">
-                                <span><i class="ti ti-file-invoice"></i></span>
-                                <span class="hide-menu">Plan Transactions</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-item">
-                            <a class="sidebar-link <?= ($currentPage === 'payment_settings.php') ? 'active' : '' ?>" href="payment_settings.php">
-                                <span><i class="ti ti-adjustments"></i></span>
-                                <span class="hide-menu">Payment Gateways</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
-                <!-- REPORTS & SYSTEM -->
-                <li class="nav-small-cap">
-                    <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-                    <span class="hide-menu">REPORTS & SYSTEM</span>
-                </li>
-
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?= ($currentPage === 'reports.php') ? 'active' : '' ?>" href="reports.php">
-                        <span><i class="ti ti-chart-bar"></i></span>
-                        <span class="hide-menu">Analytics & Reports</span>
-                    </a>
-                </li>
-
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?= ($currentPage === 'logs.php') ? 'active' : '' ?>" href="logs.php">
-                        <span><i class="ti ti-history"></i></span>
-                        <span class="hide-menu">Audit Logs</span>
-                    </a>
-                </li>
-
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?= ($currentPage === 'settings.php') ? 'active' : '' ?>" href="settings.php">
-                        <span><i class="ti ti-settings"></i></span>
-                        <span class="hide-menu">System Settings</span>
-                    </a>
-                </li>
-
-                <li class="sidebar-item">
-                    <a class="sidebar-link <?= ($currentPage === 'profile.php') ? 'active' : '' ?>" href="profile.php">
-                        <span><i class="ti ti-user-check"></i></span>
-                        <span class="hide-menu">Admin Profile</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+        <nav class="sidebar-nav scroll-sidebar" data-simplebar=""><ul id="sidebarnav">
+        <?php foreach ($portalGroups as $portalGroup => $portalItems): ?>
+        <li class="nav-small-cap"><span class="hide-menu"><?= htmlspecialchars(strtoupper($portalGroup), ENT_QUOTES, 'UTF-8') ?></span></li>
+        <?php foreach ($portalItems as $portalItem):
+            $portalTargetRoute = [];
+            parse_str(parse_url($portalItem[2], PHP_URL_QUERY) ?? '', $portalTargetRoute);
+            $portalActive = isset($portalTargetRoute['url']) ? $portalCurrentRoute === $portalTargetRoute['url'] : $portalCurrentPath === $portalItem[2];
+        ?>
+        <li class="sidebar-item"><a class="sidebar-link <?= $portalActive ? 'active' : '' ?>" href="<?= htmlspecialchars($portalItem[2], ENT_QUOTES, 'UTF-8') ?>" <?= $portalActive ? 'aria-current="page"' : '' ?>>
+        <span><i class="ti ti-<?= htmlspecialchars($portalItem[1], ENT_QUOTES, 'UTF-8') ?>"></i></span><span class="hide-menu"><?= htmlspecialchars($portalItem[0], ENT_QUOTES, 'UTF-8') ?></span></a></li>
+        <?php endforeach; endforeach; ?>
+        </ul></nav>
     </div>
 </aside>

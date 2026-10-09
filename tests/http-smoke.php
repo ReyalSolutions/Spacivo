@@ -150,6 +150,16 @@ try {
         $dashboard = $role === 'admin' ? 'admin/index.php' : ($role === 'owner' ? '?url=admin/index' : '?url=tenant/dashboard');
         $response = $request($dashboard);
         $check($response[0] === 200 && stripos($response[1], '<html') !== false && strpos($response[1], 'Something went wrong') === false, $role . ' portal boots');
+        if ($role === 'admin' || $role === 'owner') {
+            $check(strpos($response[1], 'class="left-sidebar"') !== false && strpos($response[1], '/tenant/admin/assets/css/custom_modern.css') !== false && strpos($response[1], 'class="admin-sidebar"') === false, $role . ' uses shared light management shell');
+        }
+        if ($role === 'owner') {
+            $response = $request('?url=admin/subscriptions');
+            $check($response[0] === 200 && strpos($response[1], 'class="left-sidebar"') !== false && strpos($response[1], '/tenant/public/assets/css/admin.css') === false, 'Owner subscriptions use new management design');
+            $check(strpos($response[1], 'href="/tenant/admin/users.php"') === false && strpos($response[1], 'href="/tenant/admin/roles.php"') === false && strpos($response[1], 'href="/tenant/?url=admin/subscriptions"') !== false, 'Owner navigation excludes administrator account and role controls');
+            $response = $request('admin/users.php');
+            $check($response[0] === 302, 'Shared interface does not grant owner administrator access');
+        }
         if ($role === 'admin') {
             $response = $request('?url=property/index');
             $check($response[0] === 200 && strpos($response[1], 'Listing review') !== false, 'Administrator listing review page renders');

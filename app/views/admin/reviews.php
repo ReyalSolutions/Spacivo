@@ -1,6 +1,6 @@
 <?php
 declare(strict_types=1);
-require_once __DIR__ . '/../layouts/admin_header.php';
+require_once __DIR__ . '/../layouts/management_header.php';
 ?>
 
 <style>
@@ -577,4 +577,4 @@ function deleteReview(id) {
 }
 </script>
 
-<?php require __DIR__ . '/../layouts/admin_footer.php'; ?>
+<?php require __DIR__ . '/../layouts/management_footer.php'; ?>
