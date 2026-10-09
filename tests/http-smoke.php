@@ -154,6 +154,16 @@ try {
             $check(strpos($response[1], 'class="left-sidebar"') !== false && strpos($response[1], '/tenant/admin/assets/css/custom_modern.css') !== false && strpos($response[1], 'class="admin-sidebar"') === false, $role . ' uses shared light management shell');
         }
         if ($role === 'owner') {
+            $server->query("UPDATE subscriptions SET status = 'expired', start_date = DATE_SUB(CURRENT_DATE, INTERVAL 6 MONTH) WHERE id = " . $fixtureSubscription);
+            foreach (['admin/index', 'owner/houses', 'owner/rooms', 'owner/bookings', 'owner/tenants', 'owner/payments'] as $ownerRoute) {
+                $renewedPage = $request('?url=' . $ownerRoute);
+                $check($renewedPage[0] === 200 && strpos($renewedPage[1], 'No Active Subscription Plan') === false && strpos($renewedPage[1], 'paywall-wrapper') === false, 'Paid expired subscription permits ' . $ownerRoute);
+            }
+            $server->query("UPDATE plan_payments SET paid_at = DATE_SUB(NOW(), INTERVAL 2 MONTH) WHERE subscription_id = " . $fixtureSubscription);
+            $overduePage = $request('?url=owner/houses');
+            $check($overduePage[0] === 200 && strpos($overduePage[1], 'paywall-wrapper') !== false && strpos($overduePage[1], 'No Active Subscription Plan') === false && strpos($overduePage[1], 'class="left-sidebar"') !== false, 'Unpaid overdue period shows renewal notice in shared shell');
+            $server->query("UPDATE subscriptions SET status = 'active', start_date = CURRENT_DATE WHERE id = " . $fixtureSubscription);
+            $server->query("UPDATE plan_payments SET paid_at = NOW() WHERE subscription_id = " . $fixtureSubscription);
             $response = $request('?url=admin/subscriptions');
             $check($response[0] === 200 && strpos($response[1], 'class="left-sidebar"') !== false && strpos($response[1], '/tenant/public/assets/css/admin.css') === false, 'Owner subscriptions use new management design');
             $check(strpos($response[1], 'href="/tenant/admin/users.php"') === false && strpos($response[1], 'href="/tenant/admin/roles.php"') === false && strpos($response[1], 'href="/tenant/?url=admin/subscriptions"') !== false, 'Owner navigation excludes administrator account and role controls');

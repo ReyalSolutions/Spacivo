@@ -139,64 +139,7 @@ abstract class BaseController
      */
     protected function getOwnerSubscriptionStatus(int $ownerId): ?array
     {
-        $stmt = $this->db()->prepare("
-            SELECT s.*, p.name AS plan_name, p.price_monthly, p.price_yearly
-            FROM subscriptions s
-            JOIN plans p ON p.id = s.plan_id
-            WHERE s.owner_id = ? AND s.status = 'active'
-            ORDER BY s.created_at DESC
-            LIMIT 1
-        ");
-        $stmt->bind_param('i', $ownerId);
-        $stmt->execute();
-        $row = $stmt->get_result()->fetch_assoc();
-        if (!$row) return null;
-
-        // Determine start date: use start_date if set, otherwise created_at
-        $startRaw = (!empty($row['start_date']) && $row['start_date'] !== '0000-00-00')
-            ? $row['start_date']
-            : substr((string)$row['created_at'], 0, 10);
-
-        $start = new DateTime($startRaw);
-        $today = new DateTime('today');
-
-        // advance expiry by each billing period until we exceed today
-        $expires = clone $start;
-        $interval = ($row['billing_cycle'] === 'yearly') ? new DateInterval('P1Y') : new DateInterval('P1M');
-        while ($expires <= $today) {
-            $expires->add($interval);
-        }
-        // $expires is now the next due date; go back one period to get current cycle end
-        $cycleEnd = clone $expires;
-        $cycleEnd->sub($interval);
-
-        // Check if there is a paid plan_payment for this cycle
-        $cycleEndStr  = $cycleEnd->format('Y-m-d 23:59:59');
-        $cycleStartStr = $start->format('Y-m-d 00:00:00');
-        // Recalculate the current cycle start
-        $currentCycleStart = clone $expires;
-        $currentCycleStart->sub($interval);
-        $currentCycleStartStr = $currentCycleStart->format('Y-m-d');
-
-        $paidStmt = $this->db()->prepare("
-            SELECT id FROM plan_payments
-            WHERE owner_id = ? AND subscription_id = ? AND status = 'paid'
-              AND paid_at >= ?
-            LIMIT 1
-        ");
-        $subId = (int)$row['id'];
-        $paidStmt->bind_param('iis', $ownerId, $subId, $currentCycleStartStr);
-        $paidStmt->execute();
-        $hasPaid = (bool)$paidStmt->get_result()->fetch_assoc();
-
-        $isExpired = ($today >= $cycleEnd) && !$hasPaid;
-
-        return array_merge($row, [
-            'expires_on'  => $cycleEnd->format('Y-m-d'),
-            'is_expired'  => $isExpired,
-            'has_paid'    => $hasPaid,
-            'cycle_start' => $currentCycleStartStr,
-        ]);
+        return (new Subscription($this->db()))->getOwnerSubscriptionStatus($ownerId);
     }
 
     /**

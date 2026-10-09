@@ -31,3 +31,8 @@ Metadata task: real multipart raster reencoding strips embedded executable conte
 Shared management UI: 190 database/HTTP assertions passed, including both portals using the light assets, owner subscriptions using the shared sidebar, administrator-only menus absent for owners, and direct owner access to physical admin pages denied. Foundation/mail assertions: 29 passed. Browser visual check could not run: CUA automation helper failed during initialization. No live database rows or credentials changed by this task.
 
 Hosted shared-UI source gate passed: run [37899186218](https://github.com/ReyalSolutions/Spacivo/actions/runs/37899186218), commit a85407b. Complete project lint: 197 files, zero failures; 29 foundation assertions and 190 database/HTTP assertions passed. Shared CSS/scripts return HTTP 200 on local Apache. Retained business-page content matches the original source apart from layout references. Visual browser verification remains outstanding because the automation helper could not initialize.
+
+
+## 2026-10-09 — Paid owner subscription access
+
+Subscription redirect repair: 215 disposable database/HTTP assertions and 29 foundation/mail assertions passed; 198 PHP files linted with zero failures. Includes paid-expired renewal opening dashboard/houses/rooms/bookings/tenants/payments; overdue renewal notice in shared light layout; calendar month-end/leap-year boundaries; cancelled/pending/foreign/wrong-plan/wrong-cycle payments blocked; same-plan authorization; listing expiry and limits agreement. A read-only live check confirms affected renewed entitlement active through 2026-11-09. Hosted gate follows publication.

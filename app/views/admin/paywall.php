@@ -24,42 +24,11 @@ if (empty($paymentSettings)) {
     $paymentSettings = $psModel->getAll();
 }
 ?>
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title><?= ($reason === 'no_subscription') ? 'Subscription Required' : 'Subscription Renewal Required' ?> — StayHub</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="/tenant/public/assets/css/toast.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="/tenant/public/assets/js/toast.js"></script>
-    <style>
+<?php require __DIR__ . '/../layouts/management_header.php'; ?>
+<style>
         *, *::before, *::after { box-sizing: border-box; }
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: #0b0f19;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0;
-            padding: 32px 16px;
-            position: relative;
-            color: #f1f5f9;
-        }
-        body::before {
-            content: '';
-            position: fixed; inset: 0;
-            background:
-                radial-gradient(ellipse 65% 55% at 20% 15%, rgba(99,102,241,0.18) 0%, transparent 65%),
-                radial-gradient(ellipse 55% 65% at 85% 85%, rgba(244,63,94,0.14) 0%, transparent 65%),
-                radial-gradient(ellipse 45% 45% at 50% 50%, rgba(16,185,129,0.08) 0%, transparent 60%);
-            pointer-events: none;
-        }
+
+
         .paywall-wrapper {
             position: relative;
             z-index: 2;
@@ -68,12 +37,12 @@ if (empty($paymentSettings)) {
             margin: 0 auto;
         }
         .paywall-card {
-            background: rgba(255,255,255,0.035);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
             border-radius: 32px;
             backdrop-filter: blur(28px);
             -webkit-backdrop-filter: blur(28px);
-            box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+            box-shadow: 0 32px 80px rgba(42,53,71,0.08);
             padding: 44px 36px;
             text-align: center;
         }
@@ -96,7 +65,7 @@ if (empty($paymentSettings)) {
             letter-spacing: -0.02em;
         }
         .paywall-sub {
-            color: rgba(241,245,249,0.7);
+            color: #64748b;
             font-size: 1rem;
             line-height: 1.6;
             max-width: 620px;
@@ -108,7 +77,7 @@ if (empty($paymentSettings)) {
             gap: 8px;
             background: rgba(99,102,241,0.15);
             border: 1px solid rgba(99,102,241,0.3);
-            color: #a5b4fc;
+            color: #5d87ff;
             border-radius: 30px;
             padding: 6px 16px;
             font-size: 0.8rem;
@@ -152,16 +121,16 @@ if (empty($paymentSettings)) {
             padding: 10px 24px;
             font-size: 0.88rem;
             font-weight: 600;
-            color: rgba(241,245,249,0.6);
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.1);
+            color: #64748b;
+            background: #f4f9fd;
+            border: 1px solid #e2e8f0;
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.25s ease;
             text-decoration: none;
         }
         .btn-logout:hover {
-            background: rgba(255,255,255,0.08);
+            background: #e2e8f0;
             border-color: rgba(241,245,249,0.3);
             color: #fff;
         }
@@ -171,8 +140,8 @@ if (empty($paymentSettings)) {
             display: inline-flex;
             align-items: center;
             gap: 12px;
-            background: rgba(255,255,255,0.04);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: #f4f9fd;
+            border: 1px solid #e2e8f0;
             border-radius: 100px;
             padding: 6px;
             margin-bottom: 32px;
@@ -180,7 +149,7 @@ if (empty($paymentSettings)) {
         .billing-toggle-btn {
             border: none;
             background: transparent;
-            color: rgba(241,245,249,0.6);
+            color: #64748b;
             font-size: 0.88rem;
             font-weight: 700;
             padding: 8px 22px;
@@ -213,8 +182,8 @@ if (empty($paymentSettings)) {
             text-align: left;
         }
         .plan-card {
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: #f4f9fd;
+            border: 1px solid #e2e8f0;
             border-radius: 24px;
             padding: 28px 24px;
             display: flex;
@@ -265,13 +234,13 @@ if (empty($paymentSettings)) {
         }
         .plan-price-period {
             font-size: 0.85rem;
-            color: rgba(241,245,249,0.5);
+            color: #64748b;
             font-weight: 600;
         }
         .plan-limits {
             font-size: 0.82rem;
             font-weight: 600;
-            color: #a5b4fc;
+            color: #5d87ff;
             background: rgba(99,102,241,0.1);
             border-radius: 8px;
             padding: 6px 10px;
@@ -319,11 +288,7 @@ if (empty($paymentSettings)) {
             transform: translateY(-2px);
         }
     </style>
-</head>
-<body>
-
-<div id="toast-stack"></div>
-
+<style>.paywall-title{-webkit-text-fill-color:#2a3547;background:none}.paywall-card{color:#2a3547}.paywall-card .plan-name,.paywall-card .plan-price{color:#2a3547}.paywall-card .plan-card{background:#fff;border-color:#e2e8f0}.paywall-card .plan-features{color:#475569}</style>
 <div class="paywall-wrapper">
     <div class="paywall-card">
         <div class="paywall-icon-ring">
@@ -415,7 +380,7 @@ if (empty($paymentSettings)) {
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
 
 <?php include __DIR__ . '/../components/payment_modal.php'; ?>
 
@@ -467,5 +432,4 @@ function processPlanSelection(planId, planName) {
 }
 </script>
 
-</body>
-</html>
+<?php require __DIR__ . '/../layouts/management_footer.php'; ?>

@@ -38,3 +38,8 @@ Inventory photos are private raster files, reencoded with GD and served through 
 ## 2026-10-09 — Shared management interface
 
 Admin and owner share one presentation shell (admin/components with MVC management_header/footer adapters). Role and permission checks control navigation; existing server authorization and ownership boundaries remain authoritative. Keep active legacy business pages during phased replacement; remove superseded presentation code only after reference checks.
+
+
+## 2026-10-09 — Paid owner subscription access
+
+Derive legacy owner access from the shared subscription model: active first-period assignments and settled, owner/subscription/plan/cycle-matched renewals cover one period. An expired stored flag can be reconciled by a current paid renewal, but pending/cancelled states, explicit end dates and overdue periods remain enforced. Duplicate receipts do not stack paid periods. Same-plan renewals must succeed when an authorized row exists even if plan fields are unchanged. Billing ledger and stored status are preserved during read checks.

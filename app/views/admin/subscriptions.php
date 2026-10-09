@@ -380,7 +380,7 @@ $(document).ready(function() {
         const color = colors[row.plan_name] || '#2563eb';
 
         let start = (row.start_date && row.start_date !== '0000-00-00') ? row.start_date : 'N/A';
-        let end   = (row.end_date   && row.end_date   !== '0000-00-00') ? row.end_date   : 'N/A';
+        let end = row.current_cycle_end || ((row.end_date && row.end_date !== '0000-00-00') ? row.end_date : 'N/A');
 
         // Dynamic Expiration Calculation if end_date is N/A
         if (end === 'N/A' && start !== 'N/A') {
