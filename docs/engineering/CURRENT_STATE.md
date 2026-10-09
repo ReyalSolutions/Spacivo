@@ -27,3 +27,5 @@ Hosted shared-UI source gate passed: run [37899186218](https://github.com/ReyalS
 ## 2026-10-09 — Paid owner subscription access
 
 Owner subscription redirect repair: confirmed a live expired subscription had settled renewals today. Same-plan updates returned false on zero changed rows, skipping reactivation; access checks also excluded expired rows and computed the period start as expiry. Fixed unchanged-plan success with scoped existence verification, centralized subscription entitlement/list/limits, paid renewal coverage and clamped monthly/yearly expiry. Current paid renewal now resolves active through 2026-11-09 using read-only live verification. No live billing rows changed. Next gate: hosted source verification, then resume phased development.
+
+Hosted paid-owner repair gate passed: [run 37900510660](https://github.com/ReyalSolutions/Spacivo/actions/runs/37900510660), source commit a6627ad. All subscription repair acceptance checks are complete; browser visual automation remains unavailable as previously recorded.

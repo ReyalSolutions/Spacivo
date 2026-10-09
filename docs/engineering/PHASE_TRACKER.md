@@ -28,3 +28,5 @@ Hosted shared-UI source gate passed: run [37899186218](https://github.com/ReyalS
 ## 2026-10-09 — Paid owner subscription access
 
 User-priority paid-owner access repair implemented and locally verified before continuing marketplace work; hosted source gate pending.
+
+Hosted paid-owner repair gate passed: [run 37900510660](https://github.com/ReyalSolutions/Spacivo/actions/runs/37900510660), source commit a6627ad. All subscription repair acceptance checks are complete; browser visual automation remains unavailable as previously recorded.

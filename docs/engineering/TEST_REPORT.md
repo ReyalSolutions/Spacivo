@@ -36,3 +36,5 @@ Hosted shared-UI source gate passed: run [37899186218](https://github.com/ReyalS
 ## 2026-10-09 — Paid owner subscription access
 
 Subscription redirect repair: 215 disposable database/HTTP assertions and 29 foundation/mail assertions passed; 198 PHP files linted with zero failures. Includes paid-expired renewal opening dashboard/houses/rooms/bookings/tenants/payments; overdue renewal notice in shared light layout; calendar month-end/leap-year boundaries; cancelled/pending/foreign/wrong-plan/wrong-cycle payments blocked; same-plan authorization; listing expiry and limits agreement. A read-only live check confirms affected renewed entitlement active through 2026-11-09. Hosted gate follows publication.
+
+Hosted paid-owner repair gate passed: [run 37900510660](https://github.com/ReyalSolutions/Spacivo/actions/runs/37900510660), source commit a6627ad. All subscription repair acceptance checks are complete; browser visual automation remains unavailable as previously recorded.
