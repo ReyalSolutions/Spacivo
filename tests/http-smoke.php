@@ -46,6 +46,10 @@ $savedOrganizationFlag = getenv('ORGANIZATIONS_ENABLED');
 putenv('ORGANIZATIONS_ENABLED=true');
 $savedRecoveryFlag = getenv('PASSWORD_RECOVERY_ENABLED');
 $savedOutbox = getenv('PASSWORD_RESET_OUTBOX');
+$savedMailDriver = getenv('MAIL_DRIVER');
+$savedAppEnvironment = getenv('APP_ENV');
+putenv('MAIL_DRIVER=local');
+putenv('APP_ENV=testing');
 putenv('PASSWORD_RECOVERY_ENABLED=true');
 putenv('PASSWORD_RESET_OUTBOX=' . $temporaryDirectory . '/outbox');
 mkdir($temporaryDirectory . '/sessions', 0700, true);
@@ -55,6 +59,8 @@ $process = proc_open($command, [0 => ['pipe', 'r'], 1 => ['file', $temporaryDire
 putenv($savedOrganizationFlag === false ? 'ORGANIZATIONS_ENABLED' : 'ORGANIZATIONS_ENABLED=' . $savedOrganizationFlag);
 putenv($savedRecoveryFlag === false ? 'PASSWORD_RECOVERY_ENABLED' : 'PASSWORD_RECOVERY_ENABLED=' . $savedRecoveryFlag);
 putenv($savedOutbox === false ? 'PASSWORD_RESET_OUTBOX' : 'PASSWORD_RESET_OUTBOX=' . $savedOutbox);
+putenv($savedMailDriver === false ? 'MAIL_DRIVER' : 'MAIL_DRIVER=' . $savedMailDriver);
+putenv($savedAppEnvironment === false ? 'APP_ENV' : 'APP_ENV=' . $savedAppEnvironment);
 if ($savedDatabase === false) {
     putenv('DB_NAME');
 } else {

@@ -29,9 +29,10 @@
 - [x] Test full registration/login/logout/recovery HTTP flows and selected legacy room/ledger/statement/checkout boundaries.
 - [x] Apply organization/recovery migrations and enable features with explicit approval.
 - [x] Install user-selected PHPMailer and implement/test secure SMTP delivery configuration.
-- [ ] Configure private SMTP settings and verify actual inbox delivery.
+- [x] Configure Gmail SMTP privately and verify TLS/authentication and test acceptance.
+- [x] User confirmed the Spacivo delivery test was received.
 - [x] Verify PHPMailer source commit 486df96 in hosted run 37892943844 (success).
-- [ ] Review hosted CI and final phase acceptance before proceeding.
+- [x] Review passing hosted CI and Phase 2 acceptance; test transport isolation is verified locally.
 
 ## Following phases (strict order)
 
