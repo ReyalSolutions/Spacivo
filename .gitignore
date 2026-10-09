@@ -3,6 +3,7 @@
 !/.env.example
 /vendor/
 /tools/
+/public/phpinfo.php
 /storage/*
 !/storage/.htaccess
 /public/uploads/*
