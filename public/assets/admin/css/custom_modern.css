@@ -1,0 +1,469 @@
+/* 
+  Custom Modern UI Styles 
+  These styles enhance standard Bootstrap components with a more premium, vibrant look.
+*/
+
+/* ---- Global Font Override ---- */
+body, .left-sidebar, .navbar-header, .topbar {
+  font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+/* --- Custom Range Progress Slider --- */
+.custom-range-progress {
+  height: 8px;
+  border-radius: 5px;
+  background: #e9ecef;
+  outline: none;
+  -webkit-appearance: none;
+  width: 100%;
+  margin: 10px 0;
+  transition: all 0.3s ease;
+}
+
+/* Webkit (Chrome, Safari, Edge) */
+.custom-range-progress::-webkit-slider-runnable-track {
+  height: 8px;
+  border-radius: 5px;
+  background: transparent;
+}
+.custom-range-progress::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #1f52fa;
+  cursor: pointer;
+  margin-top: -6px;
+  border: 4px solid #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+}
+.custom-range-progress:active::-webkit-slider-thumb {
+  transform: scale(1.2);
+  box-shadow: 0 0 10px rgba(31, 82, 250, 0.4);
+}
+
+/* Firefox */
+.custom-range-progress::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #1f52fa;
+  cursor: pointer;
+  border: 4px solid #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+}
+.custom-range-progress:active::-moz-range-thumb {
+  transform: scale(1.2);
+}
+.custom-range-progress::-moz-range-track {
+  height: 8px;
+  border-radius: 5px;
+  background: #e9ecef;
+}
+
+/* --- Modern Action Buttons --- */
+.btn-action {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #5d87ff 0%, #34C3FF 100%);
+  border: none;
+  color: #fff;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(93, 135, 255, 0.2);
+}
+.btn-action:hover {
+  transform: translateY(-3px) rotate(8deg);
+  box-shadow: 0 6px 12px rgba(93, 135, 255, 0.4);
+  background: linear-gradient(135deg, #34C3FF 0%, #5d87ff 100%);
+  color: #fff;
+}
+.btn-action::after { display: none; }
+
+/* Large Action Button with Text */
+.btn-action-lg {
+  padding: 10px 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #5d87ff 0%, #34C3FF 100%);
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(93, 135, 255, 0.25);
+}
+.btn-action-lg:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(93, 135, 255, 0.4);
+  color: #fff;
+}
+
+
+/* --- Modern Table Enhancements --- */
+.table-modern tbody tr {
+  transition: all 0.2s ease;
+}
+.table-modern tbody tr:hover {
+  background-color: rgba(93, 135, 255, 0.04) !important;
+}
+
+/* --- Modern Dropdown Menus --- */
+.dropdown-menu.modern-dropdown {
+  border-radius: 12px;
+  padding: 8px;
+  min-width: 180px;
+  border: none;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1) !important;
+}
+.dropdown-menu.modern-dropdown .dropdown-item {
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #5d6778;
+  transition: all 0.2s ease;
+}
+.dropdown-menu.modern-dropdown .dropdown-item:hover {
+  background-color: #f0f4ff;
+  color: #5d87ff;
+}
+.dropdown-menu.modern-dropdown .dropdown-item i {
+  font-size: 16px;
+}
+
+/* --- Modern Modal Enhancements --- */
+.rounded-4 { border-radius: 1rem !important; }
+.fs-7 { font-size: 1.5rem !important; }
+
+.modal-header .btn-close-white {
+  filter: brightness(0) invert(1);
+}
+
+.bg-primary-subtle {
+  background-color: #eef3ff !important;
+}
+
+.bg-warning-subtle {
+  background-color: #fff8eb !important;
+}
+
+.text-primary {
+  color: #5d87ff !important;
+}
+
+.text-warning {
+  color: #ffae1f !important;
+}
+
+.form-control-plaintext:focus {
+  outline: 0;
+}
+
+/* Modal Section Cards */
+.card.border-0.shadow-sm {
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075) !important;
+}
+
+.input-group-text {
+  border: none;
+}
+
+/* Custom form labels */
+.form-label.text-muted.small.text-uppercase {
+  letter-spacing: 0.5px;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+/* ============================================================
+   SIDEBAR — Light Aqua-Blue Theme
+   White/light background with aqua/teal accent colors
+   ============================================================ */
+
+/* ============================================================
+   BALANCED MODERN SIDEBAR DESIGN
+   Clean vertical rhythm, subtle icon badges, comfortable density
+   ============================================================ */
+
+.left-sidebar {
+  width: 255px !important;
+  background: #ffffff !important;
+  border-right: 1px solid #eef2f6 !important;
+  box-shadow: 2px 0 14px rgba(15, 23, 42, 0.03) !important;
+}
+
+.left-sidebar .brand-logo {
+  height: 58px !important;
+  min-height: 58px !important;
+  padding: 3px 12px !important;
+  border-bottom: 1px solid #f1f5f9 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  text-align: center !important;
+}
+
+.left-sidebar .brand-logo a.logo-img {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: 100% !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+
+.left-sidebar .brand-logo img {
+  max-height: 52px !important;
+  height: auto !important;
+  width: auto !important;
+  max-width: 210px !important;
+  object-fit: contain !important;
+  margin: 0 auto !important;
+}
+
+.left-sidebar .brand-logo .close-btn {
+  position: absolute !important;
+  right: 12px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  cursor: pointer !important;
+  z-index: 2 !important;
+}
+
+.sidebar-nav {
+  padding: 8px 10px 24px !important;
+}
+
+.sidebar-nav ul#sidebarnav {
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Section Header (HOME, RETAIL, CONTENT, etc.) */
+.sidebar-nav ul#sidebarnav .nav-small-cap,
+.sidebar-nav .nav-small-cap {
+  color: #94a3b8 !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 1px !important;
+  text-transform: uppercase !important;
+  padding: 14px 10px 5px !important;
+  margin: 0 !important;
+  line-height: 1.3 !important;
+  display: block !important;
+}
+
+.sidebar-nav .nav-small-cap .nav-small-cap-icon,
+.sidebar-nav .nav-small-cap > i {
+  display: none !important;
+}
+
+/* Sidebar Item (li) */
+.sidebar-nav ul#sidebarnav li.sidebar-item,
+.sidebar-nav li.sidebar-item {
+  margin: 2px 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+/* Sidebar Link (a) */
+.sidebar-nav ul#sidebarnav li.sidebar-item > .sidebar-link,
+.sidebar-nav .sidebar-link {
+  padding: 7px 10px !important;
+  min-height: 36px !important;
+  height: auto !important;
+  margin: 0 !important;
+  border-radius: 7px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 9px !important;
+  color: #475569 !important;
+  background: transparent !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  text-decoration: none !important;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  border: none !important;
+}
+
+/* Soft icon container badge */
+.sidebar-nav .sidebar-link > span:first-child,
+.sidebar-nav ul#sidebarnav .sidebar-link > span:first-child {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 26px !important;
+  height: 26px !important;
+  min-width: 26px !important;
+  background: #f1f5f9 !important;
+  border-radius: 6px !important;
+  box-shadow: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transition: all 0.2s ease !important;
+}
+
+/* Icon glyph inside link */
+.sidebar-nav .sidebar-link i,
+.sidebar-nav .sidebar-link > span:first-child i {
+  font-size: 15px !important;
+  color: #64748b !important;
+  transition: color 0.2s ease, transform 0.2s ease !important;
+  line-height: 1 !important;
+}
+
+/* Menu Text */
+.sidebar-nav .sidebar-link .hide-menu {
+  flex: 1 !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  line-height: 1.3 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Chevron icons */
+.sidebar-nav .sidebar-link .submenu-chevron,
+.sidebar-nav .sidebar-link .affiliate-chevron {
+  font-size: 12px !important;
+  color: #94a3b8 !important;
+  transition: transform 0.25s ease !important;
+}
+
+/* Hover state */
+.sidebar-nav ul#sidebarnav li.sidebar-item > .sidebar-link:hover,
+.sidebar-nav .sidebar-link:hover {
+  background: #f8fafc !important;
+  color: #1f52fa !important;
+  transform: translateX(2px);
+}
+
+.sidebar-nav .sidebar-link:hover > span:first-child {
+  background: #eff6ff !important;
+}
+
+.sidebar-nav .sidebar-link:hover i {
+  color: #1f52fa !important;
+  transform: scale(1.08);
+}
+
+/* Active state (Aqua/Teal Gradient with Left Indicator) */
+.sidebar-nav ul#sidebarnav li.sidebar-item > .sidebar-link.active,
+.sidebar-nav .sidebar-link.active {
+  color: #0369a1 !important;
+  background: linear-gradient(135deg, #e0f2fe 0%, #ccfbf1 100%) !important;
+  border: 1px solid rgba(14, 165, 233, 0.18) !important;
+  box-shadow: 0 2px 10px rgba(14, 165, 233, 0.1) !important;
+  font-weight: 600 !important;
+}
+
+.sidebar-nav .sidebar-link.active > span:first-child {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.2) 0%, rgba(13, 148, 136, 0.12) 100%) !important;
+  box-shadow: 0 0 8px rgba(14, 165, 233, 0.15) !important;
+}
+
+.sidebar-nav .sidebar-link.active i,
+.sidebar-nav .sidebar-link.active > span:first-child i {
+  color: #0ea5e9 !important;
+}
+
+.sidebar-nav .sidebar-link.active .hide-menu {
+  color: #0369a1 !important;
+  font-weight: 600 !important;
+}
+
+.sidebar-nav .sidebar-link.active .submenu-chevron,
+.sidebar-nav .sidebar-link.active .affiliate-chevron {
+  color: #0ea5e9 !important;
+}
+
+/* Active left indicator bar */
+.sidebar-nav .sidebar-link.active::before {
+  content: '' !important;
+  display: block !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 3px !important;
+  height: 60% !important;
+  border-radius: 0 3px 3px 0 !important;
+  background: linear-gradient(180deg, #0ea5e9, #0d9488) !important;
+  box-shadow: 0 0 6px rgba(14, 165, 233, 0.2) !important;
+}
+
+/* Submenu container (Nested lists) */
+.sidebar-nav ul[id$="Submenu"],
+.sidebar-nav ul.collapse,
+.sidebar-nav ul.first-level {
+  padding-left: 8px !important;
+  margin: 2px 0 4px 17px !important;
+  border-left: 1.5px solid #e2e8f0 !important;
+  list-style: none !important;
+}
+
+.sidebar-nav ul[id$="Submenu"] li.sidebar-item {
+  margin: 1px 0 !important;
+}
+
+.sidebar-nav ul[id$="Submenu"] .sidebar-link {
+  padding: 5px 8px !important;
+  min-height: 28px !important;
+  font-size: 12.5px !important;
+}
+
+.sidebar-nav ul[id$="Submenu"] .sidebar-link > span:first-child {
+  width: 20px !important;
+  height: 20px !important;
+  min-width: 20px !important;
+  border-radius: 4px !important;
+}
+
+.sidebar-nav ul[id$="Submenu"] .sidebar-link i {
+  font-size: 13px !important;
+}
+
+/* ---- Simplebar scrollbar track (Minimal 4px) ---- */
+.scroll-sidebar .simplebar-scrollbar::before {
+  background: rgba(31, 82, 250, 0.2) !important;
+  border-radius: 4px !important;
+  width: 4px !important;
+}
+
+/* ---- Body wrapper background (light) ---- */
+.body-wrapper {
+  background: #f4f9fd !important;
+}
+
+/* ---- KPI cards on light bg ---- */
+.kpi-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(14, 165, 233, 0.08) !important;
+  color: #334155 !important;
+}
+
+.kpi-card .text-muted {
+  color: #64748b !important;
+}
+
+.kpi-card h4, .kpi-card .fw-bold {
+  color: #0f172a !important;
+}
+
+/* ---- Top Navbar — keep light ---- */
+.navbar-header, .topbar {
+  background: #ffffff !important;
+  border-bottom: 1px solid rgba(14, 165, 233, 0.1) !important;
+  box-shadow: 0 1px 8px rgba(14, 165, 233, 0.06) !important;
+}

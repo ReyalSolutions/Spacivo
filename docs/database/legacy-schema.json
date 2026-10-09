@@ -1,0 +1,1042 @@
+{
+    "activity_logs": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": "auto_increment"
+            },
+            {
+                "COLUMN_NAME": "admin_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "target_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "action",
+                "COLUMN_TYPE": "varchar(100)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "details",
+                "COLUMN_TYPE": "text",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "source_ip",
+                "COLUMN_TYPE": "varchar(45)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "created_at",
+                "COLUMN_TYPE": "timestamp",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            }
+        ]
+    },
+    "amenities": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": "auto_increment"
+            },
+            {
+                "COLUMN_NAME": "name",
+                "COLUMN_TYPE": "varchar(100)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "UNI",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "icon",
+                "COLUMN_TYPE": "varchar(50)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "created_at",
+                "COLUMN_TYPE": "timestamp",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            }
+        ]
+    },
+    "boarding_houses": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": "auto_increment"
+            },
+            {
+                "COLUMN_NAME": "owner_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "name",
+                "COLUMN_TYPE": "varchar(150)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "description",
+                "COLUMN_TYPE": "text",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "address",
+                "COLUMN_TYPE": "text",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "latitude",
+                "COLUMN_TYPE": "decimal(10,8)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "longitude",
+                "COLUMN_TYPE": "decimal(11,8)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "status",
+                "COLUMN_TYPE": "enum('pending','approved','rejected')",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "created_at",
+                "COLUMN_TYPE": "timestamp",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "is_deleted",
+                "COLUMN_TYPE": "tinyint(1)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            }
+        ]
+    },
+    "boarding_house_amenities": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": "auto_increment"
+            },
+            {
+                "COLUMN_NAME": "boarding_house_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "amenity_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            }
+        ]
+    },
+    "boarding_house_images": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": "auto_increment"
+            },
+            {
+                "COLUMN_NAME": "boarding_house_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "image_path",
+                "COLUMN_TYPE": "varchar(500)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "sort_order",
+                "COLUMN_TYPE": "tinyint(4)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "created_at",
+                "COLUMN_TYPE": "timestamp",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            }
+        ]
+    },
+    "bookings": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": "auto_increment"
+            },
+            {
+                "COLUMN_NAME": "user_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "room_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "start_date",
+                "COLUMN_TYPE": "date",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "end_date",
+                "COLUMN_TYPE": "date",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "status",
+                "COLUMN_TYPE": "enum('pending','approved','rejected','cancelled')",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "is_moved_out",
+                "COLUMN_TYPE": "tinyint(2)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "total_amount",
+                "COLUMN_TYPE": "decimal(10,2)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "created_at",
+                "COLUMN_TYPE": "timestamp",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            }
+        ]
+    },
+    "favorites": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": "auto_increment"
+            },
+            {
+                "COLUMN_NAME": "user_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "boarding_house_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "created_at",
+                "COLUMN_TYPE": "timestamp",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            }
+        ]
+    },
+    "payments": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": "auto_increment"
+            },
+            {
+                "COLUMN_NAME": "user_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "booking_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "amount",
+                "COLUMN_TYPE": "decimal(10,2)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "payment_method",
+                "COLUMN_TYPE": "varchar(50)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "status",
+                "COLUMN_TYPE": "enum('pending','paid','failed')",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "transaction_ref",
+                "COLUMN_TYPE": "varchar(100)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "created_at",
+                "COLUMN_TYPE": "timestamp",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "description",
+                "COLUMN_TYPE": "text",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "payment_type",
+                "COLUMN_TYPE": "enum('deposit','rent','utility','advance','other')",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "months_covered",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            }
+        ]
+    },
+    "permissions": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": "auto_increment"
+            },
+            {
+                "COLUMN_NAME": "name",
+                "COLUMN_TYPE": "varchar(100)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "slug",
+                "COLUMN_TYPE": "varchar(100)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "UNI",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "category",
+                "COLUMN_TYPE": "varchar(100)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "module",
+                "COLUMN_TYPE": "varchar(100)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "description",
+                "COLUMN_TYPE": "text",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            }
+        ]
+    },
+    "plans": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": "auto_increment"
+            },
+            {
+                "COLUMN_NAME": "name",
+                "COLUMN_TYPE": "varchar(50)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "UNI",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "price_monthly",
+                "COLUMN_TYPE": "decimal(10,2)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "price_yearly",
+                "COLUMN_TYPE": "decimal(10,2)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "room_limit",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "length_free",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "bhouse_limit",
+                "COLUMN_TYPE": "int(20)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "features",
+                "COLUMN_TYPE": "longtext",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "is_deleted",
+                "COLUMN_TYPE": "tinyint(1)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "created_at",
+                "COLUMN_TYPE": "timestamp",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            }
+        ]
+    },
+    "plan_payments": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": "auto_increment"
+            },
+            {
+                "COLUMN_NAME": "owner_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "subscription_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "plan_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "billing_cycle",
+                "COLUMN_TYPE": "enum('monthly','yearly')",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "amount",
+                "COLUMN_TYPE": "decimal(10,2)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "gateway",
+                "COLUMN_TYPE": "varchar(50)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "payment_method",
+                "COLUMN_TYPE": "varchar(50)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "status",
+                "COLUMN_TYPE": "enum('pending','paid','failed')",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "transaction_ref",
+                "COLUMN_TYPE": "varchar(255)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "session_id",
+                "COLUMN_TYPE": "varchar(255)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "paid_at",
+                "COLUMN_TYPE": "datetime",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "created_at",
+                "COLUMN_TYPE": "timestamp",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            }
+        ]
+    },
+    "reviews": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": "auto_increment"
+            },
+            {
+                "COLUMN_NAME": "boarding_house_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "user_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "rating",
+                "COLUMN_TYPE": "tinyint(4)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "comment",
+                "COLUMN_TYPE": "text",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "status",
+                "COLUMN_TYPE": "enum('pending','approved','rejected')",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "created_at",
+                "COLUMN_TYPE": "timestamp",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            }
+        ]
+    },
+    "roles": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": "auto_increment"
+            },
+            {
+                "COLUMN_NAME": "name",
+                "COLUMN_TYPE": "varchar(50)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "UNI",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "slug",
+                "COLUMN_TYPE": "varchar(100)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "UNI",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "description",
+                "COLUMN_TYPE": "text",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "created_at",
+                "COLUMN_TYPE": "timestamp",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            }
+        ]
+    },
+    "role_permissions": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "role_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "permission_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": ""
+            }
+        ]
+    },
+    "rooms": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": "auto_increment"
+            },
+            {
+                "COLUMN_NAME": "boarding_house_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "room_name",
+                "COLUMN_TYPE": "varchar(100)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "price",
+                "COLUMN_TYPE": "decimal(10,2)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "capacity",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "available_slots",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "created_at",
+                "COLUMN_TYPE": "timestamp",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            }
+        ]
+    },
+    "room_amenities": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "room_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "amenity_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": ""
+            }
+        ]
+    },
+    "subscriptions": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": "auto_increment"
+            },
+            {
+                "COLUMN_NAME": "owner_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "plan_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "billing_cycle",
+                "COLUMN_TYPE": "enum('monthly','yearly')",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "start_date",
+                "COLUMN_TYPE": "date",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "end_date",
+                "COLUMN_TYPE": "date",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "status",
+                "COLUMN_TYPE": "enum('active','expired','trial','pending','cancelled','past_due','suspended','failed','renewing','paused')",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "created_at",
+                "COLUMN_TYPE": "timestamp",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            }
+        ]
+    },
+    "system_settings": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "setting_key",
+                "COLUMN_TYPE": "varchar(100)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "setting_value",
+                "COLUMN_TYPE": "text",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "updated_at",
+                "COLUMN_TYPE": "timestamp",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": "on update current_timestamp()"
+            }
+        ]
+    },
+    "users": {
+        "engine": "InnoDB",
+        "columns": [
+            {
+                "COLUMN_NAME": "id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "PRI",
+                "EXTRA": "auto_increment"
+            },
+            {
+                "COLUMN_NAME": "unique_code",
+                "COLUMN_TYPE": "varchar(50)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "UNI",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "role_id",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "MUL",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "status",
+                "COLUMN_TYPE": "tinyint(1)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "is_active",
+                "COLUMN_TYPE": "tinyint(1)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "image",
+                "COLUMN_TYPE": "varchar(100)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "username",
+                "COLUMN_TYPE": "varchar(50)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "first_name",
+                "COLUMN_TYPE": "varchar(100)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "middle_name",
+                "COLUMN_TYPE": "varchar(100)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "last_name",
+                "COLUMN_TYPE": "varchar(100)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "email",
+                "COLUMN_TYPE": "varchar(100)",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "UNI",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "last_login",
+                "COLUMN_TYPE": "datetime",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "phone",
+                "COLUMN_TYPE": "varchar(20)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "password",
+                "COLUMN_TYPE": "varchar(255)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "created_at",
+                "COLUMN_TYPE": "timestamp",
+                "IS_NULLABLE": "NO",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "failed_attempts",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "lockout_until",
+                "COLUMN_TYPE": "datetime",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "lockout_count",
+                "COLUMN_TYPE": "int(11)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            },
+            {
+                "COLUMN_NAME": "is_deleted",
+                "COLUMN_TYPE": "tinyint(1)",
+                "IS_NULLABLE": "YES",
+                "COLUMN_KEY": "",
+                "EXTRA": ""
+            }
+        ]
+    }
+}

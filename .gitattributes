@@ -1,0 +1,4 @@
+* text=auto
+# Preserve exact bytes of checksum-protected migration artifacts across platforms.
+database/migrations/*.php -text
+database/schema/*.json -text

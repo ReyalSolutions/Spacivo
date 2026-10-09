@@ -1,0 +1,10 @@
+Options -Indexes
+# Legacy root entry point remains available during the migration.
+# Production must use public/ as its document root.
+RewriteEngine On
+RewriteRule ^(?:app|config|bootstrap|routes|resources|database|storage|tests|scripts|docs|vendor|tools|\.git|\.github)(?:/|$) - [F,L,NC]
+<FilesMatch "(?i)(^\.|\.(sql|md|log|json|lock|ya?ml|bak)$)">
+    Require all denied
+</FilesMatch>
+# Historical diagnostic/migration scripts are never public application routes.
+RewriteRule ^(?!index\.php$)[^/]+\.php$ - [F,L,NC]

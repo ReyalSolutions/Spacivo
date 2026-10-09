@@ -1,0 +1,4 @@
+Options -Indexes
+<FilesMatch "^(phpinfo\.php|\.env.*)$">
+    Require all denied
+</FilesMatch>

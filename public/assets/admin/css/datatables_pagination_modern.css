@@ -1,0 +1,170 @@
+/* ==========================================
+   EXACT IMAGE MATCH - PREMIUM DATATABLES PAGINATION (UNIFIED)
+   ========================================== */
+
+/* Outer wrapper pagination container - White pill layout */
+.dataTables_wrapper .dataTables_paginate,
+.dataTables_wrapper .pagination {
+  margin-top: 1.5rem !important;
+  padding: 6px 16px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  border-radius: 50px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03) !important;
+  float: right !important;
+}
+
+/* Reset default DataTables + Bootstrap 5 list item styles to prevent double backgrounds and double pseudo elements */
+.dataTables_wrapper .pagination .page-item,
+.dataTables_wrapper .dataTables_paginate .page-item {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+}
+
+/* Explicitly disable pseudo-elements on list item to guarantee NO double text rendering */
+li.paginate_button::before,
+li.paginate_button::after,
+li.page-item::before,
+li.page-item::after,
+.page-item::before,
+.page-item::after {
+  display: none !important;
+  content: "" !important;
+}
+
+/* Base button styling - target only the actual clickable element */
+.dataTables_wrapper .dataTables_paginate .paginate_button:not(.page-item),
+.dataTables_wrapper .pagination .page-item .page-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-width: 32px !important;
+  height: 32px !important;
+  padding: 0 10px !important;
+  margin: 0 !important;
+  font-size: 0.85rem !important;
+  font-weight: 600 !important;
+  color: #4f46e5 !important; /* Deep Indigo */
+  background: rgba(79, 70, 229, 0.06) !important; /* Soft Light Indigo */
+  border: none !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease-in-out !important;
+  user-select: none !important;
+  box-shadow: none !important;
+}
+
+/* Active / Current Page State */
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover,
+.dataTables_wrapper .pagination .page-item.active .page-link,
+.dataTables_wrapper .pagination .page-item.active .page-link:hover {
+  color: #ffffff !important;
+  background: #4f46e5 !important; /* Solid Indigo */
+  border: none !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3) !important;
+}
+
+/* Inactive button hover */
+.dataTables_wrapper .dataTables_paginate .paginate_button:not(.page-item):hover:not(.disabled):not(.current):not(.previous):not(.next),
+.dataTables_wrapper .pagination .page-item:not(.active):not(.disabled) .page-link:hover {
+  background: rgba(79, 70, 229, 0.15) !important;
+  color: #4f46e5 !important;
+}
+
+/* Ellipsis styling */
+.dataTables_wrapper .dataTables_paginate span .ellipsis,
+.dataTables_wrapper .pagination .ellipsis {
+  display: inline-block !important;
+  padding: 0 6px !important;
+  color: #94a3b8 !important;
+  font-weight: 600 !important;
+}
+
+/* Back (Previous) and Next text replacement & transparent background */
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous:not(.page-item),
+.dataTables_wrapper .dataTables_paginate .paginate_button.next:not(.page-item),
+.dataTables_wrapper .pagination .page-item.previous .page-link,
+.dataTables_wrapper .pagination .page-item.next .page-link {
+  background: transparent !important;
+  border: none !important;
+  color: #4f46e5 !important;
+  min-width: auto !important;
+  padding: 0 8px !important;
+  font-size: 0 !important; /* Hide original text */
+}
+
+/* Back/Previous Content replacement */
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous:not(.page-item)::before,
+.dataTables_wrapper .pagination .page-item.previous .page-link::before {
+  content: "‹  Back" !important;
+  font-size: 0.88rem !important; /* Restore font size */
+  font-weight: 600 !important;
+  color: #4f46e5 !important;
+  display: inline-block !important;
+}
+
+/* Next Content replacement */
+.dataTables_wrapper .dataTables_paginate .paginate_button.next:not(.page-item)::before,
+.dataTables_wrapper .pagination .page-item.next .page-link::before {
+  content: "Next  ›" !important;
+  font-size: 0.88rem !important; /* Restore font size */
+  font-weight: 600 !important;
+  color: #4f46e5 !important;
+  display: inline-block !important;
+}
+
+/* Hover effect for Back and Next */
+.dataTables_wrapper .dataTables_paginate .paginate_button.previous:not(.page-item):hover:not(.disabled),
+.dataTables_wrapper .dataTables_paginate .paginate_button.next:not(.page-item):hover:not(.disabled),
+.dataTables_wrapper .pagination .page-item.previous .page-link:hover:not(.disabled),
+.dataTables_wrapper .pagination .page-item.next .page-link:hover:not(.disabled) {
+  color: #312e81 !important; /* Darker Indigo */
+  background: transparent !important;
+}
+
+/* Disabled State for Back/Next */
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:not(.page-item),
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:not(.page-item):hover,
+.dataTables_wrapper .pagination .page-item.disabled .page-link,
+.dataTables_wrapper .pagination .page-item.disabled .page-link:hover {
+  color: #cbd5e1 !important; /* Muted Light Gray */
+  background: transparent !important;
+  opacity: 0.7 !important;
+  cursor: not-allowed !important;
+}
+
+.dataTables_wrapper .pagination .page-item.disabled .page-link::before {
+  color: #cbd5e1 !important;
+}
+
+/* ── Mobile Responsive Adaptability ── */
+@media (max-width: 768px) {
+  .dataTables_wrapper .dataTables_paginate,
+  .dataTables_wrapper .pagination {
+    float: none !important;
+    display: flex !important;
+    margin: 1.25rem auto !important;
+    max-width: fit-content !important;
+  }
+
+  /* Hide all page numbers except the active one on mobile */
+  .dataTables_wrapper .dataTables_paginate .paginate_button:not(.page-item):not(.current):not(.previous):not(.next),
+  .dataTables_wrapper .pagination .page-item:not(.active):not(.previous):not(.next) {
+    display: none !important;
+  }
+
+  /* Hide ellipsis spacer */
+  .dataTables_wrapper .dataTables_paginate span .ellipsis,
+  .dataTables_wrapper .pagination .ellipsis {
+    display: none !important;
+  }
+}
