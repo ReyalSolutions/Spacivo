@@ -107,3 +107,6 @@ Global-toast hosted gate passed: [run 37909608793](https://github.com/ReyalSolut
 ## 2026-10-09 — Listing success toast repair
 
 Added omitted global success notifications for listing approval/rejection and photo deletion. Listing form success/error flashes now use ToastStack after DOM readiness and display for five seconds; removed the duplicate management toast container. Both shared headers version the toast script with its modification timestamp to invalidate stale cached engines. Regression checks confirm successful owned-listing update redirects, emits its success toast with versioned assets, and consumes the flash exactly once. Local verification: 351 database/HTTP assertions, 29 foundation assertions, 202 PHP files linted, and global toast tests including moderation notification plus table refresh. Browser visual automation remains unavailable. Hosted gate pending.
+
+
+Listing-toast hosted gate passed: [run 37910282471](https://github.com/ReyalSolutions/Spacivo/actions/runs/37910282471), source 7cb77b0. PHP, foundation, integration, 351 database/HTTP assertions and global toast regression checks succeeded. Listing notification repair loop complete.
