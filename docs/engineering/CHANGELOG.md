@@ -111,3 +111,6 @@ Upgrade modal design hosted gate passed: [run 37911327017](https://github.com/Re
 
 
 2026-10-09 - Upgrade plans moved to admin/upgrade: replaced the plan modal with a shared page section and natural document scrolling. Houses, rooms and subscription upgrade links open the page; subscription/cycle context is retained. The route checks existing subscription-view permissions and rejects foreign owner subscription IDs. Plan payment selection remains available. Removed the unused upgrade modal component. Verification: 203 PHP files linted, 29 foundation assertions and 355 database/HTTP checks passed, including page/billing/payment/ownership regressions. Browser visual verification remains unavailable; hosted gate pending.
+
+
+Upgrade-page hosted gate passed: [run 37911984985](https://github.com/ReyalSolutions/Spacivo/actions/runs/37911984985), source 4158d80. PHP, foundation/integration, 355 database/HTTP checks and all JavaScript regressions passed. Upgrade plans use document scrolling and preserve payment/subscription scope. Migration loop complete.
