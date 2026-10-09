@@ -9,7 +9,7 @@
         <form class="category-form" data-id="<?= (int)$category['id'] ?>">
             <input type="hidden" name="version" value="<?= (int)$category['version'] ?>">
             <label class="form-label">Category name<input class="form-control" name="name" maxlength="100" required value="<?= htmlspecialchars($category['name'], ENT_QUOTES, 'UTF-8') ?>"></label>
-            <label class="form-label">Category code<input class="form-control" name="slug" maxlength="80" pattern="[a-z][a-z0-9_]{1,79}" required value="<?= htmlspecialchars($category['slug'], ENT_QUOTES, 'UTF-8') ?>"></label>
+            <label class="form-label">Category code<input class="form-control" name="slug" readonly aria-describedby="category-code-help-<?= (int)$category['id'] ?>" maxlength="80" pattern="[a-z][a-z0-9_]{1,79}" required value="<?= htmlspecialchars($category['slug'], ENT_QUOTES, 'UTF-8') ?>"><span id="category-code-help-<?= (int)$category['id'] ?>" class="form-text d-block">Auto-filled from the name: lowercase letters, numbers and underscores, 2–80 characters. Example: boarding_house.</span></label>
             <fieldset class="mb-3"><legend class="h6">Supported capabilities</legend>
             <?php foreach (App\Modules\Categories\Services\CategoryConfiguration::CAPABILITIES as $code => $label): ?>
                 <label class="d-block"><input type="checkbox" name="capabilities" value="<?= $code ?>" <?= !empty($category['capabilities'][$code]) ? 'checked' : '' ?>> <?= $label ?></label>
@@ -22,6 +22,7 @@
     </section>
     <?php endforeach; ?>
 </main>
+<script src="/tenant/public/assets/js/category-code.js"></script>
 <script>
 document.querySelectorAll('.category-form').forEach(form => form.addEventListener('submit', async event => {
     event.preventDefault();

@@ -87,3 +87,6 @@ Added omitted global success notifications for listing approval/rejection and ph
 
 
 2026-10-09 - Organization/category/property workspace design organized: added one scoped shared module stylesheet with consistent headings/actions, neutral bordered cards, responsive grouped form fields, capability grids, clear empty states and compact status badges. Existing category/property records are expandable; new forms remain open. Organization staff access is expandable and admin property/index review uses the same layout. Form controls, permissions, ownership guards and request scripts remain unchanged. Local checks: 356 database/HTTP assertions, 29 foundation assertions, 203 PHP files linted, and form/control/script comparison passed. Browser visual verification remains unavailable; hosted gate pending.
+
+
+2026-10-09 - Category code autofill: category/index generates new codes from names using lowercase letters/digits/underscores, starting with a letter, 2-80 characters. Handles accents, leading digits, single-character names and length limits; suffixes codes already present in the catalog. Saved codes stay stable and the field is read-only with format guidance. Server validation/uniqueness remains authoritative. PHP lint and focused generator/live-autofill/stability/collision checks passed. Hosted gate pending.

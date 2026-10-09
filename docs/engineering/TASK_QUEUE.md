@@ -140,3 +140,6 @@ Upgrade prompt/focused-page hosted gate passed: [run 37912562022](https://github
 
 
 Organized workspace design hosted gate passed: [run 37913806582](https://github.com/ReyalSolutions/Spacivo/actions/runs/37913806582), source 6b9babb. PHP, foundation/integration, database and all JavaScript checks succeeded. Shared organization/category/property design loop complete; browser visual acceptance remains unavailable.
+
+
+2026-10-09 - Category code autofill: category/index generates new codes from names using lowercase letters/digits/underscores, starting with a letter, 2-80 characters. Handles accents, leading digits, single-character names and length limits; suffixes codes already present in the catalog. Saved codes stay stable and the field is read-only with format guidance. Server validation/uniqueness remains authoritative. PHP lint and focused generator/live-autofill/stability/collision checks passed. Hosted gate pending.
