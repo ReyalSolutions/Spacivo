@@ -30,7 +30,7 @@
 - [x] Apply organization/recovery migrations and enable features with explicit approval.
 - [x] Install user-selected PHPMailer and implement/test secure SMTP delivery configuration.
 - [ ] Configure private SMTP settings and verify actual inbox delivery.
-- [ ] Verify PHPMailer source commit in hosted CI.
+- [x] Verify PHPMailer source commit 486df96 in hosted run 37892943844 (success).
 - [ ] Review hosted CI and final phase acceptance before proceeding.
 
 ## Following phases (strict order)

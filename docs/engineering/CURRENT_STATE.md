@@ -14,4 +14,4 @@ Latest checks: 171 PHP files linted, 29 foundation/mail assertions and 90 databa
 
 User selected PHPMailer; version 7.1.1 is installed, secure SMTP delivery and environment configuration are implemented and tested. Local recovery still defaults to the private outbox; no real email was sent. SMTP settings and actual inbox verification await user configuration. Legacy absolute /tenant assets/admin paths require migration before production public-only deployment. Later category/inventory/booking/payment/mobile phases remain incomplete.
 
-Next: verify the PHPMailer source commit, configure SMTP and verify inbox delivery, finalize Phase 2 acceptance and proceed to Phase 3 categories and organization-owned inventory. Real delivery remains an external dependency; local outbox/MIME tests are not delivery evidence.
+PHPMailer implementation commit 486df96 passed hosted run 37892943844. Next: configure SMTP and verify inbox delivery, finalize Phase 2 acceptance and proceed to Phase 3 categories and organization-owned inventory. Real delivery remains an external dependency; local outbox/MIME tests are not delivery evidence.
