@@ -96,3 +96,6 @@ Added omitted global success notifications for listing approval/rejection and ph
 
 
 Listing-toast hosted gate passed: [run 37910282471](https://github.com/ReyalSolutions/Spacivo/actions/runs/37910282471), source 7cb77b0. PHP, foundation, integration, 351 database/HTTP assertions and global toast regression checks succeeded. Listing notification repair loop complete.
+
+
+2026-10-09 - Amenities checkbox restoration: normalized selected/catalog IDs before comparison in the shared listing modal. Prepared-query numeric IDs now match text-query string IDs. Focused tests cover both type directions, saved additions/removals and empty selections across reopen; PHP lint passed. Hosted full-suite gate pending. Existing stored amenities and permissions are unchanged.

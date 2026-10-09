@@ -384,8 +384,9 @@ function openAmenitiesModal(houseId, houseName) {
             document.getElementById('amenitiesForm').classList.remove('d-none');
             if (data.success) {
                 const grid = document.getElementById('amenitiesGrid');
+                const selectedIds = new Set((data.selected_ids || []).map(String));
                 grid.innerHTML = data.all.map(a => {
-                    const checked = data.selected_ids.includes(a.id) ? 'checked' : '';
+                    const checked = selectedIds.has(String(a.id)) ? 'checked' : '';
                     return `
                         <div class="col-6">
                             <div class="form-check custom-checkbox bg-white p-3 rounded-4 border shadow-sm h-100 d-flex align-items-center">

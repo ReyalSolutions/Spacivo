@@ -32,5 +32,6 @@ jobs:
       - run: composer check
       - run: node tests/management-loading.js
       - run: node tests/global-toast.js
+      - run: node tests/listing-amenities.js
       - run: php tests/run.php --integration
       - run: php tests/database.php
