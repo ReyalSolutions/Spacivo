@@ -104,3 +104,6 @@ Upgrade-page hosted gate passed: [run 37911984985](https://github.com/ReyalSolut
 
 
 2026-10-09 - Upgrade entry confirmation and focused page: shared upgrade actions display an Upgrade required dialog with View plans/Not now before navigation. Confirmation retains subscription/yearly context; cancellation leaves the current page intact. admin/upgrade now renders a standalone layout with no dashboard sidebar/header, while preserving shared styles, toast, CSRF and payment selection. Verification: 356 database/HTTP assertions, upgrade prompt confirmation/cancellation/context tests and page PHP lint passed. Visual browser verification remains unavailable; hosted gate pending.
+
+
+Upgrade prompt/focused-page hosted gate passed: [run 37912562022](https://github.com/ReyalSolutions/Spacivo/actions/runs/37912562022), source 90bf515. All PHP, integration/database and JavaScript checks succeeded, including 356 database assertions, prompt cancellation/context and absence of dashboard navigation. User-requested flow loop complete.
