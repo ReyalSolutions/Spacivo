@@ -46,6 +46,8 @@ $savedOrganizationFlag = getenv('ORGANIZATIONS_ENABLED');
 putenv('ORGANIZATIONS_ENABLED=true');
 $savedCategoryFlag = getenv('CATEGORIES_ENABLED');
 putenv('CATEGORIES_ENABLED=true');
+$savedInventoryFlag = getenv('INVENTORY_ENABLED');
+putenv('INVENTORY_ENABLED=true');
 $savedRecoveryFlag = getenv('PASSWORD_RECOVERY_ENABLED');
 $savedOutbox = getenv('PASSWORD_RESET_OUTBOX');
 $savedMailDriver = getenv('MAIL_DRIVER');
@@ -60,6 +62,7 @@ $pipes = [];
 $process = proc_open($command, [0 => ['pipe', 'r'], 1 => ['file', $temporaryDirectory . '/http.log', 'a'], 2 => ['file', $temporaryDirectory . '/http.log', 'a']], $pipes, dirname(__DIR__));
 putenv($savedOrganizationFlag === false ? 'ORGANIZATIONS_ENABLED' : 'ORGANIZATIONS_ENABLED=' . $savedOrganizationFlag);
 putenv($savedCategoryFlag === false ? 'CATEGORIES_ENABLED' : 'CATEGORIES_ENABLED=' . $savedCategoryFlag);
+putenv($savedInventoryFlag === false ? 'INVENTORY_ENABLED' : 'INVENTORY_ENABLED=' . $savedInventoryFlag);
 putenv($savedRecoveryFlag === false ? 'PASSWORD_RECOVERY_ENABLED' : 'PASSWORD_RECOVERY_ENABLED=' . $savedRecoveryFlag);
 putenv($savedOutbox === false ? 'PASSWORD_RESET_OUTBOX' : 'PASSWORD_RESET_OUTBOX=' . $savedOutbox);
 putenv($savedMailDriver === false ? 'MAIL_DRIVER' : 'MAIL_DRIVER=' . $savedMailDriver);
@@ -116,6 +119,8 @@ try {
     $check($response[0] === 200 && json_decode($response[1], true)['data'] === [], 'Versioned public category API boots with empty catalog');
     $response = $request('api/v1/admin/categories');
     $check($response[0] === 401, 'Category administration API requires authentication');
+    $response = $request('api/v1/owner/properties?organization_id=1');
+    $check($response[0] === 401, 'Inventory API requires authentication');
     $ownerOrganization = null;
     foreach (['admin', 'owner', 'tenant'] as $role) {
         $cookie = '';
@@ -130,6 +135,8 @@ try {
         $response = $request($dashboard);
         $check($response[0] === 200 && stripos($response[1], '<html') !== false && strpos($response[1], 'Something went wrong') === false, $role . ' portal boots');
         if ($role === 'admin') {
+            $response = $request('?url=property/index');
+            $check($response[0] === 200 && strpos($response[1], 'Listing review') !== false, 'Administrator listing review page renders');
             $response = $request('?url=category/index');
             $check($response[0] === 200 && strpos($response[1], 'Space categories') !== false, 'Category administration page renders');
             $configuration = ['name' => 'HTTP Court', 'slug' => 'http_court', 'active' => true, 'capabilities' => ['hourly_booking' => true]];
@@ -169,12 +176,34 @@ try {
             $payload = json_decode($response[1], true);
             $ownerOrganization = $payload['data']['id'] ?? null;
             $check($response[0] === 201 && $ownerOrganization !== null, 'Organization onboarding API creates owner membership');
+            $httpCategoryService = new App\Modules\Categories\Services\CategoryService(new App\Modules\Categories\Repositories\CategoryRepository($server), new App\Modules\Organizations\Repositories\OrganizationRepository($server));
+            $httpInventoryCategory = $httpCategoryService->save($adminId, 0, 0, 'Inventory HTTP', 'inventory_http', true, ['monthly_rental' => true]);
+            $httpPropertyInput = ['organization_id' => $ownerOrganization, 'category_id' => $httpInventoryCategory,
+                'name' => 'HTTP Property', 'description' => 'Private organization inventory.', 'address' => 'Fixture Address', 'timezone' => 'Asia/Singapore'];
+            $response = $request('api/v1/owner/properties', $httpPropertyInput, 'POST');
+            $check($response[0] === 403, 'Inventory creation requires CSRF');
+            $httpPropertyInput['csrf_token'] = $token;
+            $response = $request('api/v1/owner/properties', $httpPropertyInput, 'POST');
+            $httpInventoryProperty = (int)(json_decode($response[1], true)['data']['id'] ?? 0);
+            $check($response[0] === 201 && $httpInventoryProperty > 0, 'Owner creates scoped property through REST API');
+            $response = $request('?url=property/index&organization_id=' . $ownerOrganization);
+            $check($response[0] === 200 && strpos($response[1], 'HTTP Property') !== false, 'Owner inventory page renders property and unit forms');
+            $httpUnitInput = ['organization_id' => $ownerOrganization, 'category_id' => $httpInventoryCategory, 'name' => 'HTTP Unit', 'capacity' => 2, 'csrf_token' => $token];
+            $response = $request('api/v1/owner/properties/' . $httpInventoryProperty . '/units', $httpUnitInput, 'POST');
+            $httpInventoryUnit = (int)(json_decode($response[1], true)['data']['id'] ?? 0);
+            $check($response[0] === 201 && $httpInventoryUnit > 0, 'Owner creates scoped rental unit through REST API');
+            $response = $request('api/v1/owner/properties/' . $httpInventoryProperty . '/state', ['organization_id' => $ownerOrganization, 'version' => 2, 'state' => 'published', 'csrf_token' => $token], 'POST');
+            $check($response[0] === 422, 'REST API refuses unverified unapproved publication');
+            $response = $request('api/v1/properties');
+            $check(json_decode($response[1], true)['data'] === [], 'Public property API excludes drafts');
             $response = $request('?url=organization/show&organization_id=' . $ownerOrganization);
             $check($response[0] === 200, 'Owner API reads own organization');
             $response = $request('?url=organization/index');
             $check($response[0] === 200 && strpos($response[1], 'HTTP fixture organization') !== false, 'Owner organization workspace renders');
         }
         if ($role === 'tenant' && $ownerOrganization !== null) {
+            $response = $request('api/v1/owner/properties/' . $httpInventoryProperty . '?organization_id=' . $ownerOrganization);
+            $check($response[0] === 403, 'Cross-account inventory API access denied');
             $response = $request('?url=organization/show&organization_id=' . $ownerOrganization);
             $check($response[0] === 403, 'Cross-account organization API access denied');
             $response = $request('?url=payment/checkout&payment_id=' . $fixtureForeignPayment);
@@ -189,6 +218,9 @@ try {
         $response = $request('?url=auth/logout', ['csrf_token' => $token]);
         $check($response[0] === 302, $role . ' logout accepts valid CSRF');
     }
+    $server->query('DELETE FROM rental_units WHERE property_id = ' . $httpInventoryProperty);
+    $server->query('DELETE FROM properties WHERE id = ' . $httpInventoryProperty);
+    $server->query('DELETE FROM space_categories WHERE id = ' . $httpInventoryCategory);
     $cookie = '';
     $response = $request('?url=auth/register');
     preg_match('/name="csrf_token"\s+value="([a-f0-9]+)"/', $response[1], $matches);

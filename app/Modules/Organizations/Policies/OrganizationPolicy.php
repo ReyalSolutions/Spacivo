@@ -8,7 +8,7 @@ use App\Shared\Exceptions\AuthorizationException;
 
 final class OrganizationPolicy
 {
-    public const PERMISSIONS = ['organization.read', 'organization.members.manage'];
+    public const PERMISSIONS = ['organization.read', 'organization.members.manage', 'inventory.read', 'inventory.manage'];
     private OrganizationRepository $repository;
 
     public function __construct(OrganizationRepository $repository) { $this->repository = $repository; }
@@ -25,7 +25,8 @@ final class OrganizationPolicy
         if ($member['role'] === 'owner' && (int)$member['owner_user_id'] === $actorId) {
             return;
         }
-        if (!$this->repository->permissionGranted($organizationId, $actorId, $permission)) {
+        if (!$this->repository->permissionGranted($organizationId, $actorId, $permission)
+            && !($permission === 'inventory.read' && $this->repository->permissionGranted($organizationId, $actorId, 'inventory.manage'))) {
             throw new AuthorizationException('Forbidden');
         }
     }

@@ -6,7 +6,7 @@ Updated: 2026-10-09, Asia/Singapore. PHP 7.4.33 is the user-approved target.
 | --- | --- | --- |
 | 1 Foundation | Complete | Hosted run 37892501297 passed for e043b77 |
 | 2 Identity and permissions | Complete | Gmail test received; mail-isolation hosted run 37893511699 passed |
-| 3 Categories and inventory | Category task implemented/tested | Category migration/activation and hosted check; organization-owned properties/units remain |
+| 3 Categories and inventory | Categories enabled; properties/units implemented/tested | Inventory hosted verification and activation; photos/amenities remain |
 | 4 Marketplace | Pending Phase 3 | Cross-category discovery and Mapbox |
 | 5 Booking engine | Pending Phase 4 | Holds/pricing/idempotency/concurrency/timezones |
 | 6 Payments and operations | Pending Phase 5 | Verified sandbox/reconciliation/rental operations |

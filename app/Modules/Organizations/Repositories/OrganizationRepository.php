@@ -50,7 +50,7 @@ final class OrganizationRepository
             WHERE m.user_id = ? AND m.status = 'active' AND o.status = 'active'
                 AND ((m.role = 'owner' AND o.owner_user_id = m.user_id) OR EXISTS (
                     SELECT 1 FROM organization_member_permissions p WHERE p.organization_id = m.organization_id
-                        AND p.user_id = m.user_id AND p.permission_slug = 'organization.read'
+                        AND p.user_id = m.user_id AND p.permission_slug IN ('organization.read', 'inventory.read', 'inventory.manage')
                 )) ORDER BY o.id");
         $statement->bind_param('i', $userId);
         $statement->execute();

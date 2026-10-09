@@ -41,9 +41,9 @@
 - [x] Implement administrator configuration, capability validation, optimistic versions and public active-only reads.
 - [x] Add category management UI and versioned category REST endpoints.
 - [x] Verify category authorization, malformed combinations, activation/deactivation, duplicate codes, stale writes and HTTP/CSRF behavior.
-- [ ] Verify category commit in hosted CI.
-- [ ] Apply tested category migration and enable the category feature in the local application.
-- [ ] Implement organization-owned properties and rentable units with scoped CRUD.
+- [x] Verify category commit 5c4263e in hosted run 37894183813.
+- [x] Apply migration 004 and enable categories with explicit user approval; Apache category API returns 200.
+- [x] Implement/test organization-owned property/unit CRUD, staff grants, REST/UI, approval/reviewer records and listing lifecycle.
 - [ ] Implement amenities, safe photos, location, approval and listing lifecycle.
 - [ ] Verify that verified owners can publish approved listings.
 
@@ -58,3 +58,5 @@
 10. Flutter using the shared API.
 
 Break each phase into small tasks during inspect/plan. Do not substitute legacy feature overlap for architecture acceptance tests.
+
+Inventory task gates: hosted verification and approved migration 005/feature activation remain pending. Photos/amenities are still required before Phase 3 acceptance.
