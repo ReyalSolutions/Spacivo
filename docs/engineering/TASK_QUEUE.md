@@ -74,3 +74,8 @@ Hosted shared-UI source gate passed: run [37899186218](https://github.com/ReyalS
 [x] Repair paid-owner subscription redirects, unchanged-plan renewal activation, consistent status/expiry/limits and renewal-notice layout. Local acceptance passed; hosted verification pending.
 
 Hosted paid-owner repair gate passed: [run 37900510660](https://github.com/ReyalSolutions/Spacivo/actions/runs/37900510660), source commit a6627ad. All subscription repair acceptance checks are complete; browser visual automation remains unavailable as previously recorded.
+
+
+## 2026-10-09 — Unified reference management theme
+
+User selected a new neutral dashboard reference for all admin and owner pages. Added one management-theme stylesheet loaded by their common asset partial: slim gray sidebar, white header/cards, subtle borders, black primary actions, blue accents, compact tables/forms, consistent dialogs and responsive shell. Dashboard-specific welcome banner now uses the same theme. Existing role/organization guards remain unchanged. 215 database/HTTP checks pass. Visual browser automation remains unavailable as previously recorded; no pixel-perfect visual acceptance is claimed.

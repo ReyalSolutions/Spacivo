@@ -31,3 +31,4 @@
 <script src="/tenant/admin/assets/libs/jquery/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link rel="stylesheet" href="/tenant/public/assets/css/management.css">
+<link rel="stylesheet" href="/tenant/public/assets/css/management-theme.css">

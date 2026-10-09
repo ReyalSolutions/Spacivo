@@ -89,7 +89,7 @@ $plansList = $plansRes ? $plansRes->fetch_all(MYSQLI_ASSOC) : [];
       <!-- Welcome Banner matching reyal_solutions design -->
       <div class="row mb-4">
         <div class="col-12">
-          <div class="card border-0 animate__animated animate__fadeInDown shadow-sm"
+          <div class="card welcome-banner border-0 animate__animated animate__fadeInDown shadow-sm"
                style="background:linear-gradient(135deg, #0369a1 0%, #0d9488 100%);border-radius:18px;">
             <div class="card-body d-flex align-items-center justify-content-between flex-wrap gap-3 py-4 text-white">
               <div>

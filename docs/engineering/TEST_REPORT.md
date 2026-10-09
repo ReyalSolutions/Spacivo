@@ -43,3 +43,8 @@ Hosted paid-owner repair gate passed: [run 37900510660](https://github.com/Reyal
 ## 2026-10-09 — Header spacing repair
 
 Scoped public dashboard nav-item rules to .bottom-nav, preventing its 18% width and small typography from compressing management controls. Shared header now has nonshrinking items, a single-line clock hidden below desktop width, normal account line-height, fixed avatar sizing and truncated long names. PHP header lint and 215 database/HTTP checks passed. Browser visual automation remains unavailable as previously recorded.
+
+
+## 2026-10-09 — Unified reference management theme
+
+User selected a new neutral dashboard reference for all admin and owner pages. Added one management-theme stylesheet loaded by their common asset partial: slim gray sidebar, white header/cards, subtle borders, black primary actions, blue accents, compact tables/forms, consistent dialogs and responsive shell. Dashboard-specific welcome banner now uses the same theme. Existing role/organization guards remain unchanged. 215 database/HTTP checks pass. Visual browser automation remains unavailable as previously recorded; no pixel-perfect visual acceptance is claimed.
