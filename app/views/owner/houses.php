@@ -1,6 +1,6 @@
 <?php 
 $hideAdminHeaderTitle = true;
-require __DIR__ . '/../layouts/management_header.php'; 
+require __DIR__ . '/../layouts/management_header.php';
 ?>
 <style>
 /* Elite Dashboard Design System */

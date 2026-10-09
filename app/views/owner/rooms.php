@@ -464,5 +464,5 @@ if (isset($limits)) {
     include __DIR__ . '/../components/payment_modal.php';
 }
 
-require __DIR__ . '/../layouts/management_footer.php'; 
+require __DIR__ . '/../layouts/management_footer.php';
 ?>

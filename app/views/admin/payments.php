@@ -215,7 +215,7 @@ $(document).ready(function() {
                 data: 'amount',
                 className: 'text-center',
                 render: function(amt) {
-                    return `<div class="fw-bold text-dark">â‚±${parseFloat(amt).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>`;
+                    return `<div class="fw-bold text-dark">₱${parseFloat(amt).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</div>`;
                 }
             },
             {
@@ -315,13 +315,13 @@ $(document).ready(function() {
                                         <div class="text-xs text-muted text-uppercase fw-800 opacity-50 flex-shrink-0" style="font-size: 0.65rem;">
                                             <i class="fa-solid fa-calendar-alt me-1"></i> DATE & TIME
                                         </div>
-                                        <div class="small fw-700 text-dark text-end ms-auto">${date} Â· ${time}</div>
+                                        <div class="small fw-700 text-dark text-end ms-auto">${date} · ${time}</div>
                                     </div>
                                     <div class="p-4 rounded-4 bg-primary shadow-sm border-0 d-flex align-items-center justify-content-between">
                                         <div class="text-white text-opacity-75 fw-800 text-uppercase letter-spacing-1" style="font-size: 0.75rem;">
                                             TOTAL AMOUNT
                                         </div>
-                                        <div class="fs-4 fw-900 text-white">â‚±${amount}</div>
+                                        <div class="fs-4 fw-900 text-white">₱${amount}</div>
                                     </div>
                                 </div>
                             </div>

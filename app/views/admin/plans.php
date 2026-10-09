@@ -152,11 +152,11 @@ require __DIR__ . '/../layouts/management_header.php';
                     
                     <div class="row gx-3">
                         <div class="col-md-6 mb-3">
-                            <label class="form-label text-secondary fw-semibold small">Monthly Price (â‚±)</label>
+                            <label class="form-label text-secondary fw-semibold small">Monthly Price (₱)</label>
                             <input type="number" step="0.01" min="0" class="form-control rounded-3 py-2" id="planPriceMonthly" name="price_monthly" required placeholder="0.00">
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label class="form-label text-secondary fw-semibold small">Yearly Price (â‚±)</label>
+                            <label class="form-label text-secondary fw-semibold small">Yearly Price (₱)</label>
                             <input type="number" step="0.01" min="0" class="form-control rounded-3 py-2" id="planPriceYearly" name="price_yearly" required placeholder="0.00">
                         </div>
                     </div>
@@ -225,13 +225,13 @@ require __DIR__ . '/../layouts/management_header.php';
                     <div class="col-6">
                         <div class="p-3 bg-light rounded-4 text-center">
                             <span class="text-secondary small d-block mb-1">Monthly Billing</span>
-                            <h4 class="fw-bold text-dark mb-0" id="vPlanPriceMonthly">â‚±0.00</h4>
+                            <h4 class="fw-bold text-dark mb-0" id="vPlanPriceMonthly">₱0.00</h4>
                         </div>
                     </div>
                     <div class="col-6">
                         <div class="p-3 bg-light rounded-4 text-center border border-primary border-opacity-10">
                             <span class="text-secondary small d-block mb-1">Yearly Billing</span>
-                            <h4 class="fw-bold text-primary mb-0" id="vPlanPriceYearly">â‚±0.00</h4>
+                            <h4 class="fw-bold text-primary mb-0" id="vPlanPriceYearly">₱0.00</h4>
                         </div>
                     </div>
                 </div>
@@ -309,12 +309,12 @@ $(document).ready(function() {
             { 
                 data: 'price_monthly',
                 className: 'px-4 text-end',
-                render: (data) => `â‚±${parseFloat(data).toFixed(2)}`
+                render: (data) => `₱${parseFloat(data).toFixed(2)}`
             },
             { 
                 data: 'price_yearly',
                 className: 'px-4 text-end',
-                render: (data) => `â‚±${parseFloat(data).toFixed(2)}`
+                render: (data) => `₱${parseFloat(data).toFixed(2)}`
             },
             { 
                 data: 'bhouse_limit',
@@ -414,13 +414,13 @@ $(document).ready(function() {
                                     <div class="col-6">
                                         <div class="p-3 rounded-4 bg-light border text-center transition-all">
                                             <div class="text-xs text-muted fw-800 text-uppercase mb-1 opacity-75">Monthly</div>
-                                            <div class="fw-900 text-dark">â‚±${monthly}</div>
+                                            <div class="fw-900 text-dark">₱${monthly}</div>
                                         </div>
                                     </div>
                                     <div class="col-6">
                                         <div class="p-3 rounded-4 bg-primary text-center transition-all shadow-sm">
                                             <div class="text-white text-opacity-75 fw-800 text-uppercase mb-1" style="font-size: 0.65rem;">Yearly (Save)</div>
-                                            <div class="fw-900 text-white">â‚±${yearly}</div>
+                                            <div class="fw-900 text-white">₱${yearly}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -616,8 +616,8 @@ function viewPlan(id) {
     if (!plan) return;
 
     $('#vPlanName').text(plan.name);
-    $('#vPlanPriceMonthly').text(`â‚±${parseFloat(plan.price_monthly).toFixed(2)}`);
-    $('#vPlanPriceYearly').text(`â‚±${parseFloat(plan.price_yearly).toFixed(2)}`);
+    $('#vPlanPriceMonthly').text(`₱${parseFloat(plan.price_monthly).toFixed(2)}`);
+    $('#vPlanPriceYearly').text(`₱${parseFloat(plan.price_yearly).toFixed(2)}`);
     
     // Property Limit
     const bhouseText = plan.bhouse_limit >= 9999 ? 'Unlimited Properties' : `${plan.bhouse_limit} Properties`;

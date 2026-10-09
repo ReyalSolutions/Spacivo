@@ -354,7 +354,7 @@ $(document).ready(function () {
         table.ajax.reload();
     });
 
-    // Move Out â€” SweetAlert2 + AJAX (no page reload)
+    // Move Out — SweetAlert2 + AJAX (no page reload)
     $(document).on('click', '.btn-move-out', function() {
         const btn      = $(this);
         const id       = btn.data('id');
