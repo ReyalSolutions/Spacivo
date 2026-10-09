@@ -29,3 +29,8 @@ Hosted shared-UI source gate passed: run [37899186218](https://github.com/ReyalS
 Owner subscription redirect repair: confirmed a live expired subscription had settled renewals today. Same-plan updates returned false on zero changed rows, skipping reactivation; access checks also excluded expired rows and computed the period start as expiry. Fixed unchanged-plan success with scoped existence verification, centralized subscription entitlement/list/limits, paid renewal coverage and clamped monthly/yearly expiry. Current paid renewal now resolves active through 2026-11-09 using read-only live verification. No live billing rows changed. Next gate: hosted source verification, then resume phased development.
 
 Hosted paid-owner repair gate passed: [run 37900510660](https://github.com/ReyalSolutions/Spacivo/actions/runs/37900510660), source commit a6627ad. All subscription repair acceptance checks are complete; browser visual automation remains unavailable as previously recorded.
+
+
+## 2026-10-09 — Header spacing repair
+
+Scoped public dashboard nav-item rules to .bottom-nav, preventing its 18% width and small typography from compressing management controls. Shared header now has nonshrinking items, a single-line clock hidden below desktop width, normal account line-height, fixed avatar sizing and truncated long names. PHP header lint and 215 database/HTTP checks passed. Browser visual automation remains unavailable as previously recorded.

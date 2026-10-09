@@ -51,3 +51,8 @@ Hosted shared-UI source gate passed: run [37899186218](https://github.com/ReyalS
 ## 2026-10-09 — Paid owner subscription access
 
 Fixed owner paid-renewal redirects and unchanged-plan activation, removed duplicate subscription expiry calculation from BaseController, synchronized effective subscription listing/limits/details and migrated the remaining renewal notice to the light management shell.
+
+
+## 2026-10-09 — Header spacing repair
+
+Scoped public dashboard nav-item rules to .bottom-nav, preventing its 18% width and small typography from compressing management controls. Shared header now has nonshrinking items, a single-line clock hidden below desktop width, normal account line-height, fixed avatar sizing and truncated long names. PHP header lint and 215 database/HTTP checks passed. Browser visual automation remains unavailable as previously recorded.

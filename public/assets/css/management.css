@@ -6,3 +6,14 @@
 .management-body .page-header h1,.management-body .page-header h2{color:#2a3547}
 .management-body .welcome-section{background:linear-gradient(110deg,#006da0,#0b9586)!important;color:#fff;border:none!important;border-radius:18px!important}
 .management-body .welcome-section h1,.management-body .welcome-section h2,.management-body .welcome-section .text-dark,.management-body .welcome-section .text-muted{color:#fff!important}
+
+/* Keep management controls independent of public mobile navigation. */
+.management-header .navbar-nav{flex-wrap:nowrap}
+.management-header .navbar-nav>.nav-item{flex:0 0 auto;width:auto;padding:0;font-size:inherit}
+.management-header .management-clock{white-space:nowrap;line-height:1.4;font-size:.8rem}
+.management-header .navbar .navbar-nav .nav-item #userDropdown{line-height:1.35;padding-top:0;padding-bottom:0}
+.management-header #userDropdown>.rounded-circle{flex-shrink:0}
+.management-header .management-account{min-width:0;max-width:180px;line-height:1.35}
+.management-header .management-account>span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;line-height:1.35!important}
+.management-header .management-account>small{display:block;line-height:1.35;margin-top:3px}
+@media(max-width:575.98px){.management-header .navbar .navbar-nav .nav-item .nav-link{padding-left:10px;padding-right:10px}.management-header .navbar-collapse{min-width:0}}

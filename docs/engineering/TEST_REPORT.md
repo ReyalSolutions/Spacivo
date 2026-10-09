@@ -38,3 +38,8 @@ Hosted shared-UI source gate passed: run [37899186218](https://github.com/ReyalS
 Subscription redirect repair: 215 disposable database/HTTP assertions and 29 foundation/mail assertions passed; 198 PHP files linted with zero failures. Includes paid-expired renewal opening dashboard/houses/rooms/bookings/tenants/payments; overdue renewal notice in shared light layout; calendar month-end/leap-year boundaries; cancelled/pending/foreign/wrong-plan/wrong-cycle payments blocked; same-plan authorization; listing expiry and limits agreement. A read-only live check confirms affected renewed entitlement active through 2026-11-09. Hosted gate follows publication.
 
 Hosted paid-owner repair gate passed: [run 37900510660](https://github.com/ReyalSolutions/Spacivo/actions/runs/37900510660), source commit a6627ad. All subscription repair acceptance checks are complete; browser visual automation remains unavailable as previously recorded.
+
+
+## 2026-10-09 — Header spacing repair
+
+Scoped public dashboard nav-item rules to .bottom-nav, preventing its 18% width and small typography from compressing management controls. Shared header now has nonshrinking items, a single-line clock hidden below desktop width, normal account line-height, fixed avatar sizing and truncated long names. PHP header lint and 215 database/HTTP checks passed. Browser visual automation remains unavailable as previously recorded.

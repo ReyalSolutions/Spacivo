@@ -1,4 +1,4 @@
-<header class="app-header">
+<header class="app-header management-header">
     <nav class="navbar navbar-expand navbar-light">
         <ul class="navbar-nav">
             <li class="nav-item d-block d-xl-none">
@@ -16,7 +16,7 @@
         </ul>
         <div class="navbar-collapse justify-content-end px-0" id="navbarNav">
             <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-between gap-1">
-                <li class="nav-item d-none d-md-block me-3">
+                <li class="nav-item management-clock d-none d-xl-block me-3">
                     <div class="d-flex align-items-center text-muted small">
                         <i class="ti ti-calendar me-1"></i>
                         <span id="current-date" class="me-3 fw-medium"></span>
@@ -46,7 +46,7 @@
                         <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center fw-bold" style="width:36px;height:36px;font-size:0.9rem;">
                             <?= strtoupper(substr($userName ?? 'A', 0, 1)) ?>
                         </div>
-                        <div class="d-none d-lg-block text-start">
+                        <div class="management-account d-none d-lg-block text-start">
                             <span class="d-block fw-semibold text-dark fs-3 lh-1"><?= $userName ?></span>
                             <small class="text-muted" style="font-size:0.75rem;"><?= $userRole ?></small>
                         </div>
