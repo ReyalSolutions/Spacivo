@@ -158,6 +158,7 @@ final class AdminController extends BaseController
     public function approve_house(): void
     {
         $this->requireRole(['admin']);
+        $this->requirePermission('approve_houses');
         header('Content-Type: application/json');
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -186,6 +187,7 @@ final class AdminController extends BaseController
     public function reject_house(): void
     {
         $this->requireRole(['admin']);
+        $this->requirePermission('approve_houses');
         header('Content-Type: application/json');
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -364,6 +366,7 @@ final class AdminController extends BaseController
 
     public function houses(): void
     {
+        $this->requireRole(['admin', 'owner']);
         $this->requirePermission('view_houses');
         
         $filter = explode('/', $_GET['url'] ?? '')[2] ?? null;
@@ -383,18 +386,30 @@ final class AdminController extends BaseController
             $owners = $this->db()->query("SELECT id, first_name, last_name FROM users WHERE role_id = 2")->fetch_all(MYSQLI_ASSOC);
         }
 
+        $listingModel = new BoardingHouse($this->db());
+        $ownerId = (int)$_SESSION['user_id'];
+        $subscription = (new Subscription($this->db()))->getOwnerSubscriptionStatus($ownerId);
+        $listingCount = $role === 'admin'
+            ? (int)$this->db()->query('SELECT COUNT(*) FROM boarding_houses WHERE is_deleted = 0')->fetch_row()[0]
+            : $listingModel->countByOwnerId($ownerId);
+
         $this->render('admin/houses', [
             'houses' => [], // Now data-driven via AJAX Orchestration
             'filter' => $filter,
             'roleLabel' => $roleLabel,
             'pageTitle' => 'Properties Management',
             'owners' => $owners,
-            'ownerFilter' => $ownerFilter
+            'ownerFilter' => $ownerFilter,
+            'totalHousesCount' => $listingCount,
+            'activeSubId' => $subscription ? (int)$subscription['id'] : 0,
+            'allPlans' => (new Plan($this->db()))->getAll(),
+            'paymentSettings' => (new SystemSetting($this->db()))->getAll(),
         ]);
     }
 
     public function houses_data(): void
     {
+        $this->requireRole(['admin', 'owner']);
         $this->requirePermission('view_houses');
 
         $role = strtolower($_SESSION['role'] ?? 'owner');
@@ -573,11 +588,28 @@ final class AdminController extends BaseController
                         
                         <?php if ($roleLabel === 'Admin'): ?>
                             <div class="d-flex justify-content-between align-items-center pt-3 border-top">
-                                <div class="d-flex gap-1"></div>
+                                <div class="d-flex gap-1">
+                                <?php if ($this->hasPermission('approve_houses') && $status === 'pending'): ?>
+                                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="moderateListing(<?= $houseId ?>, 'approve')">Approve</button>
+                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="moderateListing(<?= $houseId ?>, 'reject')">Reject</button>
+                                <?php endif; ?>
+                                </div>
                                 <a href="/tenant/?url=admin/bookings&bhouse_id=<?= $houseId ?>" class="btn btn-sm btn-primary rounded-pill px-4 fw-extrabold shadow-sm ripple-button">
                                     Open Dashboard <i class="fa-solid fa-arrow-right ms-1 small"></i>
                                 </a>
                             </div>
+                        <?php endif; ?>
+                        <?php if ((int)$house['owner_id'] === $userId): ?>
+                        <div class="d-flex flex-wrap gap-2 mt-3">
+                            <?php if ($this->hasPermission('edit_houses')): ?>
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="openEditModal(<?= htmlspecialchars(json_encode($house), ENT_QUOTES, 'UTF-8') ?>)">Edit</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="openImageModal(<?= $houseId ?>, <?= htmlspecialchars(json_encode($house['name']), ENT_QUOTES, 'UTF-8') ?>)">Photos</button>
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="openAmenitiesModal(<?= $houseId ?>, <?= htmlspecialchars(json_encode($house['name']), ENT_QUOTES, 'UTF-8') ?>)">Amenities</button>
+                            <?php endif; ?>
+                            <?php if ($this->hasPermission('delete_houses')): ?>
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="confirmDelete(<?= $houseId ?>, <?= htmlspecialchars(json_encode($house['name']), ENT_QUOTES, 'UTF-8') ?>)">Delete</button>
+                            <?php endif; ?>
+                        </div>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -3110,4 +3142,50 @@ final class AdminController extends BaseController
         }
         exit;
     }
+
+    public function store_house(): void
+    {
+        (new OwnerController())->store_house();
+    }
+
+    public function update_house(): void
+    {
+        (new OwnerController())->update_house();
+    }
+
+    public function delete_house(): void
+    {
+        (new OwnerController())->delete_house();
+    }
+
+    public function upload_house_images(): void
+    {
+        (new OwnerController())->upload_house_images();
+    }
+
+    public function delete_house_image(): void
+    {
+        (new OwnerController())->delete_house_image();
+    }
+
+    public function get_house_images(): void
+    {
+        (new OwnerController())->get_house_images();
+    }
+
+    public function get_house_amenities(): void
+    {
+        (new OwnerController())->get_house_amenities();
+    }
+
+    public function update_house_amenities(): void
+    {
+        (new OwnerController())->update_house_amenities();
+    }
+
+    public function load_more_houses(): void
+    {
+        (new OwnerController())->load_more_houses();
+    }
+
 }

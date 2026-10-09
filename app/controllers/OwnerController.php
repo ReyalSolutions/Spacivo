@@ -690,74 +690,27 @@ final class OwnerController extends BaseController
 
     public function houses(): void
     {
-        $this->requireRole(['owner', 'admin']);
-
-        if (isset($_GET['status']) && $_GET['status'] === 'cancelled') {
-            $_SESSION['error'] = 'Payment process was cancelled. No changes were made.';
-            header('Location: /tenant/?url=owner/houses');
-            exit;
-        }
-        $ownerId = (int)$_SESSION['user_id'];
-        $model = new BoardingHouse($this->db());
-        
-        $limit = 10;
-        $totalHousesCount = $model->countByOwnerId($ownerId);
-        $houses = $model->getByOwnerId($ownerId, $limit, 0);
-        $paymentModel = new Payment($this->db());
-        $totalRevenue = $paymentModel->getTotalRevenueForOwner($ownerId);
-        
-        // Enrich houses with room stats
-        foreach ($houses as &$house) {
-            $house['rooms'] = $model->getRoomsByBoardingHouseId((int)$house['id']);
-            $house['amenities'] = $model->getAmenitiesForBoardingHouse((int)$house['id']);
-            $house['images'] = $model->getImages((int)$house['id']);
-        }
-        
-        $subModel = new Subscription($this->db());
-        $limits = $subModel->getLimitsForOwner($ownerId);
-        
-        // Fix: Fetch owner's active subscription ID to allow direct plan upgrades from the modal
-        $activeSubQuery = $this->db()->prepare("SELECT id FROM subscriptions WHERE owner_id = ? AND status = 'active' ORDER BY id DESC LIMIT 1");
-        $activeSubQuery->bind_param('i', $ownerId);
-        $activeSubQuery->execute();
-        $activeSubRes = $activeSubQuery->get_result()->fetch_assoc();
-        $activeSubId = $activeSubRes ? (int)$activeSubRes['id'] : 0;
-
-        $planModel = new Plan($this->db());
-        $allPlans = $planModel->getAll();
-
-        $settingModel = new SystemSetting($this->db());
-        $paymentSettings = $settingModel->getAll();
-        
-        $this->render('owner/houses', [
-            'houses' => $houses,
-            'totalHousesCount' => $totalHousesCount,
-            'totalRevenue' => $totalRevenue,
-            'limits' => $limits,
-            'activeSubId' => $activeSubId,
-            'allPlans' => $allPlans,
-            'paymentSettings' => $paymentSettings,
-            'pageTitle' => 'Manage My Properties'
-        ]);
+        (new AdminController())->houses();
     }
 
     public function store_house(): void
     {
+        $this->requirePermission('add_houses');
         $this->requireRole(['owner', 'admin']);
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirect('owner/houses');
+            $this->redirect('admin/houses');
         }
 
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $_SESSION['error'] = 'Invalid security token configuration.';
-            $this->redirect('owner/houses');
+            $this->redirect('admin/houses');
         }
 
         $address = trim($_POST['address'] ?? '');
         if (!$this->validateAddress($address)) {
             $_SESSION['error'] = 'Invalid address format. Required: street/purok, barangay, city, province, country';
-            $this->redirect('owner/houses');
+            $this->redirect('admin/houses');
         }
 
         $ownerId = (int)$_SESSION['user_id'];
@@ -768,7 +721,7 @@ final class OwnerController extends BaseController
 
         if ($limits['bhouse_limit'] > 0 && $currentCount >= $limits['bhouse_limit']) {
             $_SESSION['error'] = 'Property limit reached. Please upgrade your plan to add more boarding houses.';
-            $this->redirect('owner/houses');
+            $this->redirect('admin/houses');
         }
         $lat = $_POST['latitude'] ?? '';
         $lng = $_POST['longitude'] ?? '';
@@ -803,20 +756,21 @@ final class OwnerController extends BaseController
             $_SESSION['error'] = 'Failed to register property. Please check your inputs.';
         }
 
-        $this->redirect('owner/houses');
+        $this->redirect('admin/houses');
     }
 
     public function update_house(): void
     {
+        $this->requirePermission('edit_houses');
         $this->requireRole(['owner', 'admin']);
 
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirect('owner/houses');
+            $this->redirect('admin/houses');
         }
 
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $_SESSION['error'] = 'Security validation failed.';
-            $this->redirect('owner/houses');
+            $this->redirect('admin/houses');
         }
 
         $houseId = (int)($_POST['house_id'] ?? 0);
@@ -826,13 +780,13 @@ final class OwnerController extends BaseController
         $existing = $model->getById($houseId);
         if (!$existing || (int)$existing['owner_id'] !== (int)$_SESSION['user_id']) {
             $_SESSION['error'] = 'Unauthorized access to property identity.';
-            $this->redirect('owner/houses');
+            $this->redirect('admin/houses');
         }
 
         $address = trim($_POST['address'] ?? '');
         if (!$this->validateAddress($address)) {
             $_SESSION['error'] = 'Format error: street/purok, barangay, city, province, country required.';
-            $this->redirect('owner/houses');
+            $this->redirect('admin/houses');
         }
 
         $data = [
@@ -864,20 +818,21 @@ final class OwnerController extends BaseController
             $_SESSION['error'] = 'Failed to update property meta-data.';
         }
 
-        $this->redirect('owner/houses');
+        $this->redirect('admin/houses');
     }
 
     public function delete_house(): void
     {
+        $this->requirePermission('delete_houses');
         $this->requireRole(['owner', 'admin']);
         
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            $this->redirect('owner/houses');
+            $this->redirect('admin/houses');
         }
 
         if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
             $_SESSION['error'] = 'Invalid cryptographic token.';
-            $this->redirect('owner/houses');
+            $this->redirect('admin/houses');
         }
 
         $houseId = (int)($_POST['house_id'] ?? 0);
@@ -887,7 +842,7 @@ final class OwnerController extends BaseController
         $existing = $model->getById($houseId);
         if (!$existing || (int)$existing['owner_id'] !== (int)$_SESSION['user_id']) {
             $_SESSION['error'] = 'Destructive action blocked: Ownership mismatch.';
-            $this->redirect('owner/houses');
+            $this->redirect('admin/houses');
         }
 
         if ($model->delete($houseId)) {
@@ -909,7 +864,7 @@ final class OwnerController extends BaseController
             $_SESSION['error'] = 'Failed to decommission property record.';
         }
 
-        $this->redirect('owner/houses');
+        $this->redirect('admin/houses');
     }
 
     public function move_out(): void
@@ -965,6 +920,7 @@ final class OwnerController extends BaseController
 
     public function upload_house_images(): void
     {
+        $this->requirePermission('edit_houses');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -1044,6 +1000,7 @@ final class OwnerController extends BaseController
 
     public function delete_house_image(): void
     {
+        $this->requirePermission('edit_houses');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -1091,6 +1048,7 @@ final class OwnerController extends BaseController
 
     public function get_house_images(): void
     {
+        $this->requirePermission('view_houses');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -1108,6 +1066,7 @@ final class OwnerController extends BaseController
 
     public function get_house_amenities(): void
     {
+        $this->requirePermission('view_houses');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -1130,6 +1089,7 @@ final class OwnerController extends BaseController
 
     public function update_house_amenities(): void
     {
+        $this->requirePermission('edit_houses');
         $this->requireRole(['owner', 'admin']);
         header('Content-Type: application/json');
 
@@ -1178,6 +1138,7 @@ final class OwnerController extends BaseController
 
     public function load_more_houses(): void
     {
+        $this->requirePermission('view_houses');
         $this->requireRole(['owner', 'admin']);
         $ownerId = (int)$_SESSION['user_id'];
         $offset = (int)($_GET['offset'] ?? 0);

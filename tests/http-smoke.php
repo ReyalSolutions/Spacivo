@@ -16,6 +16,14 @@ foreach ([1 => 'admin', 2 => 'owner', 3 => 'tenant'] as $roleId => $slug) {
 $server->query("INSERT INTO permissions (name, slug, category, module) VALUES ('Dashboard', 'view_dashboard', 'dashboard', 'dashboard')");
 $permissionId = $server->insert_id;
 $server->query('INSERT INTO role_permissions (role_id, permission_id) VALUES (1, ' . $permissionId . '), (2, ' . $permissionId . ')');
+foreach (['view_houses', 'add_houses', 'edit_houses', 'delete_houses', 'approve_houses'] as $listingPermission) {
+    $statement = $server->prepare("INSERT INTO permissions (name, slug, category, module) VALUES (?, ?, 'Property', 'Boarding House')");
+    $statement->bind_param('ss', $listingPermission, $listingPermission);
+    $statement->execute();
+    $listingPermissionId = (int)$server->insert_id;
+    $server->query('INSERT INTO role_permissions (role_id, permission_id) VALUES (1, ' . $listingPermissionId . ')');
+    if ($listingPermission === 'view_houses') $server->query('INSERT INTO role_permissions (role_id, permission_id) VALUES (2, ' . $listingPermissionId . ')');
+}
 $fixtureUsers = new User($server);
 $fixtureOwner = (int)$fixtureUsers->findByUsername('fixture_owner')['id'];
 $fixtureOtherOwner = $fixtureUsers->create('Foreign', null, 'Owner', 'foreign-owner@example.test', '09991111110', 2, 'foreign_owner', 'FixturePassword123');
@@ -27,6 +35,8 @@ $fixtureSubscription = $server->insert_id;
 $server->query("INSERT INTO plan_payments (owner_id, subscription_id, plan_id, billing_cycle, amount, gateway, payment_method, status, paid_at) VALUES (" . $fixtureOwner . ', ' . $fixtureSubscription . ', ' . $fixturePlan . ", 'monthly', 100, 'fixture', 'Cash', 'paid', NOW())");
 $server->query("INSERT INTO boarding_houses (owner_id, name, status) VALUES (" . $fixtureOtherOwner . ", 'Foreign private house', 'approved')");
 $fixtureForeignHouse = $server->insert_id;
+$server->query("INSERT INTO boarding_houses (owner_id, name, address, status) VALUES (" . $fixtureOwner . ", 'Own scoped listing', 'Street, Barangay, City, Province, Country', 'pending')");
+$fixtureOwnHouse = (int)$server->insert_id;
 $server->query("INSERT INTO rooms (boarding_house_id, room_name, price) VALUES (" . $fixtureForeignHouse . ", 'Foreign room', 100)");
 $fixtureForeignRoom = $server->insert_id;
 $server->query("INSERT INTO bookings (user_id, room_id, start_date, status, is_moved_out) VALUES (" . $fixtureOtherTenant . ', ' . $fixtureForeignRoom . ", CURRENT_DATE, 'pending', 0)");
@@ -171,6 +181,8 @@ try {
             $check($response[0] === 302, 'Shared interface does not grant owner administrator access');
         }
         if ($role === 'admin') {
+            $allListings = $request('?url=admin/houses_data');
+            $check($allListings[0] === 200 && strpos($allListings[1], 'Foreign private house') !== false && strpos($allListings[1], 'Own scoped listing') !== false, 'Shared admin listing data includes every owner');
             $response = $request('?url=property/index');
             $check($response[0] === 200 && strpos($response[1], 'Listing review') !== false, 'Administrator listing review page renders');
             $response = $request('?url=category/index');
@@ -198,6 +210,26 @@ try {
             $server->query('UPDATE users SET role_id = 1 WHERE id = ' . $adminId);
         }
         if ($role === 'owner') {
+            foreach (['?url=admin/houses', '?url=owner/houses', 'admin/houses.php'] as $listingRoute) {
+                $listingPage = $request($listingRoute);
+                $check($listingPage[0] === 200 && strpos($listingPage[1], 'id="houses-table"') !== false, 'Both listing entry routes render canonical admin page: ' . $listingRoute);
+            }
+            $ownedListings = $request('?url=admin/houses_data&owner_id=' . $fixtureOtherOwner);
+            $check($ownedListings[0] === 200 && strpos($ownedListings[1], 'Own scoped listing') !== false && strpos($ownedListings[1], 'Foreign private house') === false, 'Owner listing query ignores attempted foreign-owner filter');
+            foreach (['store_house', 'update_house', 'delete_house', 'upload_house_images', 'update_house_amenities'] as $listingAction) {
+                $deniedListingWrite = $request('?url=admin/' . $listingAction, ['house_id' => $fixtureOwnHouse, 'csrf_token' => $token]);
+                $check($deniedListingWrite[0] === 403, 'Read-only listing grant denies direct ' . $listingAction);
+            }
+            $editPermission = (int)$server->query("SELECT id FROM permissions WHERE slug = 'edit_houses'")->fetch_row()[0];
+            $server->query('INSERT INTO role_permissions (role_id, permission_id) VALUES (2, ' . $editPermission . ')');
+            $foreignListingEdit = $request('?url=admin/update_house', ['house_id' => $fixtureForeignHouse, 'name' => 'Unauthorized change', 'csrf_token' => $token]);
+            $check($foreignListingEdit[0] === 302 && $server->query('SELECT name FROM boarding_houses WHERE id = ' . $fixtureForeignHouse)->fetch_row()[0] === 'Foreign private house', 'Edit permission never overrides owner listing boundary');
+            $server->query('DELETE FROM role_permissions WHERE role_id = 2 AND permission_id = ' . $editPermission);
+            $viewPermission = (int)$server->query("SELECT id FROM permissions WHERE slug = 'view_houses'")->fetch_row()[0];
+            $server->query('DELETE FROM role_permissions WHERE role_id = 2 AND permission_id = ' . $viewPermission);
+            $revokedListings = $request('?url=admin/houses_data');
+            $check($revokedListings[0] === 403, 'Listing permission revocation applies on next request');
+            $server->query('INSERT INTO role_permissions (role_id, permission_id) VALUES (2, ' . $viewPermission . ')');
             $response = $request('api/v1/admin/categories');
             $check($response[0] === 403, 'Owner cannot read category administration API');
             $response = $request('?url=owner/get_room&id=' . $fixtureForeignRoom);

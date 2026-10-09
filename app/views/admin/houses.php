@@ -4,11 +4,14 @@
     <!-- Header & Filter Section -->
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
         <div>
-            <h2 class="fw-bold m-0 text-gradient-primary">Property Governance</h2>
-            <p class="text-muted small mb-0">Manage and monitor all boarding house properties in the system.</p>
+            <h2 class="fw-bold m-0 text-gradient-primary">Boarding Houses</h2>
+            <p class="text-muted small mb-0"><?= $roleLabel === 'Admin' ? 'Manage all boarding house listings.' : 'Manage your own boarding house listings.' ?></p>
         </div>
         
         <div class="d-flex gap-2 align-items-center header-actions">
+            <?php if ($this->hasPermission('add_houses')): ?>
+            <button type="button" class="btn btn-primary" onclick="openAddModal()">Add property</button>
+            <?php endif; ?>
             <?php if ($roleLabel === 'Admin'): ?>
                 <div style="min-width: 180px;">
                     <div class="input-group input-group-sm rounded-pill border overflow-hidden">
@@ -414,5 +417,12 @@ function resetFilters() {
 }
 </style>
 
-<?php require __DIR__ . '/../layouts/management_footer.php'; ?>
+<script>
+function moderateListing(id, action) {
+    $.ajax({url:'/tenant/?url=admin/' + action + '_house',method:'POST',dataType:'json',data:{house_id:id,csrf_token:$('meta[name="csrf-token"]').attr('content')}})
+        .done(function(result){if(result.success){$('#houses-table').DataTable().ajax.reload(null,false);}else{Swal.fire('Unable to update',result.message,'error');}})
+        .fail(function(){Swal.fire('Unable to update','Permission or security validation failed.','error');});
+}
+</script>
+<?php require __DIR__ . '/../components/listing_controls.php'; require __DIR__ . '/../layouts/management_footer.php'; ?>
 

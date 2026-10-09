@@ -1,305 +1,3 @@
-<?php 
-$hideAdminHeaderTitle = true;
-require __DIR__ . '/../layouts/management_header.php';
-?>
-<style>
-/* Elite Dashboard Design System */
-:root {
-    --glass-bg: rgba(255, 255, 255, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.3);
-    --accent-indigo: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-    --accent-emerald: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    --accent-amber: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-}
-
-.dashboard-container {
-    animation: fadeIn 0.8s ease-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Glass Stats Cards */
-.stats-card {
-    background: var(--glass-bg);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.07);
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.stats-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 15px 45px rgba(31, 38, 135, 0.12);
-}
-
-.icon-box {
-    width: 56px;
-    height: 56px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 18px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-}
-
-/* Professional Property Cards */
-.house-card {
-    border: none;
-    border-radius: 28px;
-    background: #ffffff;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.03);
-    transition: all 0.4s ease;
-    border: 1px solid #f1f5f9;
-}
-.house-card:hover {
-    transform: translateY(-12px);
-    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
-}
-
-.house-img-container {
-    height: 220px;
-    border-radius: 24px 24px 0 0;
-    position: relative;
-    overflow: hidden;
-    background: #f8fafc;
-}
-
-.house-img-placeholder {
-    height: 100%;
-    background: linear-gradient(45deg, #1e293b, #334155);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: rgba(255,255,255,0.9);
-    transition: transform 0.6s ease;
-}
-.house-card:hover .house-img-placeholder { transform: scale(1.1); }
-
-/* Animated Badges */
-.status-badge {
-    position: absolute;
-    top: 24px;
-    right: 24px;
-    padding: 8px 16px;
-    border-radius: 40px;
-    font-size: 0.65rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    z-index: 5;
-    animation: pulseBadge 2s infinite;
-}
-
-@keyframes pulseBadge {
-    0% { transform: scale(1); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-    50% { transform: scale(1.05); box-shadow: 0 4px 25px rgba(0,0,0,0.2); }
-    100% { transform: scale(1); box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-}
-
-.status-approved { background: rgba(16, 185, 129, 0.9); color: white; }
-.status-pending { background: rgba(245, 158, 11, 0.9); color: white; }
-.status-rejected { background: rgba(239, 68, 68, 0.9); color: white; }
-
-/* Action Clusters & Premium Tooltips */
-.action-cluster {
-    gap: 12px;
-}
-
-.tool-icon {
-    width: 46px;
-    height: 46px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 14px;
-    border: 1.5px solid transparent;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    font-size: 1.15rem;
-    position: relative;
-    text-decoration: none !important;
-}
-.tool-icon:hover {
-    transform: translateY(-4px) scale(1.08) rotate(3deg);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.08);
-    z-index: 10;
-}
-.tool-icon.delete:hover {
-    transform: translateY(-4px) scale(1.08) rotate(-3deg);
-}
-
-/* Tooltip Magic */
-[data-tooltip]::before,
-[data-tooltip]::after {
-    position: absolute;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    pointer-events: none;
-    z-index: 1000;
-}
-[data-tooltip]::after {
-    content: attr(data-tooltip);
-    bottom: 115%;
-    left: 50%;
-    transform: translateX(-50%) translateY(8px);
-    background: #0f172a;
-    color: #fff;
-    font-size: 0.72rem;
-    font-weight: 700;
-    padding: 6px 14px;
-    border-radius: 8px;
-    white-space: nowrap;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    letter-spacing: 0.5px;
-}
-[data-tooltip]::before {
-    content: '';
-    bottom: calc(115% - 5px);
-    left: 50%;
-    transform: translateX(-50%) translateY(8px);
-    border: 6px solid transparent;
-    border-top-color: #0f172a;
-}
-[data-tooltip]:hover::before,
-[data-tooltip]:hover::after {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(-50%) translateY(0);
-}
-
-/* Custom Modal Meta */
-.modal-content { border-radius: 32px; border: none; }
-.modal-header { border-radius: 32px 32px 0 0; }
-.modal-footer { border-radius: 0 0 32px 32px; }
-
-</style>
-
-<div class="container-fluid px-4 py-5 dashboard-container">
-    <!-- Header Hero -->
-    <div class="row align-items-center mb-5">
-        <div class="col-lg-7">
-            <div class="d-flex align-items-center gap-3 mb-2">
-                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-800 small uppercase letter-spacing-1">Portfolio v2.0</span>
-                <span class="text-muted small">|</span>
-                <span class="text-muted small fw-600">Secure Administrative Dashboard</span>
-            </div>
-            <h1 class="display-5 fw-900 text-dark mb-2 letter-spacing--2">Property Management</h1>
-            <p class="text-muted fs-5 mb-0 fw-500">Orchestrate your boarding houses with real-time analytics and secure logistics.</p>
-        </div>
-        <div class="col-lg-5 text-lg-end mt-4 mt-lg-0">
-            <button class="btn btn-primary rounded-pill px-5 py-3 shadow-lg fw-900 d-inline-flex align-items-center gap-3 transition-all hover-scale" onclick="openAddModal()">
-                <div class="bg-white rounded-circle p-2 d-flex align-items-center justify-content-center shadow-sm" style="width:34px; height:34px;">
-                    <i class="fa-solid fa-plus-circle text-primary"></i>
-                </div>
-                <span>REGISTER NEW PROPERTY</span>
-            </button>
-        </div>
-    </div>
-
-    <!-- Analytics Dashboard -->
-    <div class="row g-4 mb-5">
-        <div class="col-xl-3 col-md-6">
-            <div class="card stats-card p-4 h-100">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div class="icon-box bg-cyan-50 text-cyan-600" style="background:#ecfeff; color:#0891b2;">
-                        <i class="fa-solid fa-building-circle-check fa-xl"></i>
-                    </div>
-                    <span class="badge bg-info-subtle text-info rounded-pill px-2 py-1 small fw-800">Verified</span>
-                </div>
-                <div class="text-muted small fw-800 uppercase letter-spacing-1 mb-1">Active Assets</div>
-                <div class="h2 mb-0 fw-900"><?= count($houses) ?> <small class="text-muted fw-500 h6">Units</small></div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-md-6">
-            <div class="card stats-card p-4 h-100">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div class="icon-box bg-emerald-50 text-emerald-600" style="background:#ecfdf5; color:#059669;">
-                        <i class="fa-solid fa-bed-pulse fa-xl"></i>
-                    </div>
-                    <span class="text-muted small fw-700">Total Capacity</span>
-                </div>
-                <div class="text-muted small fw-800 uppercase letter-spacing-1 mb-1">Human Occupancy</div>
-                <div class="h2 mb-0 fw-900">
-                    <?php 
-                        $totalCap = array_reduce($houses, fn($c, $h) => $c + array_reduce($h['rooms'] ?? [], fn($cc, $r) => $cc + $r['capacity'], 0), 0);
-                        echo $totalCap;
-                    ?>
-                    <small class="text-muted fw-500 h6">Slots</small>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-md-6">
-            <div class="card stats-card p-4 h-100">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div class="icon-box bg-amber-50 text-amber-600" style="background:#fffbeb; color:#d97706;">
-                        <i class="fa-solid fa-wallet fa-xl"></i>
-                    </div>
-                    <span class="badge bg-success-subtle text-success rounded-pill px-2 py-1 small fw-800">Verified</span>
-                </div>
-                <div class="text-muted small fw-800 uppercase letter-spacing-1 mb-1">Total Revenue</div>
-                <div class="h2 mb-0 fw-900">
-                    <small class="text-muted fw-500 h6">₱</small><?= number_format($totalRevenue, 2) ?>
-                </div>
-            </div>
-        </div>
-        <div class="col-xl-3 col-md-6">
-            <div class="card stats-card p-4 h-100" style="background: linear-gradient(135deg, #64748b 0%, #334155 100%); border: none; color: white; box-shadow: 0 10px 30px rgba(51, 65, 85, 0.3);">
-                <div class="d-flex justify-content-between align-items-start mb-3">
-                    <div class="icon-box shadow-sm" style="background: rgba(255,255,255,0.15); color: #ffffff;">
-                        <i class="fa-solid fa-screwdriver-wrench" style="color: #ffffff; font-size: 26px;"></i>
-                    </div>
-                </div>
-                <div class="text-white text-opacity-70 small fw-800 uppercase letter-spacing-1 mb-1">Provisioned Amenities</div>
-                <div class="h2 mb-0 fw-900">
-                    <?php 
-                        $totalAmenities = array_reduce($houses, fn($c, $h) => $c + count($h['amenities'] ?? []), 0);
-                        echo $totalAmenities;
-                    ?>
-                    <small class="text-white text-opacity-50 fw-500 h6">Services</small>
-                </div>
-                <div class="text-white text-opacity-40 small mt-3 fw-600">Across Portfolio Asset Suite</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Active Property Clusters -->
-    <div id="housesGrid" class="row g-4 mb-3">
-        <?php if (empty($houses)): ?>
-            <div class="col-12 text-center py-5">
-                <div class="p-5 bg-white rounded-5 shadow-sm border border-dashed border-2">
-                    <div class="mb-4">
-                        <i class="fa-solid fa-house-circle-exclamation text-primary bg-primary bg-opacity-10 p-5 rounded-circle" style="font-size: 5rem;"></i>
-                    </div>
-                    <h2 class="fw-900 text-dark mb-3">Your Portfolio is Empty</h2>
-                    <p class="text-muted fs-5 mb-4 mx-auto" style="max-width: 500px;">Begin by registering your first property to access the StayHub administrative ecosystem and start attracting verified tenants.</p>
-                    <button class="btn btn-primary rounded-pill px-5 py-3 fw-900 shadow-lg d-inline-flex align-items-center gap-2" onclick="openAddModal()">
-                        <i class="fa-solid fa-plus-circle fa-lg"></i>
-                        <span>REGISTER FIRST PROPERTY</span>
-                    </button>
-                </div>
-            </div>
-        <?php else: ?>
-            <?php foreach ($houses as $h): ?>
-                <?php include __DIR__ . '/_house_card.php'; ?>
-            <?php endforeach; ?>
-        <?php endif; ?>
-    </div>
-
-    <?php if (!empty($houses) && isset($totalHousesCount) && $totalHousesCount > count($houses)): ?>
-        <div class="text-center mt-3 mb-5" id="loadMoreContainer">
-            <button class="btn btn-outline-primary rounded-pill px-5 py-3 fw-800 shadow-sm" id="loadMoreBtn" onclick="loadMoreHouses()">
-                <i class="fa-solid fa-arrow-down fa-bounce me-2"></i> LOAD MORE PROPERTIES (<span id="remainingCount"><?= $totalHousesCount - count($houses) ?></span> REMAINING)
-            </button>
-        </div>
-    <?php endif; ?>
-</div>
-
 <!-- Modal Refinements -->
 <div class="modal fade" id="houseModal" data-bs-backdrop="false" tabindex="-1" style="background-color: rgba(0,0,0,0.6); z-index: 1060;">
     <div class="modal-dialog modal-dialog-centered modal-lg">
@@ -457,7 +155,7 @@ require __DIR__ . '/../layouts/management_header.php';
 </div>
 
 <!-- Delete Confirmation Form -->
-<form id="deleteForm" method="POST" action="/tenant/?url=owner/delete_house">
+<form id="deleteForm" method="POST" action="/tenant/?url=admin/delete_house">
     <input type="hidden" name="csrf_token" value="<?= htmlspecialchars(Csrf::token()) ?>">
     <input type="hidden" name="house_id" id="deleteHouseId">
 </form>
@@ -489,7 +187,7 @@ document.getElementById('houseForm').onsubmit = function(e) {
 
 
 function openEditModal(house) {
-    document.getElementById('houseForm').action = '/tenant/?url=owner/update_house';
+    document.getElementById('houseForm').action = '/tenant/?url=admin/update_house';
     document.getElementById('modalTitle').innerText = 'Refine Asset Meta-data';
     document.getElementById('houseId').value = house.id;
     document.getElementById('houseName').value = house.name;
@@ -516,7 +214,7 @@ function openImageModal(houseId, houseName) {
 }
 
 function loadExistingImages() {
-    fetch('/tenant/?url=owner/get_house_images&house_id=' + currentImgHouseId)
+    fetch('/tenant/?url=admin/get_house_images&house_id=' + currentImgHouseId)
         .then(r => r.json())
         .then(images => {
             const grid = document.getElementById('existingImagesGrid');
@@ -551,65 +249,8 @@ function loadExistingImages() {
  * @param {Array} images  — [{id, image_path, sort_order}, ...]
  */
 function refreshCardHero(houseId, images) {
-    const container = document.getElementById('card-img-' + houseId);
-    if (!container) return;
-
-    const carouselId = 'carousel-' + houseId;
-
-    // Destroy existing Bootstrap carousel instance if any
-    const oldCarousel = document.getElementById(carouselId);
-    if (oldCarousel) {
-        const bsInstance = bootstrap.Carousel.getInstance(oldCarousel);
-        if (bsInstance) bsInstance.dispose();
-    }
-
-    // Remove everything except the status badge
-    Array.from(container.children).forEach(el => {
-        if (!el.classList.contains('status-badge')) el.remove();
-    });
-
-    if (images.length === 0) {
-        // Restore placeholder
-        const ph = document.createElement('div');
-        ph.className = 'house-img-placeholder';
-        ph.innerHTML = '<i class="fa-solid fa-house-chimney fa-4x mb-2 opacity-50"></i><span class="small fw-800 text-uppercase letter-spacing-2 opacity-50">Boarding House</span>';
-        container.appendChild(ph);
-        return;
-    }
-
-    // Build carousel
-    const slides = images.map((img, i) => `
-        <div class="carousel-item h-100 ${i === 0 ? 'active' : ''}" style="background-color: #0f172a;">
-            <img src="${img.image_path}" alt="Property Photo"
-                style="width:100%;height:220px;object-fit:contain;display:block;">
-        </div>
-    `).join('');
-
-    const controls = images.length > 1 ? `
-        <button class="carousel-control-prev" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev" style="opacity:1;">
-            <i class="fa-solid fa-chevron-left text-primary fs-2" style="filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.8));"></i>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#${carouselId}" data-bs-slide="next" style="opacity:1;">
-            <i class="fa-solid fa-chevron-right text-primary fs-2" style="filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.8));"></i>
-        </button>
-        <div style="position:absolute;bottom:10px;right:14px;background:rgba(0,0,0,0.55);color:#fff;font-size:0.68rem;padding:3px 9px;border-radius:20px;font-weight:700;backdrop-filter:blur(6px);z-index:5;">
-            <i class="fa-solid fa-images me-1"></i>${images.length} Photos
-        </div>
-    ` : '';
-
-    const carouselEl = document.createElement('div');
-    carouselEl.id = carouselId;
-    carouselEl.className = 'carousel slide h-100';
-    carouselEl.setAttribute('data-bs-ride', 'carousel');
-    carouselEl.style.cssText = 'border-radius:24px 24px 0 0;overflow:hidden;';
-    carouselEl.innerHTML = `<div class="carousel-inner h-100">${slides}</div>${controls}`;
-
-    container.appendChild(carouselEl);
-
-    // Boot Bootstrap carousel
-    new bootstrap.Carousel(carouselEl, { ride: 'carousel', interval: 3500 });
+    if ($.fn.dataTable.isDataTable('#houses-table')) $('#houses-table').DataTable().ajax.reload(null, false);
 }
-
 
 function handleDrop(event) {
     event.preventDefault();
@@ -652,7 +293,7 @@ function commitUpload() {
     txt.textContent = 'Uploading ' + stagedFiles.length + ' image(s)...';
 
     const xhr = new XMLHttpRequest();
-    xhr.open('POST', '/tenant/?url=owner/upload_house_images');
+    xhr.open('POST', '/tenant/?url=admin/upload_house_images');
     xhr.upload.onprogress = e => {
         if (e.lengthComputable) bar.style.width = Math.round((e.loaded / e.total) * 90) + '%';
     };
@@ -696,7 +337,7 @@ function deleteImage(imageId) {
         fd.append('csrf_token', CSRF_TOKEN);
         fd.append('house_id', currentImgHouseId);
         fd.append('image_id', imageId);
-        fetch('/tenant/?url=owner/delete_house_image', { method: 'POST', body: fd })
+        fetch('/tenant/?url=admin/delete_house_image', { method: 'POST', body: fd })
             .then(r => r.json())
             .then(res => {
                 if (res.success) {
@@ -735,7 +376,7 @@ function openAmenitiesModal(houseId, houseName) {
     document.getElementById('amenitiesLoader').classList.remove('d-none');
     document.getElementById('amenitiesForm').classList.add('d-none');
     
-    fetch('/tenant/?url=owner/get_house_amenities&house_id=' + houseId)
+    fetch('/tenant/?url=admin/get_house_amenities&house_id=' + houseId)
         .then(r => r.json())
         .then(data => {
             document.getElementById('amenitiesLoader').classList.add('d-none');
@@ -775,7 +416,7 @@ function saveAmenities() {
     btn.disabled = true;
     btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>SAVING...';
     
-    fetch('/tenant/?url=owner/update_house_amenities', { method: 'POST', body: formData })
+    fetch('/tenant/?url=admin/update_house_amenities', { method: 'POST', body: formData })
         .then(r => r.json())
         .then(res => {
             btn.disabled = false;
@@ -793,50 +434,13 @@ function saveAmenities() {
         });
 }
 
-let currentOffset = 10;
-function loadMoreHouses() {
-    const btn = document.getElementById('loadMoreBtn');
-    const originalContent = btn.innerHTML;
-    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>LOADING...';
-    btn.disabled = true;
-
-    fetch('/tenant/?url=owner/load_more_houses&offset=' + currentOffset)
-        .then(r => r.text())
-        .then(html => {
-            if (html.trim() !== '') {
-                const temp = document.createElement('div');
-                temp.innerHTML = html;
-                const loadedCount = temp.querySelectorAll('.house-card').length;
-                
-                document.getElementById('housesGrid').insertAdjacentHTML('beforeend', html);
-                currentOffset += loadedCount;
-                
-                const total = <?= isset($totalHousesCount) ? $totalHousesCount : 0 ?>;
-                const remaining = total - currentOffset;
-                
-                if (remaining > 0) {
-                    btn.disabled = false;
-                    btn.innerHTML = `<i class="fa-solid fa-arrow-down fa-bounce me-2"></i> LOAD MORE PROPERTIES (<span id="remainingCount">${remaining}</span> REMAINING)`;
-                } else {
-                    document.getElementById('loadMoreContainer').remove();
-                }
-            } else {
-                document.getElementById('loadMoreContainer').remove();
-            }
-        })
-        .catch(err => {
-            btn.innerHTML = originalContent;
-            btn.disabled = false;
-            Swal.fire('Error', 'Failed to load more properties.', 'error');
-        });
-}
 </script>
 
 <?php if (isset($_SESSION['success'])): ?>
 <script>
 Swal.fire({
     title: 'Success!',
-    text: "<?= $_SESSION['success'] ?>",
+    text: <?= json_encode($_SESSION['success'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>,
     icon: 'success',
     confirmButtonColor: '#4f46e5',
     borderRadius: '24px',
@@ -850,7 +454,7 @@ Swal.fire({
 <script>
 Swal.fire({
     title: 'Action Failed',
-    text: "<?= $_SESSION['error'] ?>",
+    text: <?= json_encode($_SESSION['error'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>,
     icon: 'error',
     confirmButtonColor: '#ef4444',
     borderRadius: '24px'
@@ -864,7 +468,7 @@ include __DIR__ . '/../components/payment_modal.php';
 ?>
 
 <script>
-const BHOUSE_LIMIT = <?= (int)($limits['bhouse_limit'] ?? 0) ?>;
+const BHOUSE_LIMIT = <?= $roleLabel === 'Admin' ? 2147483647 : (int)((new Subscription($this->db()))->getLimitsForOwner((int)$_SESSION['user_id'])['bhouse_limit']) ?>;
 const CURRENT_BHOUSE_COUNT = <?= (int)($totalHousesCount ?? count($houses)) ?>;
 
 function openAddModal() {
@@ -873,7 +477,7 @@ function openAddModal() {
         return;
     }
     document.getElementById('modalTitle').innerText = 'Register New Property';
-    document.getElementById('houseForm').action = '/tenant/?url=owner/store_house';
+    document.getElementById('houseForm').action = '/tenant/?url=admin/store_house';
     document.getElementById('houseId').value = '';
     document.getElementById('houseName').value = '';
     document.getElementById('houseAddress').value = '';
@@ -883,5 +487,3 @@ function openAddModal() {
     new bootstrap.Modal(document.getElementById('houseModal')).show();
 }
 </script>
-
-<?php require __DIR__ . '/../layouts/management_footer.php'; ?>

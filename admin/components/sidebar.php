@@ -11,7 +11,7 @@ $portalAdd('Overview', 'Dashboard', 'layout-dashboard', $portalAdmin ? '/tenant/
 $portalAdd('Overview', 'Notifications', 'bell', $portalAdmin ? '/tenant/admin/notifications.php' : '/tenant/?url=admin/notifications', $portalAdmin || $portalCan('view_notifications'));
 $portalAdd('Identity & Access', 'User Accounts', 'users', '/tenant/admin/users.php', $portalAdmin && $portalCan('list_users'));
 $portalAdd('Identity & Access', 'Roles & Permissions', 'shield-lock', '/tenant/admin/roles.php', $portalAdmin && $portalCan('manage_roles'));
-$portalAdd('Property Management', 'Boarding Houses', 'home', $portalAdmin ? '/tenant/admin/houses.php' : '/tenant/?url=owner/houses', ($portalAdmin && $portalCan('view_houses')) || $portalOwner);
+$portalAdd('Property Management', 'Boarding Houses', 'home', '/tenant/?url=admin/houses', ($portalAdmin || $portalOwner) && $portalCan('view_houses'));
 $portalAdd('Property Management', 'Rooms', 'door', '/tenant/?url=owner/rooms', $portalOwner);
 $portalAdd('Property Management', 'Amenities Catalog', 'sparkles', $portalAdmin ? '/tenant/admin/amenities.php' : '/tenant/?url=admin/amenities', ($portalAdmin && $portalCan('manage_amenities')) || $portalOwner);
 $portalAdd('Property Management', 'Reviews & Ratings', 'star', '/tenant/admin/reviews.php', $portalAdmin && $portalCan('manage_reviews'));

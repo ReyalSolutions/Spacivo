@@ -1,0 +1,522 @@
+[
+  {
+    "route": "admin/index",
+    "proposed_permission": "view_dashboard",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/approve_house",
+    "proposed_permission": "approve_houses",
+    "status": "enforced_listing_migration"
+  },
+  {
+    "route": "admin/reject_house",
+    "proposed_permission": "approve_houses",
+    "status": "enforced_listing_migration"
+  },
+  {
+    "route": "admin/bookings",
+    "proposed_permission": "manage_bookings",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/bookings_data",
+    "proposed_permission": "manage_bookings",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/houses",
+    "proposed_permission": "view_houses",
+    "status": "enforced_listing_migration"
+  },
+  {
+    "route": "admin/houses_data",
+    "proposed_permission": "view_houses",
+    "status": "enforced_listing_migration"
+  },
+  {
+    "route": "admin/users",
+    "proposed_permission": "view_users",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/roles",
+    "proposed_permission": "view_roles",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/store_role",
+    "proposed_permission": "add_roles",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/update_role",
+    "proposed_permission": "edit_roles",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/update_role_permissions",
+    "proposed_permission": "sync_permissions",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/delete_role",
+    "proposed_permission": "delete_roles",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/store_permission",
+    "proposed_permission": "sync_permissions",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/delete_permission",
+    "proposed_permission": "sync_permissions",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/store_user",
+    "proposed_permission": "add_users",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/update_user",
+    "proposed_permission": "edit_users",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/notifications",
+    "proposed_permission": "view_notifications",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/payments",
+    "proposed_permission": "view_payments",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/get_payments_json",
+    "proposed_permission": "view_payments",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/plan_payments",
+    "proposed_permission": "audit_payments",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/get_plan_payments_json",
+    "proposed_permission": "audit_payments",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/update_plan_payment_status",
+    "proposed_permission": "verify_payouts",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/print_plan_payments",
+    "proposed_permission": "download_audit_report",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/plans",
+    "proposed_permission": "view_plans",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/get_plans_json",
+    "proposed_permission": "view_plans",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/print_plans",
+    "proposed_permission": "view_plans",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/create_plan",
+    "proposed_permission": "add_plans",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/update_plan",
+    "proposed_permission": "edit_plans",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/delete_plan",
+    "proposed_permission": "delete_plans",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/subscriptions",
+    "proposed_permission": "view_subscriptions",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/get_subscriptions_json",
+    "proposed_permission": "view_subscriptions",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/upgrade_subscription_yearly",
+    "proposed_permission": "manage_subscriptions",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/downgrade_subscription_monthly",
+    "proposed_permission": "manage_subscriptions",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/cancel_subscription",
+    "proposed_permission": "cancel_subscription",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/upgrade_plan",
+    "proposed_permission": "manage_subscriptions",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/reviews",
+    "proposed_permission": "view_reviews",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/get_reviews_json",
+    "proposed_permission": "view_reviews",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/update_review_status",
+    "proposed_permission": "approve_reviews",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/delete_review",
+    "proposed_permission": "delete_reviews",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/reports",
+    "proposed_permission": "generate_reports",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/get_reports_stats",
+    "proposed_permission": "generate_reports",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/map",
+    "proposed_permission": "view_property_map",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/map_update_coords",
+    "proposed_permission": "edit_property_map",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/settings",
+    "proposed_permission": "view_settings",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/payment_settings",
+    "proposed_permission": "view_settings",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/save_settings",
+    "proposed_permission": "update_settings",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/fetch_payment_methods",
+    "proposed_permission": "view_settings",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/logs",
+    "proposed_permission": "view_activity_logs",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/logs_data",
+    "proposed_permission": "view_activity_logs",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/delete_logs",
+    "proposed_permission": "clear_activity_logs",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/profile",
+    "proposed_permission": "manage_profile",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/get_profile_async",
+    "proposed_permission": "manage_profile",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/update_profile",
+    "proposed_permission": "manage_profile",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/move_out",
+    "proposed_permission": "edit_tenants",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/print_users",
+    "proposed_permission": "print_users",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/get_users_json",
+    "proposed_permission": "view_users",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/print_payments",
+    "proposed_permission": "print_payment_receipt",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/toggle_user_status",
+    "proposed_permission": "audit_user_status",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/amenities",
+    "proposed_permission": "view_global_amenities",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/amenities_data",
+    "proposed_permission": "view_global_amenities",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/store_amenity",
+    "proposed_permission": "add_global_amenities",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/update_amenity",
+    "proposed_permission": "edit_global_amenities",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "admin/delete_amenity",
+    "proposed_permission": "delete_global_amenities",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/bookings",
+    "proposed_permission": "manage_bookings",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/bookings_data",
+    "proposed_permission": "manage_bookings",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/bookings_history",
+    "proposed_permission": "manage_bookings",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/bookings_print_history",
+    "proposed_permission": "print_tenant_contract",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/payments",
+    "proposed_permission": "view_payments",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/payments_earnings",
+    "proposed_permission": "view_earnings",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/payments_transactions",
+    "proposed_permission": "view_payments",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/transactions_data",
+    "proposed_permission": "view_payments",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/payments_print_transactions",
+    "proposed_permission": "export_transactions",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/analytics",
+    "proposed_permission": "view_analytics",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/tenants",
+    "proposed_permission": "view_tenants",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/approve_booking",
+    "proposed_permission": "booking_ops",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/reject_booking",
+    "proposed_permission": "booking_ops",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/get_residency_payments_json",
+    "proposed_permission": "view_payments",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/record_manual_payment",
+    "proposed_permission": "record_payments",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/void_payment",
+    "proposed_permission": "refund_payments",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/approve_pending_payment",
+    "proposed_permission": "edit_payments",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/print_statement",
+    "proposed_permission": "print_payment_receipt",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/houses",
+    "proposed_permission": "view_houses",
+    "status": "enforced_listing_migration"
+  },
+  {
+    "route": "owner/store_house",
+    "proposed_permission": "add_houses",
+    "status": "enforced_listing_migration"
+  },
+  {
+    "route": "owner/update_house",
+    "proposed_permission": "edit_houses",
+    "status": "enforced_listing_migration"
+  },
+  {
+    "route": "owner/delete_house",
+    "proposed_permission": "delete_houses",
+    "status": "enforced_listing_migration"
+  },
+  {
+    "route": "owner/move_out",
+    "proposed_permission": "edit_tenants",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/upload_house_images",
+    "proposed_permission": "edit_houses",
+    "status": "enforced_listing_migration"
+  },
+  {
+    "route": "owner/delete_house_image",
+    "proposed_permission": "edit_houses",
+    "status": "enforced_listing_migration"
+  },
+  {
+    "route": "owner/get_house_images",
+    "proposed_permission": "view_houses",
+    "status": "enforced_listing_migration"
+  },
+  {
+    "route": "owner/get_house_amenities",
+    "proposed_permission": "view_houses",
+    "status": "enforced_listing_migration"
+  },
+  {
+    "route": "owner/update_house_amenities",
+    "proposed_permission": "edit_houses",
+    "status": "enforced_listing_migration"
+  },
+  {
+    "route": "owner/load_more_houses",
+    "proposed_permission": "view_houses",
+    "status": "enforced_listing_migration"
+  },
+  {
+    "route": "owner/rooms",
+    "proposed_permission": "view_rooms",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/get_all_rooms_json",
+    "proposed_permission": "view_rooms",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/get_room",
+    "proposed_permission": "view_rooms",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/store_room",
+    "proposed_permission": "add_rooms",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/update_room",
+    "proposed_permission": "edit_rooms",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/delete_room",
+    "proposed_permission": "delete_rooms",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/subscription_simulation",
+    "proposed_permission": "manage_subscriptions",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/get_available_rooms_json",
+    "proposed_permission": "view_rooms",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/store_tenant",
+    "proposed_permission": "add_tenants",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/get_tenant_json",
+    "proposed_permission": "view_tenants",
+    "status": "proposal_not_enabled"
+  },
+  {
+    "route": "owner/update_tenant",
+    "proposed_permission": "edit_tenants",
+    "status": "proposal_not_enabled"
+  }
+]
