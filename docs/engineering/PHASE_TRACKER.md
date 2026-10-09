@@ -55,3 +55,6 @@ Listing-toast hosted gate passed: [run 37910282471](https://github.com/ReyalSolu
 
 
 2026-10-09 - Amenities checkbox restoration: normalized selected/catalog IDs before comparison in the shared listing modal. Prepared-query numeric IDs now match text-query string IDs. Focused tests cover both type directions, saved additions/removals and empty selections across reopen; PHP lint passed. Hosted full-suite gate pending. Existing stored amenities and permissions are unchanged.
+
+
+Amenities checkbox hosted gate passed: [run 37910749284](https://github.com/ReyalSolutions/Spacivo/actions/runs/37910749284), source 6645cd1. Full PHP/integration/database suites and the mixed-ID/reopen modal regression check succeeded. Repair loop complete.
