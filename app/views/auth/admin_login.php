@@ -98,7 +98,7 @@ $(function() {
         const p = $('#password').val();
 
         if (!u || !p) {
-            Swal.fire({
+            Feedback.fire({
                 icon: 'warning',
                 title: 'Missing Credentials',
                 text: 'Please enter both system username and security password.',
@@ -121,7 +121,7 @@ $(function() {
             },
             success: function(response) {
                 if (response.success) {
-                    Swal.fire({
+                    Feedback.fire({
                         icon: 'success',
                         title: 'Access Granted',
                         text: 'Welcome to the management portal.',
@@ -134,7 +134,7 @@ $(function() {
                         window.location.href = response.redirect;
                     });
                 } else {
-                    Swal.fire({
+                    Feedback.fire({
                         icon: 'error',
                         title: 'Authorization Failed',
                         text: response.message || 'Invalid credentials or insufficient permissions.',
@@ -146,7 +146,7 @@ $(function() {
                 }
             },
             error: function() {
-                Swal.fire({
+                Feedback.fire({
                     icon: 'error',
                     title: 'System Error',
                     text: 'Unable to connect to the secure server.',

@@ -18,7 +18,7 @@ $(function () {
     if (window.isAuthenticated === false) {
       e.preventDefault();
       e.stopImmediatePropagation();
-      Swal.fire({
+      Feedback.fire({
         icon: "warning",
         title: "Login Required",
         text: "You must log in first to rent a room.",
@@ -47,7 +47,7 @@ $(function () {
         if (res && res.ok && res.checkout_url) {
           window.location.href = res.checkout_url;
         } else {
-          Swal.fire(
+          Feedback.fire(
             "Error",
             res && res.message ? res.message : "Unable to create booking",
             "error",
@@ -60,7 +60,7 @@ $(function () {
           if (xhr.responseJSON && xhr.responseJSON.message)
             msg = xhr.responseJSON.message;
         } catch (e) {}
-        Swal.fire("Error", msg, "error");
+        Feedback.fire("Error", msg, "error");
       });
   });
 
@@ -69,7 +69,7 @@ $(function () {
     if (window.isAuthenticated === false) {
       e.preventDefault();
       e.stopImmediatePropagation();
-      Swal.fire({
+      Feedback.fire({
         icon: "warning",
         title: "Login Required",
         text: "You must log in first to add favorites.",
@@ -90,13 +90,13 @@ $(function () {
     })
       .done(function (res) {
         if (res && res.ok) {
-          Swal.fire(
+          Feedback.fire(
             "Updated",
             res.favorited ? "Added to favorites" : "Removed from favorites",
             "success",
           );
         } else {
-          Swal.fire(
+          Feedback.fire(
             "Error",
             res && res.message ? res.message : "Unable to update favorites",
             "error",
@@ -109,7 +109,7 @@ $(function () {
           if (xhr.responseJSON && xhr.responseJSON.message)
             msg = xhr.responseJSON.message;
         } catch (e) {}
-        Swal.fire("Error", msg, "error");
+        Feedback.fire("Error", msg, "error");
       });
   });
 });

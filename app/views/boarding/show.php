@@ -290,7 +290,7 @@ $defaultEnd = date('Y-m-d', strtotime('+30 days'));
         // Favorite Toggle Logic
         $('#favorite-btn').on('click', function() {
             if (!window.isAuthenticated) {
-                Swal.fire({
+                Feedback.fire({
                     icon: 'warning',
                     title: 'Login Required',
                     text: 'You must log in first to add favorites.',
@@ -321,7 +321,7 @@ $defaultEnd = date('Y-m-d', strtotime('+30 days'));
                             icon.removeClass('far').addClass('fas');
                             label.text('Saved to Favorites');
                             
-                            Swal.fire({
+                            Feedback.fire({
                                 icon: 'success',
                                 title: 'Added to favorites',
                                 toast: true,
@@ -335,7 +335,7 @@ $defaultEnd = date('Y-m-d', strtotime('+30 days'));
                             icon.removeClass('fas').addClass('far');
                             label.text('Add to Favorites');
 
-                            Swal.fire({
+                            Feedback.fire({
                                 icon: 'info',
                                 title: 'Removed from favorites',
                                 toast: true,
@@ -359,7 +359,7 @@ $defaultEnd = date('Y-m-d', strtotime('+30 days'));
             const csrf = '<?= Csrf::token() ?>';
 
             if (!window.isAuthenticated) {
-                Swal.fire({
+                Feedback.fire({
                     icon: 'warning',
                     title: 'Login Required',
                     text: 'You must log in first to rent a room.',
@@ -374,7 +374,7 @@ $defaultEnd = date('Y-m-d', strtotime('+30 days'));
             }
 
             if (!startDate) {
-                Swal.fire('Error', 'Please select a move-in date.', 'error');
+                Feedback.fire('Error', 'Please select a move-in date.', 'error');
                 return;
             }
 
@@ -391,7 +391,7 @@ $defaultEnd = date('Y-m-d', strtotime('+30 days'));
                 },
                 success: function(resp) {
                     if (resp.ok) {
-                        Swal.fire({
+                        Feedback.fire({
                             icon: 'success',
                             title: 'Booking request sent!',
                             text: 'Redirecting to payment...',
@@ -411,7 +411,7 @@ $defaultEnd = date('Y-m-d', strtotime('+30 days'));
                             form.submit();
                         });
                     } else {
-                        Swal.fire('Booking Failed', resp.message || 'Error occurred', 'error');
+                        Feedback.fire('Booking Failed', resp.message || 'Error occurred', 'error');
                         btn.prop('disabled', false).html('<i class="fas fa-wallet"></i> Rent this Room');
                     }
                 },
@@ -421,7 +421,7 @@ $defaultEnd = date('Y-m-d', strtotime('+30 days'));
                         const err = JSON.parse(xhr.responseText);
                         msg = err.message || msg;
                     } catch(e) {}
-                    Swal.fire('Error', msg, 'error');
+                    Feedback.fire('Error', msg, 'error');
                     btn.prop('disabled', false).html('<i class="fas fa-wallet"></i> Rent this Room');
                 }
             });

@@ -37,6 +37,7 @@ $siteName = $sysSettings['site_name'] ?? 'StayHub';
     <link rel="stylesheet" href="/tenant/public/assets/css/toast.css">
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/tenant/public/assets/js/toast.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <?php 
@@ -827,7 +828,7 @@ if (strpos($url, 'auth/') === 0) {
 window.isAuthenticated = <?= !empty($currentRole) ? 'true' : 'false' ?>;
 
 function confirmLogout(formId) {
-    Swal.fire({
+    Feedback.fire({
         title: 'Ready to leave?',
         text: 'Are you sure you want to logout of your account?',
         icon: 'question',

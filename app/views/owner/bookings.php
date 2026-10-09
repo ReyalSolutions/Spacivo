@@ -463,7 +463,7 @@ $(document).ready(function() {
 function confirmMoveOut(id, name) {
     const today = new Date().toISOString().split('T')[0];
     
-    Swal.fire({
+    Feedback.fire({
         title: 'Confirm Move-out',
         html: `
             <div class="text-start mb-3">
@@ -504,9 +504,9 @@ function confirmMoveOut(id, name) {
 
 <?php if (isset($_SESSION['success'])): ?>
 <script>
-Swal.fire({
+Feedback.fire({
     title: 'Success!',
-    text: "<?= $_SESSION['success'] ?>",
+    text: <?= json_encode($_SESSION['success'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>,
     icon: 'success',
     confirmButtonColor: '#4f46e5',
     borderRadius: '24px',
@@ -518,9 +518,9 @@ Swal.fire({
 
 <?php if (isset($_SESSION['error'])): ?>
 <script>
-Swal.fire({
+Feedback.fire({
     title: 'Action Failed',
-    text: "<?= $_SESSION['error'] ?>",
+    text: <?= json_encode($_SESSION['error'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>,
     icon: 'error',
     confirmButtonColor: '#ef4444',
     borderRadius: '24px'

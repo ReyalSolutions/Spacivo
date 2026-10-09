@@ -333,7 +333,7 @@ $(document).ready(function() {
 
         if (selectedIds.length === 0) return;
 
-        Swal.fire({
+        Feedback.fire({
             title: 'Purge selected logs?',
             text: `You are about to irreversibly delete ${selectedIds.length} administrative event(s).`,
             icon: 'warning',
@@ -360,7 +360,7 @@ $(document).ready(function() {
                     dataType: 'json',
                     success: function(response) {
                         if (response.success) {
-                            Swal.fire({
+                            Feedback.fire({
                                 icon: 'success',
                                 title: 'Purged',
                                 text: response.message,
@@ -369,11 +369,11 @@ $(document).ready(function() {
                             });
                             dt.ajax.reload(null, false);
                         } else {
-                            Swal.fire('Error', response.message, 'error');
+                            Feedback.fire('Error', response.message, 'error');
                         }
                     },
                     error: function() {
-                        Swal.fire('Network Error', 'Could not communicate with the server.', 'error');
+                        Feedback.fire('Network Error', 'Could not communicate with the server.', 'error');
                     }
                 });
             }

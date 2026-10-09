@@ -479,16 +479,16 @@ $(document).ready(function() {
         $.post('/tenant/?url=owner/store_tenant', $form.serialize(), function(res) {
             if (res.success) {
                 $('#addTenantModal').modal('hide');
-                Swal.fire({ icon: 'success', title: 'Provisioning Successful', text: res.message, confirmButtonColor: '#2563eb', timer: 3000, showConfirmButton: false })
+                Feedback.fire({ icon: 'success', title: 'Provisioning Successful', text: res.message, confirmButtonColor: '#2563eb', timer: 3000, showConfirmButton: false })
                     .then(() => location.reload());
             } else {
-                Swal.fire({ icon: 'error', title: 'Verification Failed', text: res.message, confirmButtonColor: '#2563eb' });
+                Feedback.fire({ icon: 'error', title: 'Verification Failed', text: res.message, confirmButtonColor: '#2563eb' });
                 $btn.html(orig).attr('disabled', false);
             }
         }).fail(function(xhr) {
             let msg = 'Unexpected error occurred.';
             try { msg = JSON.parse(xhr.responseText).message || msg; } catch(e) {}
-            Swal.fire({ icon: 'error', title: 'System Error', text: msg, confirmButtonColor: '#2563eb' });
+            Feedback.fire({ icon: 'error', title: 'System Error', text: msg, confirmButtonColor: '#2563eb' });
             $btn.html(orig).attr('disabled', false);
         });
     });
@@ -513,7 +513,7 @@ $(document).ready(function() {
             $form.find('input, select, button[type="submit"]').attr('disabled', false);
 
             if (!res.success) {
-                Swal.fire({ icon: 'error', title: 'Load Failed', text: res.message, confirmButtonColor: '#2563eb' });
+                Feedback.fire({ icon: 'error', title: 'Load Failed', text: res.message, confirmButtonColor: '#2563eb' });
                 $modal.modal('hide');
                 return;
             }
@@ -532,7 +532,7 @@ $(document).ready(function() {
         }).fail(function() {
             $body.find('.edit-loading-overlay').remove();
             $form.find('input, select, button[type="submit"]').attr('disabled', false);
-            Swal.fire({ icon: 'error', title: 'Error', text: 'Failed to load resident data.', confirmButtonColor: '#2563eb' });
+            Feedback.fire({ icon: 'error', title: 'Error', text: 'Failed to load resident data.', confirmButtonColor: '#2563eb' });
             $modal.modal('hide');
         });
     });
@@ -545,16 +545,16 @@ $(document).ready(function() {
         $.post('/tenant/?url=owner/update_tenant', $form.serialize(), function(res) {
             if (res.success) {
                 $('#editTenantModal').modal('hide');
-                Swal.fire({ icon: 'success', title: 'Record Updated', text: res.message, confirmButtonColor: '#059669', timer: 3000, showConfirmButton: false })
+                Feedback.fire({ icon: 'success', title: 'Record Updated', text: res.message, confirmButtonColor: '#059669', timer: 3000, showConfirmButton: false })
                     .then(() => location.reload());
             } else {
-                Swal.fire({ icon: 'error', title: 'Update Failed', text: res.message, confirmButtonColor: '#2563eb' });
+                Feedback.fire({ icon: 'error', title: 'Update Failed', text: res.message, confirmButtonColor: '#2563eb' });
                 $btn.html(orig).attr('disabled', false);
             }
         }).fail(function(xhr) {
             let msg = 'Unexpected error occurred.';
             try { msg = JSON.parse(xhr.responseText).message || msg; } catch(e) {}
-            Swal.fire({ icon: 'error', title: 'System Error', text: msg, confirmButtonColor: '#2563eb' });
+            Feedback.fire({ icon: 'error', title: 'System Error', text: msg, confirmButtonColor: '#2563eb' });
             $btn.html(orig).attr('disabled', false);
         });
     });

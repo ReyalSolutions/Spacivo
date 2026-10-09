@@ -177,7 +177,7 @@ $(document).ready(function() {
             },
             success: function(response) {
                 if (response.success) {
-                    Swal.fire({
+                    Feedback.fire({
                         icon: 'success',
                         title: 'Registration Complete!',
                         text: 'Your account has been successfully created.',
@@ -188,7 +188,7 @@ $(document).ready(function() {
                         window.location.href = response.redirect;
                     });
                 } else {
-                    Swal.fire({
+                    Feedback.fire({
                         icon: 'error',
                         title: 'Setup Error',
                         text: response.message || 'An unexpected error occurred.',
@@ -198,7 +198,7 @@ $(document).ready(function() {
                 }
             },
             error: function() {
-                Swal.fire({
+                Feedback.fire({
                     icon: 'error',
                     title: 'System Error',
                     text: 'Unable to finalize registration. Please try again.',

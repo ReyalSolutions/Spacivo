@@ -259,7 +259,7 @@ function editAmenity(data) {
 }
 
 function deleteAmenity(id) {
-    Swal.fire({
+    Feedback.fire({
         title: 'Delete Amenity?',
         text: "Are you sure? This cannot be undone.",
         icon: 'warning',

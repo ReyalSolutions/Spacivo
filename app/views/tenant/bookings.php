@@ -292,12 +292,12 @@ $(document).ready(function() {
 
                 } else {
                     $('#bhouseModal').removeClass('active');
-                    Swal.fire('Error', resp.message || 'Failed to load details', 'error');
+                    Feedback.fire('Error', resp.message || 'Failed to load details', 'error');
                 }
             },
             error: function() {
                 $('#bhouseModal').removeClass('active');
-                Swal.fire('Error', 'Network error occurred.', 'error');
+                Feedback.fire('Error', 'Network error occurred.', 'error');
             }
         });
     });

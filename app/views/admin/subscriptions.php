@@ -145,10 +145,10 @@ require __DIR__ . '/../layouts/management_header.php';
 <script>
 $(document).ready(function() {
     <?php if (isset($_SESSION['success'])): ?>
-        Swal.fire({ 
+        Feedback.fire({ 
             icon: 'success', 
             title: 'Success', 
-            text: '<?= $_SESSION['success'] ?>', 
+            text: <?= json_encode($_SESSION['success'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>, 
             timer: 3000, 
             showConfirmButton: false, 
             background: '#f8fafc' 
@@ -157,10 +157,10 @@ $(document).ready(function() {
     <?php endif; ?>
 
     <?php if (isset($_SESSION['error'])): ?>
-        Swal.fire({ 
+        Feedback.fire({ 
             icon: 'error', 
             title: 'Error', 
-            text: '<?= $_SESSION['error'] ?>', 
+            text: <?= json_encode($_SESSION['error'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>, 
             background: '#f8fafc' 
         });
         <?php unset($_SESSION['error']); ?>
@@ -486,7 +486,7 @@ $(document).ready(function() {
 function upgradeToYearly(subId, planId, planName, priceYearly) {
     const yearly = parseFloat(priceYearly).toLocaleString('en-PH', { minimumFractionDigits: 2 });
 
-    Swal.fire({
+    Feedback.fire({
         title: 'Upgrade to Yearly Billing?',
         html: `<div class="py-1">
                 <p class="text-muted mb-2">You are about to upgrade <strong>${planName}</strong> to yearly billing.</p>
@@ -532,7 +532,7 @@ function upgradeToYearly(subId, planId, planName, priceYearly) {
 
 
 function switchToMonthly(subId) {
-    Swal.fire({
+    Feedback.fire({
         title: 'Switch to Monthly?',
         text: 'Are you sure you want to switch this subscription to monthly billing?',
         icon: 'question',
@@ -547,25 +547,25 @@ function switchToMonthly(subId) {
                 csrf_token: '<?= Csrf::token() ?>'
             }, function(res) {
                 if (res.success) {
-                    Swal.fire({ icon: 'success', title: 'Switched!', text: res.message, timer: 2000, showConfirmButton: false });
+                    Feedback.fire({ icon: 'success', title: 'Switched!', text: res.message, timer: 2000, showConfirmButton: false });
                     $('#subDetailModal').modal('hide');
                     if (typeof subscriptionsTable !== 'undefined') subscriptionsTable.ajax.reload(null, false);
                 } else {
-                    Swal.fire('Error', res.message || 'Failed to switch subscription.', 'error');
+                    Feedback.fire('Error', res.message || 'Failed to switch subscription.', 'error');
                 }
             }).fail(function(xhr) {
                 let msg = 'Failed to switch subscription.';
                 try {
                     msg = JSON.parse(xhr.responseText).message || msg;
                 } catch(e) {}
-                Swal.fire('Error', msg, 'error');
+                Feedback.fire('Error', msg, 'error');
             });
         }
     });
 }
 
 function cancelSubscription(subId) {
-    Swal.fire({
+    Feedback.fire({
         title: 'Cancel Subscription?',
         text: 'Are you sure you want to cancel this plan? You will immediately lose access to premium features.',
         icon: 'warning',
@@ -580,18 +580,18 @@ function cancelSubscription(subId) {
                 csrf_token: '<?= Csrf::token() ?>'
             }, function(res) {
                 if (res.success) {
-                    Swal.fire({ icon: 'success', title: 'Cancelled!', text: res.message, timer: 2000, showConfirmButton: false });
+                    Feedback.fire({ icon: 'success', title: 'Cancelled!', text: res.message, timer: 2000, showConfirmButton: false });
                     $('#subDetailModal').modal('hide');
                     if (typeof subscriptionsTable !== 'undefined') subscriptionsTable.ajax.reload(null, false);
                 } else {
-                    Swal.fire('Error', res.message || 'Failed to cancel subscription.', 'error');
+                    Feedback.fire('Error', res.message || 'Failed to cancel subscription.', 'error');
                 }
             }).fail(function(xhr) {
                 let msg = 'Failed to cancel subscription.';
                 try {
                     msg = JSON.parse(xhr.responseText).message || msg;
                 } catch(e) {}
-                Swal.fire('Error', msg, 'error');
+                Feedback.fire('Error', msg, 'error');
             });
         }
     });

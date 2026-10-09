@@ -52,12 +52,12 @@ require __DIR__ . '/../layouts/management_header.php';
 $(document).ready(function() {
     // Session Notifications
     <?php if (isset($_SESSION['success'])): ?>
-        Swal.fire({ icon: 'success', title: 'Action Successful', text: '<?= $_SESSION['success'] ?>', timer: 3000, showConfirmButton: false, background: '#f8fafc' });
+        Feedback.fire({ icon: 'success', title: 'Action Successful', text: <?= json_encode($_SESSION['success'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>, timer: 3000, showConfirmButton: false, background: '#f8fafc' });
         <?php unset($_SESSION['success']); ?>
     <?php endif; ?>
 
     <?php if (isset($_SESSION['error'])): ?>
-        Swal.fire({ icon: 'error', title: 'Action Failed', text: '<?= $_SESSION['error'] ?>', background: '#f8fafc' });
+        Feedback.fire({ icon: 'error', title: 'Action Failed', text: <?= json_encode($_SESSION['error'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>, background: '#f8fafc' });
         <?php unset($_SESSION['error']); ?>
     <?php endif; ?>
 
@@ -238,7 +238,7 @@ $(document).ready(function() {
         const icon = currentStatus == 1 ? 'warning' : 'info';
         const color = currentStatus == 1 ? '#ef4444' : '#22c55e';
 
-        Swal.fire({
+        Feedback.fire({
             title: action + ' Identity?',
             text: "Are you sure you want to " + action.toLowerCase() + " access for @" + username + "?",
             icon: icon,

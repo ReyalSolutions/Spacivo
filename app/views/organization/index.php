@@ -72,10 +72,9 @@ document.querySelectorAll('.organization-form').forEach(form => {
             const response = await fetch(form.action, {method: 'POST', body: new FormData(form), credentials: 'same-origin'});
             const result = await response.json();
             if (!response.ok || !result.success) throw new Error(result.message || 'Unable to save your changes.');
-            window.location.reload();
+            Feedback.fire({icon:'success', title:'Saved', text:result.message || 'Your changes were saved.', timer:1500}).then(function(){window.location.reload();});
         } catch (error) {
-            message.className = 'alert alert-danger';
-            message.textContent = error.message;
+            ToastStack.error(error.message);
             button.disabled = false;
         }
     });

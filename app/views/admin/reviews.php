@@ -488,7 +488,7 @@ function refreshData() {
                 text.text('REFRESH');
                 
                 // Optional Toast
-                Swal.fire({
+                Feedback.fire({
                     toast: true,
                     position: 'top-end',
                     icon: 'success',
@@ -523,7 +523,7 @@ function updateStatus(id, status) {
     const title = status === 'approved' ? 'Approve Review?' : 'Reject Review?';
     const confirmText = status === 'approved' ? 'Yes, approve it' : 'Yes, reject it';
     
-    Swal.fire({
+    Feedback.fire({
         title: title,
         text: `Are you sure you want to set this review status to ${status}?`,
         icon: 'question',
@@ -540,10 +540,10 @@ function updateStatus(id, status) {
                 csrf_token: '<?= htmlspecialchars(Csrf::token()) ?>'
             }, function(res) {
                 if (res.success) {
-                    Swal.fire({ icon: 'success', title: 'Updated!', text: res.message, timer: 1500, showConfirmButton: false });
+                    Feedback.fire({ icon: 'success', title: 'Updated!', text: res.message, timer: 1500, showConfirmButton: false });
                     reviewsTable.ajax.reload(null, false);
                 } else {
-                    Swal.fire('Error', res.message, 'error');
+                    Feedback.fire('Error', res.message, 'error');
                 }
             }, 'json');
         }
@@ -551,7 +551,7 @@ function updateStatus(id, status) {
 }
 
 function deleteReview(id) {
-    Swal.fire({
+    Feedback.fire({
         title: 'Delete Review?',
         text: "You won't be able to revert this!",
         icon: 'warning',
@@ -566,10 +566,10 @@ function deleteReview(id) {
                 csrf_token: '<?= htmlspecialchars(Csrf::token()) ?>'
             }, function(res) {
                 if (res.success) {
-                    Swal.fire({ icon: 'success', title: 'Deleted!', text: res.message, timer: 1500, showConfirmButton: false });
+                    Feedback.fire({ icon: 'success', title: 'Deleted!', text: res.message, timer: 1500, showConfirmButton: false });
                     reviewsTable.ajax.reload(null, false);
                 } else {
-                    Swal.fire('Error', res.message, 'error');
+                    Feedback.fire('Error', res.message, 'error');
                 }
             }, 'json');
         }

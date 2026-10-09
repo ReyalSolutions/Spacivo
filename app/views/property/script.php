@@ -14,10 +14,10 @@ document.querySelectorAll('.inventory-form').forEach(form => form.addEventListen
             headers: upload ? {'X-CSRF-Token': <?= json_encode(Csrf::token()) ?>} : {'Content-Type': 'application/json', 'X-CSRF-Token': <?= json_encode(Csrf::token()) ?>}, body: upload ? formData : JSON.stringify(input)});
         const result = await response.json();
         if (!response.ok || !result.success) throw new Error(result.message || 'Unable to save listing.');
-        window.location.reload();
+        Feedback.fire({icon:'success', title:'Saved', text:result.message || 'Your changes were saved.', timer:1500}).then(function(){window.location.reload();});
     } catch (error) {
         const message = document.getElementById('inventory-message');
-        message.className = 'alert alert-danger'; message.textContent = error.message; button.disabled = false;
+        ToastStack.error(error.message); button.disabled = false;
     }
 }));
 </script>

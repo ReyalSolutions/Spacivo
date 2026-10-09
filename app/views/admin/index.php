@@ -364,14 +364,14 @@ const _csrfToken = '<?= Csrf::token() ?>';
 function dashboardAction(url, payload, successMsg, $row) {
     $.post(url, { csrf_token: _csrfToken, ...payload }, function(res) {
         if (res.success) {
-            Swal.fire({ icon: 'success', title: 'Done!', text: res.message, timer: 2500, confirmButtonColor: '#2563eb', showConfirmButton: false });
+            Feedback.fire({ icon: 'success', title: 'Done!', text: res.message, timer: 2500, confirmButtonColor: '#2563eb', showConfirmButton: false });
             // Fade out the row
             if ($row) $row.fadeOut(400, function() { $(this).remove(); });
         } else {
-            Swal.fire({ icon: 'error', title: 'Action Failed', text: res.message, confirmButtonColor: '#2563eb' });
+            Feedback.fire({ icon: 'error', title: 'Action Failed', text: res.message, confirmButtonColor: '#2563eb' });
         }
     }).fail(function() {
-        Swal.fire({ icon: 'error', title: 'Error', text: 'Network error. Please try again.', confirmButtonColor: '#2563eb' });
+        Feedback.fire({ icon: 'error', title: 'Error', text: 'Network error. Please try again.', confirmButtonColor: '#2563eb' });
     });
 }
 
@@ -381,7 +381,7 @@ $(document).ready(function() {
     $(document).on('click', '.btn-approve-house', function() {
         const $btn  = $(this), houseId = $btn.data('house-id'), houseName = $btn.data('house-name');
         const $row  = $btn.closest('tr');
-        Swal.fire({
+        Feedback.fire({
             icon: 'question',
             title: 'Approve Boarding House?',
             html: `Approve <strong>${houseName}</strong> and make it visible to tenants?`,
@@ -398,7 +398,7 @@ $(document).ready(function() {
     $(document).on('click', '.btn-reject-house', function() {
         const $btn  = $(this), houseId = $btn.data('house-id'), houseName = $btn.data('house-name');
         const $row  = $btn.closest('tr');
-        Swal.fire({
+        Feedback.fire({
             icon: 'warning',
             title: 'Reject Boarding House?',
             html: `Reject listing for <strong>${houseName}</strong>? The owner will be notified.`,
@@ -415,7 +415,7 @@ $(document).ready(function() {
     $(document).on('click', '.btn-approve-booking', function() {
         const $btn  = $(this), bookingId = $btn.data('booking-id'), tenant = $btn.data('tenant');
         const $row  = $btn.closest('tr');
-        Swal.fire({
+        Feedback.fire({
             icon: 'question',
             title: 'Approve Booking?',
             html: `Approve booking request from <strong>${tenant}</strong>?`,
@@ -432,7 +432,7 @@ $(document).ready(function() {
     $(document).on('click', '.btn-reject-booking', function() {
         const $btn  = $(this), bookingId = $btn.data('booking-id'), tenant = $btn.data('tenant');
         const $row  = $btn.closest('tr');
-        Swal.fire({
+        Feedback.fire({
             icon: 'warning',
             title: 'Reject Booking?',
             html: `Decline booking request from <strong>${tenant}</strong>?`,

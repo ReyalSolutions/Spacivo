@@ -529,7 +529,7 @@ document.querySelectorAll('.house-item').forEach(item => {
 // --- Map click to drop temp pin ---
 map.on('click', function(e) {
     if (!selectedHouseId) {
-        Swal.fire({ icon: 'info', title: 'Select a House First', text: 'Please click on a boarding house from the list on the left first.', confirmButtonColor: '#2563eb' });
+        Feedback.fire({ icon: 'info', title: 'Select a House First', text: 'Please click on a boarding house from the list on the left first.', confirmButtonColor: '#2563eb' });
         return;
     }
 
@@ -612,15 +612,15 @@ function saveCoordinates() {
             selectedHouseId = null;
             document.querySelectorAll('.house-item').forEach(i => i.classList.remove('active'));
 
-            Swal.fire({ icon: 'success', title: 'Coordinates Saved!', text: `Location pinned for "${selectedHouseName || 'the property'}".`, timer: 2000, showConfirmButton: false });
+            Feedback.fire({ icon: 'success', title: 'Coordinates Saved!', text: `Location pinned for "${selectedHouseName || 'the property'}".`, timer: 2000, showConfirmButton: false });
         } else {
-            Swal.fire({ icon: 'error', title: 'Failed', text: data.message || 'Could not save. Try again.' });
+            Feedback.fire({ icon: 'error', title: 'Failed', text: data.message || 'Could not save. Try again.' });
         }
     })
     .catch(() => {
         btn.disabled = false;
         btn.innerHTML = '<i class="fa-solid fa-floppy-disk me-2"></i>Save Location';
-        Swal.fire({ icon: 'error', title: 'Network Error', text: 'Please check your connection and try again.' });
+        Feedback.fire({ icon: 'error', title: 'Network Error', text: 'Please check your connection and try again.' });
     });
 }
 

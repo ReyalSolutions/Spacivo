@@ -2,7 +2,6 @@
 
 <!-- Global Toast Notification Assets -->
 <link rel="stylesheet" href="/tenant/public/assets/css/toast.css">
-<script src="/tenant/public/assets/js/toast.js"></script>
 
 <div id="toast-stack"></div>
 

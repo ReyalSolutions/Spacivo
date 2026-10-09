@@ -318,7 +318,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (response.success) {
                     amenityModal.hide();
                     table.ajax.reload();
-                    Swal.fire({
+                    Feedback.fire({
                         icon: 'success',
                         title: 'Success!',
                         text: response.message,
@@ -328,11 +328,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         timer: 3000
                     });
                 } else {
-                    Swal.fire('Error', response.message, 'error');
+                    Feedback.fire('Error', response.message, 'error');
                 }
             },
             error: function() {
-                Swal.fire('Error', 'An unexpected error occurred.', 'error');
+                Feedback.fire('Error', 'An unexpected error occurred.', 'error');
             },
             complete: function() {
                 $('#saveBtn').prop('disabled', false).text('Save Amenity');
@@ -381,7 +381,7 @@ function editAmenity(data) {
 }
 
 function deleteAmenity(id, name) {
-    Swal.fire({
+    Feedback.fire({
         title: 'Delete Amenity?',
         text: `Are you sure you want to delete "${name}"? This cannot be undone.`,
         icon: 'warning',
@@ -401,7 +401,7 @@ function deleteAmenity(id, name) {
                 success: function(response) {
                     if (response.success) {
                         table.ajax.reload();
-                        Swal.fire({
+                        Feedback.fire({
                             icon: 'success',
                             title: 'Deleted!',
                             text: response.message,
@@ -411,11 +411,11 @@ function deleteAmenity(id, name) {
                             timer: 3000
                         });
                     } else {
-                        Swal.fire('Failed', response.message, 'error');
+                        Feedback.fire('Failed', response.message, 'error');
                     }
                 },
                 error: function() {
-                    Swal.fire('Error', 'An unexpected error occurred.', 'error');
+                    Feedback.fire('Error', 'An unexpected error occurred.', 'error');
                 }
             });
         }

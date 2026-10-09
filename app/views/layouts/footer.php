@@ -82,7 +82,6 @@ $(document).ready(function() {
 </footer>
 
 <script src="/tenant/public/assets/js/app.js"></script>
-<script src="/tenant/public/assets/js/toast.js"></script>
 <script>
     window.APP_BASE_URL = '/tenant/?url=';
     window.CSRF_TOKEN = <?= json_encode($csrfToken) ?>;
@@ -151,7 +150,7 @@ $(document).ready(function() {
             renderShortcuts();
             $('#shortcutModal').removeClass('active');
             
-            Swal.fire({
+            Feedback.fire({
                 icon: 'success',
                 title: 'Shortcuts updated successfully',
                 toast: true,
@@ -169,7 +168,7 @@ $(document).ready(function() {
         });
 
         <?php if (isset($_SESSION['flash_success'])): ?>
-            Swal.fire({
+            Feedback.fire({
                 icon: 'success',
                 title: 'Success!',
                 text: <?= json_encode($_SESSION['flash_success']) ?>,
@@ -183,7 +182,7 @@ $(document).ready(function() {
         <?php endif; ?>
 
         <?php if (isset($_SESSION['flash_error'])): ?>
-            Swal.fire({
+            Feedback.fire({
                 icon: 'error',
                 title: 'Oops...',
                 text: <?= json_encode($_SESSION['flash_error']) ?>,

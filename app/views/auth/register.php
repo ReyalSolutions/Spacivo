@@ -138,7 +138,7 @@ $(document).ready(function() {
         });
 
         if (missing.length > 0) {
-            Swal.fire({
+            Feedback.fire({
                 icon: 'warning',
                 title: 'Required Fields',
                 text: 'Please fill out the following fields: ' + missing.join(', '),
@@ -166,7 +166,7 @@ $(document).ready(function() {
                 if (response.success) {
                     window.location.href = response.redirect;
                 } else {
-                    Swal.fire({
+                    Feedback.fire({
                         icon: 'error',
                         title: 'Registration Error',
                         text: response.message || 'An unexpected error occurred.',
@@ -176,7 +176,7 @@ $(document).ready(function() {
                 }
             },
             error: function() {
-                Swal.fire({
+                Feedback.fire({
                     icon: 'error',
                     title: 'System Error',
                     text: 'Unable to process registration. Please try again later.',

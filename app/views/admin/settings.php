@@ -232,7 +232,7 @@ $(document).ready(function() {
             dataType: "json",
             success: function(response) {
                 if (response.success) {
-                    Swal.fire({
+                    Feedback.fire({
                         icon: "success",
                         title: "Orchestration Success",
                         text: response.message,
@@ -263,11 +263,11 @@ $(document).ready(function() {
                         $header.find('span').text(siteName).attr('title', siteName);
                     }
                 } else {
-                    Swal.fire({ icon: "error", title: "Persistence Failure", text: response.message });
+                    Feedback.fire({ icon: "error", title: "Persistence Failure", text: response.message });
                 }
             },
             error: function() {
-                Swal.fire({ icon: "error", title: "System Boundary Error", text: "Communication failed." });
+                Feedback.fire({ icon: "error", title: "System Boundary Error", text: "Communication failed." });
             },
             complete: function() {
                 submitBtn.prop("disabled", false).html(originalHtml);

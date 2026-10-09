@@ -192,7 +192,7 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(data) {
                 if (data.success) {
-                    Swal.fire({ title: 'Success!', text: data.message, icon: 'success', timer: 1500, showConfirmButton: false })
+                    Feedback.fire({ title: 'Success!', text: data.message, icon: 'success', timer: 1500, showConfirmButton: false })
                     .then(() => {
                         $('#roomModal').modal('hide');
                         loadRooms();
@@ -202,12 +202,12 @@ $(document).ready(function() {
                         $('#roomModal').modal('hide');
                         $('#upgradePlanModal').modal('show');
                     } else {
-                        Swal.fire('Error', data.message || 'Operation failed', 'error');
+                        Feedback.fire('Error', data.message || 'Operation failed', 'error');
                     }
                 }
             },
             error: function() {
-                Swal.fire('Error', 'Network connection issue.', 'error');
+                Feedback.fire('Error', 'Network connection issue.', 'error');
             },
             complete: function() {
                 $submitBtn.text(originalText).prop('disabled', false);
@@ -225,11 +225,11 @@ function loadRooms() {
             if (response.success && response.data) {
                 renderRooms(response.data);
             } else {
-                $('#roomsContainer').html('<div class="alert alert-danger rounded-4 fw-bold">Failed to load rooms.</div>');
+                $('#roomsContainer').empty(); ToastStack.error('Failed to load rooms.');
             }
         },
         error: function() {
-            $('#roomsContainer').html('<div class="alert alert-danger rounded-4 fw-bold">Network error while fetching rooms.</div>');
+            $('#roomsContainer').empty(); ToastStack.error('Network error while fetching rooms.');
         }
     });
 }
@@ -330,7 +330,7 @@ function openAddRoomModal() {
 function openEditRoomModal(roomId, houseId) {
     currentRoomAction = 'update_room';
     
-    Swal.fire({
+    Feedback.fire({
         title: 'Loading...',
         allowOutsideClick: false,
         didOpen: () => Swal.showLoading()
@@ -356,11 +356,11 @@ function openEditRoomModal(roomId, houseId) {
                 
                 $('#roomModal').modal('show');
             } else {
-                Swal.fire('Error', data.message, 'error');
+                Feedback.fire('Error', data.message, 'error');
             }
         },
         error: function() {
-            Swal.fire('Error', 'Network connection issue.', 'error');
+            Feedback.fire('Error', 'Network connection issue.', 'error');
         }
     });
 }
@@ -369,7 +369,7 @@ function deleteRoom() {
     const roomId = $('#room_id').val();
     if (!roomId) return;
     
-    Swal.fire({
+    Feedback.fire({
         title: 'Delete Room?',
         text: 'This action cannot be undone. Any associated features/amenities will be lost.',
         icon: 'warning',
@@ -379,7 +379,7 @@ function deleteRoom() {
         confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
         if (result.isConfirmed) {
-            Swal.fire({ title: 'Deleting...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            Feedback.fire({ title: 'Deleting...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
             
             $.ajax({
                 url: '/tenant/?url=owner/delete_room',
@@ -391,17 +391,17 @@ function deleteRoom() {
                 dataType: 'json',
                 success: function(data) {
                     if (data.success) {
-                        Swal.fire({title: 'Deleted!', text: data.message, icon: 'success', timer: 1500, showConfirmButton: false})
+                        Feedback.fire({title: 'Deleted!', text: data.message, icon: 'success', timer: 1500, showConfirmButton: false})
                         .then(() => {
                             $('#roomModal').modal('hide');
                             loadRooms();
                         });
                     } else {
-                        Swal.fire('Error', data.message, 'error');
+                        Feedback.fire('Error', data.message, 'error');
                     }
                 },
                 error: function() {
-                    Swal.fire('Error', 'Network issue.', 'error');
+                    Feedback.fire('Error', 'Network issue.', 'error');
                 }
             });
         }

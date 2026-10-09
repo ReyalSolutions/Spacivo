@@ -533,7 +533,7 @@ $(document).ready(function() {
         const ref = $(this).data('ref');
         const csrf = '<?= Csrf::token() ?>';
 
-        Swal.fire({
+        Feedback.fire({
             title: 'Verify Transaction Status',
             html: `Are you sure you want to mark transaction <strong class="text-primary">${ref}</strong> as <span class="badge ${status === 'paid' ? 'bg-success' : 'bg-danger'}">${status.toUpperCase()}</span>?`,
             icon: 'question',
@@ -561,7 +561,7 @@ $(document).ready(function() {
             allowOutsideClick: () => !Swal.isLoading()
         }).then((result) => {
             if (result.isConfirmed) {
-                Swal.fire({
+                Feedback.fire({
                     icon: 'success',
                     title: 'Status Updated!',
                     text: result.value.message,

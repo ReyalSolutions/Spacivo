@@ -226,7 +226,7 @@ function initiatePayMongoTransaction(method, element) {
 }
 
 function submitPaymentReference(gateway, method = '') {
-    Swal.fire({
+    Feedback.fire({
         title: 'Initializing Secure Checkout',
         text: 'Generating your PayMongo verification link...',
         allowOutsideClick: false,
@@ -262,7 +262,7 @@ function submitPaymentReference(gateway, method = '') {
             window.location.href = data.redirect_url;
         } else if (data.success) {
             // This should ideally not happen for PayMongo if success is true but redirect_url is missing
-            Swal.fire({
+            Feedback.fire({
                 icon: 'warning',
                 title: 'Partial Success',
                 text: data.message || 'Subscription protocols initialized, but no redirect URL was provided. Please contact support.',
@@ -274,7 +274,7 @@ function submitPaymentReference(gateway, method = '') {
             if (data.debug_info && data.debug_info.error) {
                 errorDetail += `\n\nDetail: ${data.debug_info.error}`;
             }
-            Swal.fire({
+            Feedback.fire({
                 icon: 'error',
                 title: 'Payment Error',
                 text: errorDetail,
@@ -285,7 +285,7 @@ function submitPaymentReference(gateway, method = '') {
     })
     .catch(error => {
         console.error('Payment Error:', error);
-        Swal.fire('Error', 'Gateway timeout. Please check your connection.', 'error');
+        Feedback.fire('Error', 'Gateway timeout. Please check your connection.', 'error');
         resetModalUI();
     });
 }

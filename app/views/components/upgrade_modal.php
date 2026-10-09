@@ -249,7 +249,7 @@ function submitDirectUpgrade(planId) {
         });
     } else {
         console.error('payment_modal.php not included correctly.');
-        Swal.fire('Error', 'Payment system initialized incorrectly.', 'error');
+        Feedback.fire('Error', 'Payment system initialized incorrectly.', 'error');
     }
 }
 </script>

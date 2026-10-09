@@ -252,7 +252,7 @@ $(document).ready(function() {
         const originalHtml = btn.html();
 
         if (!pub || !sec) {
-            Swal.fire({ icon: 'warning', title: 'Keys Required', text: 'Specify protocol keys before discovery.' });
+            Feedback.fire({ icon: 'warning', title: 'Keys Required', text: 'Specify protocol keys before discovery.' });
             return;
         }
 
@@ -265,13 +265,13 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
-                    Swal.fire({ icon: 'success', title: 'Discovery Complete', text: response.message, timer: 1500, showConfirmButton: false });
+                    Feedback.fire({ icon: 'success', title: 'Discovery Complete', text: response.message, timer: 1500, showConfirmButton: false });
                     
                     // Re-render grid with discovered methods if they changed (in real app)
                     // For now, we just ensure the section is visible
                     togglePayMongoMethods();
                 } else {
-                    Swal.fire({ icon: 'error', title: 'Discovery Failed', text: response.message });
+                    Feedback.fire({ icon: 'error', title: 'Discovery Failed', text: response.message });
                 }
             },
             complete: function() {
@@ -298,7 +298,7 @@ $(document).ready(function() {
             dataType: "json",
             success: function(response) {
                 if (response.success) {
-                    Swal.fire({
+                    Feedback.fire({
                         icon: "success",
                         title: "Gateways Refined",
                         text: response.message,
@@ -308,11 +308,11 @@ $(document).ready(function() {
                         backdrop: `rgba(0,123,255,0.05)`
                     });
                 } else {
-                    Swal.fire({ icon: "error", title: "Configuration Fault", text: response.message });
+                    Feedback.fire({ icon: "error", title: "Configuration Fault", text: response.message });
                 }
             },
             error: function() {
-                Swal.fire({ icon: "error", title: "System Boundary Error", text: "Communication failed." });
+                Feedback.fire({ icon: "error", title: "System Boundary Error", text: "Communication failed." });
             },
             complete: function() {
                 submitBtn.prop("disabled", false).html(originalHtml);

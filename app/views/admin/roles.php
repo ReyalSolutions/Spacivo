@@ -6,20 +6,12 @@ require __DIR__ . '/../layouts/management_header.php';
 <div class="animate-fade-up">
     <!-- Feedback Alerts -->
     <?php if (isset($_SESSION['success'])): ?>
-        <div class="alert alert-success alert-dismissible fade show rounded-pill px-4 mb-4 border-0 shadow-sm" role="alert">
-            <i class="fa-solid fa-circle-check me-2"></i>
-            <?= $_SESSION['success']; unset($_SESSION['success']); ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+<script>document.addEventListener('DOMContentLoaded',function(){ToastStack.create({type:'success', message:<?= json_encode($_SESSION['success'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>});});</script>
+<?php unset($_SESSION['success']); endif; ?>
 
     <?php if (isset($_SESSION['error'])): ?>
-        <div class="alert alert-danger alert-dismissible fade show rounded-pill px-4 mb-4 border-0 shadow-sm" role="alert">
-            <i class="fa-solid fa-circle-exclamation me-2"></i>
-            <?= $_SESSION['error']; unset($_SESSION['error']); ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-        </div>
-    <?php endif; ?>
+<script>document.addEventListener('DOMContentLoaded',function(){ToastStack.create({type:'error', message:<?= json_encode($_SESSION['error'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>});});</script>
+<?php unset($_SESSION['error']); endif; ?>
 
     <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
         <div>

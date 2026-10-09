@@ -67,3 +67,8 @@ Shared management assets provide skeleton shimmer loading for same-origin jQuery
 Automatic review declined broad router/global-authentication and transport monkey-patching proposals. Those proposals were not applied. Feature groups were migrated and verified separately; loading uses ordinary AJAX events and a tested fetch wrapper.
 
 Hosted action-permissions/loading gate passed: [run 37908631123](https://github.com/ReyalSolutions/Spacivo/actions/runs/37908631123), source e7efb4f. PHP validation, foundation/integration/database checks and Node loader checks all succeeded. This user-priority implementation loop is complete; resume shared rooms consolidation next.
+
+
+## 2026-10-09 — Global toast across pages
+
+Notification feedback uses the existing ToastStack engine across admin, owner, tenant, public and authentication views, including role/recovery flash messages and organization/category/inventory saves. Shared headers load the engine before page scripts. Feedback.fire sends notices to ToastStack and preserves interactive confirmations, input prompts and loading dialogs. Post-notice redirects retain display delays; success/error notices close pending loading dialogs. Titles/messages are escaped, server flash values are JSON encoded and toast roles support accessible announcements. Browser visual verification remains unavailable. Local verification: 202 PHP files linted, 29 foundation assertions, 348 database/HTTP assertions, skeleton checks and global-toast safety/confirmation/callback tests passed. Hosted gate pending.

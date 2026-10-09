@@ -40,9 +40,9 @@ document.querySelectorAll('.category-form').forEach(form => form.addEventListene
         });
         const result = await response.json();
         if (!response.ok || !result.success) throw new Error(result.message || 'Unable to save category.');
-        window.location.reload();
+        Feedback.fire({icon:'success', title:'Saved', text:result.message || 'Your changes were saved.', timer:1500}).then(function(){window.location.reload();});
     } catch (error) {
-        message.className = 'alert alert-danger'; message.textContent = error.message; button.disabled = false;
+        ToastStack.error(error.message); button.disabled = false;
     }
 }));
 </script>

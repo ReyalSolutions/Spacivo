@@ -360,7 +360,7 @@ $(document).ready(function () {
         const id       = btn.data('id');
         const csrf     = btn.data('csrf');
 
-        Swal.fire({
+        Feedback.fire({
             title: 'Move Out Tenant?',
             html: 'This will <strong>release the room slot</strong> and mark the tenant as moved out. This action <u>cannot be undone</u>.',
             icon: 'warning',
@@ -384,7 +384,7 @@ $(document).ready(function () {
                 dataType: 'json',
                 success: function(res) {
                     if (res.success) {
-                        Swal.fire({
+                        Feedback.fire({
                             title: 'Done!',
                             text: 'Tenant has been marked as moved out and the room slot has been released.',
                             icon: 'success',
@@ -393,12 +393,12 @@ $(document).ready(function () {
                         }).then(() => table.ajax.reload(null, false));
                     } else {
                         btn.prop('disabled', false).html('<i class="fa-solid fa-person-walking-arrow-right"></i> Move Out');
-                        Swal.fire('Failed', res.message || 'Could not process move out.', 'error');
+                        Feedback.fire('Failed', res.message || 'Could not process move out.', 'error');
                     }
                 },
                 error: function() {
                     btn.prop('disabled', false).html('<i class="fa-solid fa-person-walking-arrow-right"></i> Move Out');
-                    Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+                    Feedback.fire('Error', 'Something went wrong. Please try again.', 'error');
                 }
             });
         });

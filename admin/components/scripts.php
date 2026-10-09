@@ -26,7 +26,6 @@
   </script>
 
   <!-- Global Toast Notification Engine -->
-  <script src="/tenant/public/assets/js/toast.js"></script>
 
 
 <script>function confirmLogout(formId){Swal.fire({title:"Log out?",icon:"question",showCancelButton:true,confirmButtonText:"Logout"}).then(function(result){if(result.isConfirmed){document.getElementById(formId).submit();}});}</script>

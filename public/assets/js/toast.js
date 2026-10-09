@@ -8,7 +8,7 @@
  *   ToastStack.warning('Session expiring soon');
  *   ToastStack.info('New notification received');
  */
-const ToastStack = (() => {
+window.ToastStack = window.ToastStack || (() => {
   // Support both Tabler Icons (Admin) and FontAwesome (Public/App)
   const hasTabler = () => !!document.querySelector('link[href*="tabler"]');
 
@@ -52,6 +52,7 @@ const ToastStack = (() => {
 
     const el = document.createElement('div');
     el.className = `gtoast gtoast--${normalizedType}`;
+    el.setAttribute('role', normalizedType === 'danger' ? 'alert' : 'status');
 
     const pwHtml = password
       ? `<div class="gtoast__pw">
@@ -68,8 +69,8 @@ const ToastStack = (() => {
     el.innerHTML = `
       <div class="gtoast__icon"><i class="${iconClass}"></i></div>
       <div class="gtoast__body">
-        <div class="gtoast__title">${title || TITLES[normalizedType] || 'Notification'}</div>
-        <p class="gtoast__msg">${message}</p>
+        <div class="gtoast__title">${escapeHtml(title || TITLES[normalizedType] || 'Notification')}</div>
+        <p class="gtoast__msg">${escapeHtml(message)}</p>
         ${pwHtml}
       </div>
       <button type="button" class="gtoast__close" onclick="this.closest('.gtoast').remove()" title="Dismiss">
@@ -161,11 +162,28 @@ const ToastStack = (() => {
 })();
 
 // Universal fallback helper
-window.ToastStack = ToastStack;
+
 window.showToast = function(message, type = 'success', title = '') {
   ToastStack.create({
     type: type === 'error' ? 'danger' : type,
     title: title || (type === 'error' ? 'Error' : 'Notification'),
     message: message
   });
+};
+
+// Shared notification API. Interactive prompts remain dialogs.
+window.Feedback = {
+  fire: function (options, message, icon) {
+    var opts = typeof options === 'object' ? options : {title: options, text: message, icon: icon};
+    if (opts.showCancelButton || opts.showDenyButton || opts.input || opts.preConfirm || opts.didOpen || opts.willOpen || !opts.icon || opts.icon === 'question') {
+      return window.Swal.fire.apply(window.Swal, arguments);
+    }
+    if (window.Swal && window.Swal.isLoading && window.Swal.isLoading()) window.Swal.close();
+    var text = opts.text || '';
+    if (!text && opts.html) { var content = document.createElement('div'); content.innerHTML = opts.html; text = content.textContent; }
+    var duration = Number(opts.timer) > 0 ? Number(opts.timer) : 5000;
+    window.ToastStack.create({type:opts.icon, title:opts.title, message:text, duration:duration});
+    // Keep existing post-feedback redirects and refreshes after the display interval.
+    return new Promise(function(resolve) { setTimeout(function() { resolve({isConfirmed:true, isDismissed:false}); }, duration); });
+  }
 };

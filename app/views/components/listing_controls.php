@@ -171,7 +171,7 @@ document.getElementById('houseForm').onsubmit = function(e) {
     
     if (parts.length !== 5 || parts.some(p => p === '')) {
         e.preventDefault();
-        Swal.fire({
+        Feedback.fire({
             title: 'Invalid Address Format',
             text: 'Please follow the format: Street/Purok, Barangay, City, Province, Country (5 components separated by commas)',
             icon: 'error',
@@ -310,19 +310,19 @@ function commitUpload() {
                 document.getElementById('stagedPreviews').classList.add('d-none');
                 document.getElementById('stagedGrid').innerHTML = '';
                 document.getElementById('imageFileInput').value = '';
-                Swal.fire({ title: 'Uploaded!', text: res.uploaded + ' image(s) added.', icon: 'success', timer: 1800, showConfirmButton: false, toast: true, position: 'top-end' });
+                Feedback.fire({ title: 'Uploaded!', text: res.uploaded + ' image(s) added.', icon: 'success', timer: 1800, showConfirmButton: false, toast: true, position: 'top-end' });
                 loadExistingImages();
             } else {
-                Swal.fire('Upload Failed', res.message || 'Unknown error.', 'error');
+                Feedback.fire('Upload Failed', res.message || 'Unknown error.', 'error');
             }
-        } catch(e) { Swal.fire('Error', 'Server error during upload.', 'error'); }
+        } catch(e) { Feedback.fire('Error', 'Server error during upload.', 'error'); }
     };
-    xhr.onerror = () => Swal.fire('Error', 'Network error. Please retry.', 'error');
+    xhr.onerror = () => Feedback.fire('Error', 'Network error. Please retry.', 'error');
     xhr.send(formData);
 }
 
 function deleteImage(imageId) {
-    Swal.fire({
+    Feedback.fire({
         title: 'Remove Photo?',
         text: 'This photo will be permanently deleted.',
         icon: 'warning',
@@ -345,14 +345,14 @@ function deleteImage(imageId) {
                     if (tile) tile.remove();
                     loadExistingImages();
                 } else {
-                    Swal.fire('Error', res.message, 'error');
+                    Feedback.fire('Error', res.message, 'error');
                 }
             });
     });
 }
 
 function confirmDelete(id, name) {
-    Swal.fire({
+    Feedback.fire({
         title: 'Purge Asset Record?',
         text: `Are you absolutely certain you want to decommission "${name}"? This action is irrevocable and will purge all systemic associations.`,
         icon: 'warning',
@@ -397,9 +397,9 @@ function openAmenitiesModal(houseId, houseName) {
                     `;
                 }).join('');
             } else {
-                Swal.fire('Error', data.message, 'error');
+                Feedback.fire('Error', data.message, 'error');
             }
-        }).catch(err => Swal.fire('Network Error', 'Could not load amenities', 'error'));
+        }).catch(err => Feedback.fire('Network Error', 'Could not load amenities', 'error'));
     
     new bootstrap.Modal(document.getElementById('amenitiesModal')).show();
 }
@@ -423,14 +423,14 @@ function saveAmenities() {
             btn.innerText = originalText;
             if (res.success) {
                 bootstrap.Modal.getInstance(document.getElementById('amenitiesModal')).hide();
-                Swal.fire({ title: 'Saved!', text: 'Property amenities updated.', icon: 'success', toast: true, position: 'top-end', timer: 2000, showConfirmButton: false });
+                Feedback.fire({ title: 'Saved!', text: 'Property amenities updated.', icon: 'success', toast: true, position: 'top-end', timer: 2000, showConfirmButton: false });
             } else {
-                Swal.fire('Error', res.message, 'error');
+                Feedback.fire('Error', res.message, 'error');
             }
         }).catch(err => {
             btn.disabled = false;
             btn.innerText = originalText;
-            Swal.fire('Error', 'Network error while saving.', 'error');
+            Feedback.fire('Error', 'Network error while saving.', 'error');
         });
 }
 
@@ -438,7 +438,7 @@ function saveAmenities() {
 
 <?php if (isset($_SESSION['success'])): ?>
 <script>
-Swal.fire({
+Feedback.fire({
     title: 'Success!',
     text: <?= json_encode($_SESSION['success'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>,
     icon: 'success',
@@ -452,7 +452,7 @@ Swal.fire({
 
 <?php if (isset($_SESSION['error'])): ?>
 <script>
-Swal.fire({
+Feedback.fire({
     title: 'Action Failed',
     text: <?= json_encode($_SESSION['error'], JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT) ?>,
     icon: 'error',

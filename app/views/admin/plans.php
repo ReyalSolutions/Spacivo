@@ -277,7 +277,7 @@ $(document).ready(function() {
             dataSrc: 'data',
             error: function (xhr, error, code) {
                 console.error("DataTables Ajax Error:", xhr.responseText);
-                Swal.fire('Table Error', 'Failed to load plans. Check console for details.', 'error');
+                Feedback.fire('Table Error', 'Failed to load plans. Check console for details.', 'error');
             }
         },
         autoWidth: false,
@@ -503,11 +503,11 @@ $(document).ready(function() {
             success: function(res) {
                 console.log("Plan Save Response:", res);
                 if (res.success) {
-                    Swal.fire({ icon: 'success', title: 'Success!', text: res.message, timer: 1500, showConfirmButton: false });
+                    Feedback.fire({ icon: 'success', title: 'Success!', text: res.message, timer: 1500, showConfirmButton: false });
                     $('#planModal').modal('hide');
                     plansTable.ajax.reload(null, false);
                 } else {
-                    Swal.fire('Error', res.message || 'Failed to save plan.', 'error');
+                    Feedback.fire('Error', res.message || 'Failed to save plan.', 'error');
                 }
             },
             error: function(xhr) {
@@ -517,7 +517,7 @@ $(document).ready(function() {
                     const parsed = JSON.parse(xhr.responseText);
                     msg = parsed.message || msg;
                 } catch(e) {}
-                Swal.fire('Error', msg, 'error');
+                Feedback.fire('Error', msg, 'error');
             },
             complete: function() {
                 btn.prop('disabled', false).html('Save Plan');
@@ -571,7 +571,7 @@ function editPlan(id) {
 }
 
 function deletePlan(id, name) {
-    Swal.fire({
+    Feedback.fire({
         title: 'Delete Plan?',
         html: `Are you sure you want to permanently delete the <strong>${name}</strong> plan?<br><br><small class="text-danger"><i class="fa-solid fa-triangle-exclamation me-1"></i>Active subscriptions will prevent deletion.</small>`,
         icon: 'warning',
@@ -591,10 +591,10 @@ function deletePlan(id, name) {
                 dataType: 'json',
                 success: function(res) {
                     if (res.success) {
-                        Swal.fire({ icon: 'success', title: 'Deleted!', text: res.message, timer: 1500, showConfirmButton: false });
+                        Feedback.fire({ icon: 'success', title: 'Deleted!', text: res.message, timer: 1500, showConfirmButton: false });
                         plansTable.ajax.reload(null, false);
                     } else {
-                        Swal.fire('Action Blocked', res.message || 'Failed to delete plan.', 'error');
+                        Feedback.fire('Action Blocked', res.message || 'Failed to delete plan.', 'error');
                     }
                 },
                 error: function(xhr) {
@@ -604,7 +604,7 @@ function deletePlan(id, name) {
                         const parsed = JSON.parse(xhr.responseText);
                         msg = parsed.message || msg;
                     } catch(e) {}
-                    Swal.fire('Error', msg, 'error');
+                    Feedback.fire('Error', msg, 'error');
                 }
             });
         }

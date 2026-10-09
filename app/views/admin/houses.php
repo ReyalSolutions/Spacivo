@@ -420,8 +420,8 @@ function resetFilters() {
 <script>
 function moderateListing(id, action) {
     $.ajax({url:'/tenant/?url=admin/' + action + '_house',method:'POST',dataType:'json',data:{house_id:id,csrf_token:$('meta[name="csrf-token"]').attr('content')}})
-        .done(function(result){if(result.success){$('#houses-table').DataTable().ajax.reload(null,false);}else{Swal.fire('Unable to update',result.message,'error');}})
-        .fail(function(){Swal.fire('Unable to update','Permission or security validation failed.','error');});
+        .done(function(result){if(result.success){$('#houses-table').DataTable().ajax.reload(null,false);}else{Feedback.fire('Unable to update',result.message,'error');}})
+        .fail(function(){Feedback.fire('Unable to update','Permission or security validation failed.','error');});
 }
 </script>
 <?php require __DIR__ . '/../components/listing_controls.php'; require __DIR__ . '/../layouts/management_footer.php'; ?>

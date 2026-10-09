@@ -672,7 +672,7 @@ document.getElementById('confirmActionButton').addEventListener('click', functio
     $.post(url, payload, function(response) {
         let res = JSON.parse(response);
         if (res.success) {
-            Swal.fire({
+            Feedback.fire({
                 icon: 'success',
                 title: 'Action Successful',
                 text: res.message,
@@ -686,7 +686,7 @@ document.getElementById('confirmActionButton').addEventListener('click', functio
                 location.reload(); 
             });
         } else {
-            Swal.fire({
+            Feedback.fire({
                 icon: 'error',
                 title: 'Action Failed',
                 text: res.message,

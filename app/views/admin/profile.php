@@ -327,7 +327,7 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(res) {
                 if (res.success) {
-                    Swal.fire({
+                    Feedback.fire({
                         icon: 'success',
                         title: 'Profile Synchronized',
                         text: res.message,
@@ -344,7 +344,7 @@ $(document).ready(function() {
                     $form.find('[name="password"], [name="confirm_password"]').val('');
                     
                 } else {
-                    Swal.fire({
+                    Feedback.fire({
                         icon: 'error',
                         title: 'Sync Failed',
                         text: res.message,
@@ -358,7 +358,7 @@ $(document).ready(function() {
                 if (xhr.responseJSON && xhr.responseJSON.message) {
                     errorMsg = xhr.responseJSON.message;
                 }
-                Swal.fire({ icon: 'error', title: 'System Error', text: errorMsg });
+                Feedback.fire({ icon: 'error', title: 'System Error', text: errorMsg });
             },
             complete: function() {
                 $btn.prop('disabled', false).html(originalBtnHtml);
