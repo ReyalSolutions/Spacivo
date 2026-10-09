@@ -599,7 +599,7 @@ function cancelSubscription(subId) {
 
 function openUpgradePlanModal(subId, planId, billingCycle) {
     $('#subDetailModal').modal('hide');
-    window.location.href = '/tenant/?url=admin/upgrade&subscription_id=' + encodeURIComponent(subId) + '&cycle=' + encodeURIComponent(billingCycle);
+    showUpgradeRequired(subId, billingCycle);
 }
 
 // ── Shared status badge helper ──

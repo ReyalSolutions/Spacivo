@@ -200,7 +200,7 @@ $(document).ready(function() {
                 } else {
                     if (data.message === 'LIMIT_REACHED') {
                         $('#roomModal').modal('hide');
-                        window.location.href = '/tenant/?url=admin/upgrade';
+                        showUpgradeRequired();
                     } else {
                         Feedback.fire('Error', data.message || 'Operation failed', 'error');
                     }

@@ -92,3 +92,6 @@ Upgrade modal design hosted gate passed: [run 37911327017](https://github.com/Re
 
 
 Upgrade-page hosted gate passed: [run 37911984985](https://github.com/ReyalSolutions/Spacivo/actions/runs/37911984985), source 4158d80. PHP, foundation/integration, 355 database/HTTP checks and all JavaScript regressions passed. Upgrade plans use document scrolling and preserve payment/subscription scope. Migration loop complete.
+
+
+2026-10-09 - Upgrade entry confirmation and focused page: shared upgrade actions display an Upgrade required dialog with View plans/Not now before navigation. Confirmation retains subscription/yearly context; cancellation leaves the current page intact. admin/upgrade now renders a standalone layout with no dashboard sidebar/header, while preserving shared styles, toast, CSRF and payment selection. Verification: 356 database/HTTP assertions, upgrade prompt confirmation/cancellation/context tests and page PHP lint passed. Visual browser verification remains unavailable; hosted gate pending.

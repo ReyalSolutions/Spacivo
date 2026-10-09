@@ -33,5 +33,6 @@ jobs:
       - run: node tests/management-loading.js
       - run: node tests/global-toast.js
       - run: node tests/listing-amenities.js
+      - run: node tests/upgrade-prompt.js
       - run: php tests/run.php --integration
       - run: php tests/database.php

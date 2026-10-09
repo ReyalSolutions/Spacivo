@@ -232,6 +232,7 @@ try {
         if ($role === 'owner') {
             $upgradePage = $request('?url=admin/upgrade&cycle=yearly');
             $check($upgradePage[0] === 200 && strpos($upgradePage[1], '<section id="upgradePlans"') !== false && strpos($upgradePage[1], 'id="upgradePlanModal"') === false, 'Upgrade plans render as a page without a plan modal');
+            $check(strpos($upgradePage[1], '<aside') === false && strpos($upgradePage[1], '<header') === false && strpos($upgradePage[1], '<main class="upgrade-page">') !== false, 'Upgrade page has no dashboard sidebar or header');
             $check(strpos($upgradePage[1], 'setUpgradeBilling("yearly")') !== false && strpos($upgradePage[1], 'id="paymentGatewayModal"') !== false, 'Upgrade page retains billing cycle and payment selection');
             $server->query("INSERT INTO subscriptions (owner_id, plan_id, status, start_date) VALUES (" . $fixtureOtherOwner . ', ' . $fixturePlan . ", 'active', CURRENT_DATE)");
             $otherSubscription = (int)$server->insert_id;

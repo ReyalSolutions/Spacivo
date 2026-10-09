@@ -464,7 +464,7 @@ const CURRENT_BHOUSE_COUNT = <?= (int)($totalHousesCount ?? count($houses)) ?>;
 
 function openAddModal() {
     if (BHOUSE_LIMIT > 0 && CURRENT_BHOUSE_COUNT >= BHOUSE_LIMIT) {
-        window.location.href = '/tenant/?url=admin/upgrade';
+        showUpgradeRequired();
         return;
     }
     document.getElementById('modalTitle').innerText = 'Register New Property';
