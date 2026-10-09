@@ -4,186 +4,39 @@ $_upgradeRecommendedIdx = 1;
 ?>
 <!-- Upgrade Plan Modal Component -->
 <style>
-#upgradePlanModal { z-index: 9999 !important; }
-.modal-backdrop { z-index: 9998 !important; }
-
-/* Remove inner scrollbar - let the modal be auto height */
-#upgradePlanModal .modal-dialog {
-    max-height: none !important;
-}
-#upgradePlanModal .modal-content {
-    background: #ffffff;
-    border-radius: 28px;
-    border: none;
-    box-shadow: 0 32px 80px rgba(0,0,0,0.22);
-    overflow: visible;
-}
-#upgradePlanModal .modal-body {
-    overflow: visible !important;
-    max-height: none !important;
-}
-
-/* Dark gradient header strip */
-#upgradePlanModal .upgrade-header {
-    background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-    border-radius: 28px 28px 0 0;
-    padding: 36px 40px 28px;
-}
-
-/* Billing toggle */
-.billing-toggle-group {
-    display: inline-flex;
-    background: rgba(255,255,255,0.1);
-    border-radius: 100px;
-    padding: 4px;
-}
-.billing-toggle-group button {
-    border: none;
-    background: transparent;
-    color: rgba(255,255,255,0.55);
-    font-size: 0.84rem;
-    font-weight: 700;
-    padding: 8px 22px;
-    border-radius: 100px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    white-space: nowrap;
-}
-.billing-toggle-group button.active {
-    background: #6366f1;
-    color: #fff;
-    box-shadow: 0 4px 14px rgba(99,102,241,0.45);
-}
-
-/* Plan card */
-.upgrade-plan-card {
-    background: #f8fafc;
-    border: 2px solid #e2e8f0;
-    border-radius: 20px;
-    transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
-}
-.upgrade-plan-card:hover {
-    transform: translateY(-5px);
-    border-color: #a5b4fc;
-    box-shadow: 0 16px 40px rgba(99,102,241,0.12);
-}
-.upgrade-plan-card.recommended {
-    background: #fff;
-    border-color: #6366f1;
-    box-shadow: 0 0 0 1px #6366f1, 0 16px 40px rgba(99,102,241,0.18);
-}
-
-.upgrade-plan-name {
-    font-size: 0.72rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: #64748b;
-}
-.upgrade-plan-card.recommended .upgrade-plan-name { color: #6366f1; }
-
-.popular-badge {
-    font-size: 0.62rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    padding: 3px 10px;
-    background: rgba(99,102,241,0.1);
-    color: #6366f1;
-    border: 1px solid rgba(99,102,241,0.25);
-    border-radius: 100px;
-}
-
-.price-amount-lg {
-    font-size: 2.2rem;
-    font-weight: 900;
-    color: #0f172a;
-    line-height: 1;
-    letter-spacing: -0.04em;
-}
-.price-period { font-size: 0.78rem; color: #94a3b8; font-weight: 600; }
-.price-original {
-    font-size: 0.78rem;
-    color: #94a3b8;
-    text-decoration: line-through;
-    display: none;
-}
-.annual-badge {
-    font-size: 0.65rem;
-    font-weight: 800;
-    padding: 2px 8px;
-    border-radius: 100px;
-    background: rgba(16,185,129,0.1);
-    color: #059669;
-    border: 1px solid rgba(16,185,129,0.25);
-    display: none;
-}
-
-.limit-chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    background: #f1f5f9;
-    border: 1px solid #e2e8f0;
-    border-radius: 100px;
-    padding: 3px 10px;
-    font-size: 0.76rem;
-    font-weight: 600;
-    color: #475569;
-}
-.upgrade-plan-card.recommended .limit-chip {
-    background: rgba(99,102,241,0.07);
-    border-color: rgba(99,102,241,0.2);
-    color: #4338ca;
-}
-
-.upgrade-feature-list { list-style: none; padding: 0; margin: 0; }
-.upgrade-feature-list li {
-    font-size: 0.81rem;
-    color: #64748b;
-    padding: 5px 0;
-    display: flex;
-    align-items: flex-start;
-    gap: 8px;
-    border-bottom: 1px solid #f1f5f9;
-}
-.upgrade-feature-list li:last-child { border-bottom: none; }
-.upgrade-feature-list li i { color: #10b981; font-size: 0.68rem; margin-top: 4px; flex-shrink: 0; }
-
-.plan-cta-btn {
-    width: 100%;
-    padding: 11px 0;
-    border-radius: 12px;
-    font-weight: 700;
-    font-size: 0.875rem;
-    border: 2px solid #e2e8f0;
-    background: #fff;
-    color: #475569;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-.plan-cta-btn:hover {
-    border-color: #6366f1;
-    color: #6366f1;
-    background: rgba(99,102,241,0.05);
-}
-.upgrade-plan-card.recommended .plan-cta-btn {
-    background: #6366f1;
-    border-color: #6366f1;
-    color: #fff;
-    box-shadow: 0 6px 18px rgba(99,102,241,0.35);
-}
-.upgrade-plan-card.recommended .plan-cta-btn:hover {
-    background: #4f46e5;
-    border-color: #4f46e5;
-}
-
-.savings-global-note {
-    font-size: 0.78rem;
-    color: rgba(255,255,255,0.5);
-    text-align: center;
-    margin-top: 12px;
-}
+#upgradePlanModal{z-index:9999!important;color:#27272a}
+#upgradePlanModal .modal-dialog{max-width:1120px;margin:24px auto}
+#upgradePlanModal .modal-content{background:#fff;border:1px solid #e4e4e7;border-radius:12px;box-shadow:0 16px 48px #18181b24;overflow:hidden;max-height:calc(100dvh - 48px)}
+#upgradePlanModal .upgrade-header{background:#fff;border-bottom:1px solid #e4e4e7;padding:24px;flex-shrink:0}
+#upgradePlanModal .upgrade-icon{width:40px;height:40px;background:#f4f4f5;border:1px solid #e4e4e7;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:#3f3f46}
+#upgradePlanModal .upgrade-header h5{font-size:20px;font-weight:600;letter-spacing:-.3px;color:#18181b}
+#upgradePlanModal .upgrade-subtitle,#upgradePlanModal .savings-global-note{font-size:12px;color:#71717a}
+#upgradePlanModal .upgrade-close{width:32px;height:32px;background:#fff;border:1px solid #e4e4e7;border-radius:7px;color:#52525b;flex-shrink:0}
+#upgradePlanModal .billing-toggle-group{display:inline-flex;background:#f4f4f5;border:1px solid #e4e4e7;border-radius:8px;padding:3px}
+#upgradePlanModal .billing-toggle-group button{border:0;background:transparent;color:#71717a;font-size:12px;font-weight:500;padding:8px 18px;border-radius:6px;cursor:pointer;white-space:nowrap}
+#upgradePlanModal .billing-toggle-group button.active{background:#18181b;color:#fff}
+#upgradePlanModal .savings-label{font-size:10px;padding:2px 5px;background:#eaf7ee;color:#237344;border-radius:4px}
+#upgradePlanModal .savings-global-note{text-align:center;margin-top:8px}
+#upgradePlanModal .modal-body{background:#fafafa;overflow-y:auto;min-height:0;padding:24px}
+#upgradePlanModal .upgrade-plan-card{background:#fff;border:1px solid #e4e4e7;border-radius:10px;padding:20px!important}
+#upgradePlanModal .upgrade-plan-card.recommended{border-color:#2878f0;box-shadow:0 0 0 1px #2878f0}
+#upgradePlanModal .upgrade-plan-name{font-size:12px;font-weight:600;color:#52525b}
+#upgradePlanModal .popular-badge{font-size:10px;font-weight:500;padding:3px 7px;background:#eff6ff;color:#2563eb;border-radius:5px}
+#upgradePlanModal .price-amount-lg{font-size:30px;font-weight:600;color:#18181b;line-height:1.2;letter-spacing:-1px}
+#upgradePlanModal .price-period,#upgradePlanModal .price-original{font-size:12px;color:#71717a}
+#upgradePlanModal .price-original{text-decoration:line-through;display:none}
+#upgradePlanModal .annual-badge{font-size:10px;color:#237344;background:#eaf7ee;padding:2px 6px;border-radius:4px;display:none}
+#upgradePlanModal .limit-chip{display:inline-flex;align-items:center;gap:5px;background:#f4f4f5;border:1px solid #e4e4e7;border-radius:6px;padding:4px 7px;font-size:11px;color:#52525b}
+#upgradePlanModal .upgrade-feature-list{list-style:none;padding:0;margin:0}
+#upgradePlanModal .upgrade-feature-list li{display:flex;align-items:flex-start;gap:8px;font-size:12px;line-height:1.5;color:#52525b;padding:6px 0;border-bottom:1px solid #f4f4f5}
+#upgradePlanModal .upgrade-feature-list li:last-child{border-bottom:0}
+#upgradePlanModal .upgrade-feature-list i{color:#2878f0;font-size:10px;margin-top:4px;flex-shrink:0}
+#upgradePlanModal .plan-cta-btn{width:100%;padding:10px 12px;border-radius:7px;font-size:12px;font-weight:500;border:1px solid #dedee3;background:#fff;color:#27272a;cursor:pointer}
+#upgradePlanModal .plan-cta-btn:hover{background:#f4f4f5}
+#upgradePlanModal .recommended .plan-cta-btn{background:#18181b;border-color:#18181b;color:#fff}
+#upgradePlanModal .recommended .plan-cta-btn:hover{background:#3f3f46}
+#upgradePlanModal button:focus-visible{outline:2px solid #2878f0;outline-offset:3px}
+@media(max-width:575.98px){#upgradePlanModal .modal-dialog{margin:12px}#upgradePlanModal .modal-content{max-height:calc(100dvh - 24px)}#upgradePlanModal .upgrade-header,#upgradePlanModal .modal-body{padding:16px}#upgradePlanModal .upgrade-header h5{font-size:18px}}
 </style>
 
 <script>
@@ -254,26 +107,24 @@ function submitDirectUpgrade(planId) {
 }
 </script>
 
-<div class="modal fade" id="upgradePlanModal" data-bs-backdrop="static" tabindex="-1">
+<div class="modal fade" id="upgradePlanModal" data-bs-backdrop="static" tabindex="-1" aria-labelledby="upgradePlanModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl">
         <div class="modal-content">
             <input type="hidden" id="upgradePlanActiveSubId" value="<?= isset($activeSubId) ? (int)$activeSubId : 0 ?>">
 
-            <!-- Header (dark gradient) -->
+            <!-- Shared neutral management design -->
             <div class="upgrade-header">
                 <div class="d-flex justify-content-between align-items-start">
                     <div class="d-flex align-items-center gap-3">
-                        <div style="width:50px;height:50px;background:linear-gradient(135deg,#6366f1,#a855f7);border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(99,102,241,0.4);flex-shrink:0;">
-                            <i class="fa-solid fa-rocket" style="font-size:1.3rem;color:#fff;"></i>
+                        <div class="upgrade-icon">
+                            <i class="fa-solid fa-arrow-up"></i>
                         </div>
                         <div>
-                            <h5 class="mb-0 fw-900 text-white" style="letter-spacing:-0.02em;">Upgrade Your Plan</h5>
-                            <p class="mb-0 small fw-500" style="color:rgba(255,255,255,0.5);">Unlock more properties, rooms &amp; features</p>
+                            <h5 class="mb-0" id="upgradePlanModalTitle">Upgrade Your Plan</h5>
+                            <p class="mb-0 upgrade-subtitle">Unlock more properties, rooms &amp; features</p>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-sm rounded-circle d-flex align-items-center justify-content-center"
-                            data-bs-dismiss="modal"
-                            style="width:34px;height:34px;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.6);flex-shrink:0;">
+                    <button type="button" class="upgrade-close d-flex align-items-center justify-content-center" data-bs-dismiss="modal" aria-label="Close upgrade plans">
                         <i class="fa-solid fa-xmark"></i>
                     </button>
                 </div>
@@ -283,7 +134,7 @@ function submitDirectUpgrade(planId) {
                     <div class="billing-toggle-group">
                         <button data-cycle="monthly" class="active" onclick="setUpgradeBilling('monthly')">Monthly</button>
                         <button data-cycle="yearly" onclick="setUpgradeBilling('yearly')">
-                            Yearly &nbsp;<span style="font-size:0.6rem;font-weight:800;padding:1px 7px;background:rgba(16,185,129,0.2);color:#6ee7b7;border-radius:100px;">Save 17%</span>
+                            Yearly &nbsp;<span class="savings-label">Save 17%</span>
                         </button>
                     </div>
                     <div class="savings-global-note mt-2">Yearly billing saves up to 17%</div>
@@ -291,7 +142,7 @@ function submitDirectUpgrade(planId) {
             </div>
 
             <!-- Body (white/light) -->
-            <div class="modal-body px-4 pt-4 pb-4" style="background:#f8fafc; border-radius: 0 0 28px 28px;">
+            <div class="modal-body">
                 <div class="row g-3">
                     <?php if (isset($allPlans) && is_array($allPlans)):
                         $plans = array_values($allPlans);
@@ -309,7 +160,7 @@ function submitDirectUpgrade(planId) {
                                 <!-- Name + badge -->
                                 <div class="d-flex justify-content-between align-items-center mb-3">
                                     <span class="upgrade-plan-name"><?= htmlspecialchars($plan['name']) ?></span>
-                                    <?php if ($isRec): ?><span class="popular-badge">⭐ Popular</span><?php endif; ?>
+                                    <?php if ($isRec): ?><span class="popular-badge">Popular</span><?php endif; ?>
                                 </div>
 
                                 <!-- Price -->
@@ -338,7 +189,7 @@ function submitDirectUpgrade(planId) {
                                 <!-- CTA -->
                                 <button type="button" class="plan-cta-btn"
                                         onclick="submitDirectUpgrade(<?= (int)$plan['id'] ?>)">
-                                    <?= $isRec ? '⚡ Upgrade Now' : 'Select Plan' ?>
+                                    <?= $isRec ? 'Upgrade Now' : 'Select Plan' ?>
                                 </button>
                             </div>
                         </div>

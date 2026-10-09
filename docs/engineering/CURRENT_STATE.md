@@ -80,3 +80,6 @@ Listing-toast hosted gate passed: [run 37910282471](https://github.com/ReyalSolu
 
 
 Amenities checkbox hosted gate passed: [run 37910749284](https://github.com/ReyalSolutions/Spacivo/actions/runs/37910749284), source 6645cd1. Full PHP/integration/database suites and the mixed-ID/reopen modal regression check succeeded. Repair loop complete.
+
+
+2026-10-09 - Upgrade modal shared design: replaced the dark/purple presentation with the neutral management theme, white header, bordered plan cards, black billing/primary controls and restrained blue recommendation highlight. Styles are scoped to the modal so moving it to document.body retains the theme. Added a bounded scrolling body and accessible title/close/focus controls. Billing prices, limits, selection, permissions and payment functions remain intact. PHP lint and existing toast/amenity tests passed. Browser visual verification remains unavailable; hosted gate pending.
