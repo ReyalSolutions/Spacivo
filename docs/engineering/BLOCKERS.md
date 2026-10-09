@@ -2,7 +2,7 @@
 
 Resolved: PHP version decision, Composer installation, baseline reconciliation/testing, portal boot verification, and approval to apply the first three migrations. Existing PHP 7.4.33 is explicitly authorized.
 
-GitHub remote supplied: https://github.com/ReyalSolutions/Spacivo.git. Repository metadata confirms main as the default branch and push access. It was empty when inspected. Hosted CI still requires reviewed source publication and an actual Actions result; local equivalent checks pass.
+Resolved: the user explicitly approved publication to https://github.com/ReyalSolutions/Spacivo.git. Source is published on main; GitHub Actions run 37892096783 passed for c73f304. Final expanded-check commit verification follows.
 
 Awaiting the email provider choice for real password recovery delivery. The local/testing adapter queues private messages only. Do not claim those messages were sent as email; recovery is intentionally unavailable outside local/testing until a production adapter exists.
 

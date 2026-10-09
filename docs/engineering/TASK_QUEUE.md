@@ -12,7 +12,8 @@
 - [x] Apply baseline with explicit user approval.
 - [x] Verify admin/owner/tenant login and real portal/shared layout boot on a disposable database.
 - [x] Run lint, foundation tests, database/HTTP tests and Composer validation locally.
-- [ ] Publish reviewed source and record actual hosted CI result.
+- [x] Publish user-approved source; hosted run 37892096783 passed for c73f304.
+- [ ] Verify final expanded-check source commit in hosted CI.
 
 ## Phase 2
 

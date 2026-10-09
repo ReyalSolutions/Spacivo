@@ -5,14 +5,17 @@ $root = dirname(__DIR__);
 $failures = 0;
 $checked = 0;
 // The nested reyal_solutions application and historical diagnostic scripts are separate from active application code.
-foreach (['app', 'bootstrap', 'config', 'public', 'scripts', 'tests', 'database/migrations'] as $directory) {
+foreach (['index.php', 'app', 'admin', 'bootstrap', 'config', 'public', 'scripts', 'tests', 'database/migrations'] as $directory) {
     $path = $root . '/' . $directory;
-    if (!is_dir($path)) {
+    if (!is_dir($path) && !is_file($path)) {
         continue;
     }
-    $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS));
+    $iterator = is_file($path) ? [new SplFileInfo($path)]
+        : new RecursiveIteratorIterator(new RecursiveDirectoryIterator($path, FilesystemIterator::SKIP_DOTS));
     foreach ($iterator as $file) {
-        if ($file->getExtension() !== 'php' || strpos(str_replace('\\', '/', $file->getPathname()), '/public/uploads/') !== false) {
+        $normalizedPath = str_replace('\\', '/', $file->getPathname());
+        if ($file->getExtension() !== 'php' || strpos($normalizedPath, '/public/uploads/') !== false
+            || substr($normalizedPath, -19) === '/public/phpinfo.php') {
             continue;
         }
         $output = [];

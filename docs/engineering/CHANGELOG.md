@@ -19,3 +19,7 @@ User explicitly approved baseline application and then both Phase 2 migrations/f
 Fixed registration role escalation, opaque password handling, strict-schema user image defaults, CSRF logout/payment writes, stale role authorization and reset-session invalidation. Added login lockouts and negative account/organization tests. Repaired inherited Apache denial affecting legacy admin pages.
 
 Final local verification: 142 PHP files linted; 21 foundation and 90 database/HTTP assertions pass; Composer strict validation and all health checks pass. Real email and hosted CI remain unverified. User supplied ReyalSolutions/Spacivo as the remote; repository is initially empty/public.
+
+## 2026-10-09: Approved publication and hosted verification
+
+Published reviewed source after explicit user approval, excluding local secrets, SQL dumps, uploaded media and diagnostic phpinfo. GitHub Actions run 37892096783 passed for c73f304 with PHP 7.4 and MariaDB 10.4. Expanded lint to include the root entry point and legacy admin application: 168 files pass. Include the private storage Apache denial in source control. Real password-recovery email delivery awaits provider configuration; Phase 2 acceptance and subsequent phases remain open.
